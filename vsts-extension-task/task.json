@@ -9,7 +9,7 @@
     "version":  {
                     "Major":  0,
                     "Minor":  0,
-                    "Patch":  12
+                    "Patch":  13
                 },
     "visibility":  [
                        "Build",
@@ -95,7 +95,7 @@
                        "type":  "connectedService:marketplace-auth-key",
                        "label":  "Service Endpoint",
                        "defaultValue":  "",
-                       "required":  true,
+                       "required":  false,
                        "helpMarkDown":  "",
                        "groupName":  "GlobalOptions"
                    },
