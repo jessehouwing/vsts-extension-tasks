@@ -30,6 +30,7 @@
     <Content Include="task.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="icon.png" />
     <Compile Include="vsts-extension-task.ps1" />
   </ItemGroup>
   <ItemGroup>

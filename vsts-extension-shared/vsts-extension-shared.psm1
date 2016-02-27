@@ -9,11 +9,14 @@ function Convert-GlobalOptions
     )
 
     $globalOptions = @{
-        TfxInstall = $parameters["TfxInstall"] -eq $true
-        TfxInstallPath = $parameters["TfxInstallPath"]
+        TfxInstall = ($parameters["TfxInstall"] -eq $true)
+        TfxInstallPath = ($parameters["TfxInstallPath"])
     }
 
-    $globalOptions
+    Write-Debug "GlobalOptions:"
+    Write-Debug ($globalOptions | Out-String)
+
+    return $globalOptions
 }
 
 
@@ -25,10 +28,13 @@ function Convert-PackageOptions
     )
 
     $packageOptions = @{
-        Enabled = $parameters["EnablePackaging"] -eq $true
+        Enabled = ($parameters["EnablePackaging"] -eq $true)
     }
 
-    $packageOptions
+    Write-Debug "PackageOptions:"
+    Write-Debug ($packageOptions | Out-String)
+
+    return $packageOptions
 }
 
 function Convert-PublishOptions 
@@ -39,10 +45,13 @@ function Convert-PublishOptions
     )
 
     $publishOptions = @{
-        Enabled = $parameters["EnablePublishing"] -eq $true
+        Enabled = ($parameters["EnablePublishing"] -eq $true)
     }
 
-    $publishOptions
+    Write-Debug "PublishOptions:"
+    Write-Debug ($publishOptions | Out-String)
+
+    return $publishOptions
 }
 
 function Convert-ShareOptions 
@@ -55,8 +64,11 @@ function Convert-ShareOptions
     $shareOptions = @{
         Enabled = $parameters["EnableSharing"] -eq $true
     }
+
+    Write-Debug "ShareOptions:"
+    Write-Debug ($shareOptions | Out-String)
     
-    $shareOptions
+    return $shareOptions
 }
 
 function Find-Tfx
@@ -128,12 +140,13 @@ function Find-Tfx
                 throw ("Unable to locate npm")
             }
 
-            $npmargs = @(
-                "install",
-                "tfx-cli",
-                "--prefix",
-                "$TfxLocation"
-            )
+            #$npmargs = @(
+            #    "install",
+            #    "tfx-cli",
+            #    "--prefix",
+            #    "$TfxLocation"
+            #)
+            $npmargs = "install ""tfx-cli"" --prefix ""$TfxLocation"""
             Write-Verbose "Calling: $($npm.Path) $npmargs"
             Invoke-Tool -Path $npm.Path -Arguments $npmArgs -WorkingFolder $cwd -WarningPattern "^npm WARN"
             

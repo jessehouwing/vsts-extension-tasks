@@ -9,10 +9,10 @@ Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "vsts-extension-task", "vsts
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extension", "Extension", "{BC296AF2-F84F-4227-B0E7-93CBF12940F8}"
 	ProjectSection(SolutionItems) = preProject
-		extension-manifest.json = extension-manifest.json
 		extension\extension-overview.md = extension\extension-overview.md
 		License.txt = License.txt
 		README.md = README.md
+		vss-extension.json = vss-extension.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{60191CF5-016B-4E2D-B762-228F0D128D8C}"

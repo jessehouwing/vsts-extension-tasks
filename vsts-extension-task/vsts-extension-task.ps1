@@ -78,20 +78,31 @@ $packageOptions = Convert-PackageOptions $PSBoundParameters
 $publishOptions = Convert-PublishOptions $PSBoundParameters
 $shareOptions = Convert-ShareOptions $PSBoundParameters
 
-$tfx = Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect:$false
+[string]$tfx = Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect
 
 if ($packageOptions.Enabled)
 {
-
+    $tfsArgs = "extension create --json --no-prompt --root ."
     
-    Invoke-Tool -Path $tfx.Path -Arguments $npmArgs -WorkingFolder $cwd -WarningPattern "^npm WARN"
+    $output = (Invoke-Tool -Path $tfx -Arguments $tfxArgs -WorkingFolder $cwd -WarningPattern "^npm WARN" | ConvertFrom-Json )
+    Write-Debug $output
+    $publishOptions.VsixPath = $output.Path
 }
 
 if ($publishOptions.Enabled)
 {
+    $tfsArgs = @(
+        "extension",
+        "publish"
+    )
 
     if ($shareOptions.Enabled)
     {
+        foreach ($account in $shareOptions.Accounts)
+        {
+            $tfxArgs = "extension publish --vsix-path ""$publishOptions.VsixPath"" --share-with $account"
 
+            Invoke-Tool -Path $tfx -Arguments $tfxArgs -WorkingFolder $cwd
+        }
     }
 }
