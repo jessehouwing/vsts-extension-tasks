@@ -1,6 +1,6 @@
 [cmdletbinding()]
 param(
-    [string[]] $Items = @(".\vsts-extension-tasks"),
+    [string[]] $Items = @(".\vsts-extension-task"),
     [switch] $Force = $false,
     [switch] $Package = $false,
     [switch] $PublishLocal = $false,
@@ -141,7 +141,7 @@ foreach ($Item in $Items)
     if (Test-Path $Item)
     {
         Write-Output "Processing: $Item"
-        Copy-Item .\vsts-tfvc-shared\*.psm1 .\$item -Force
+        Copy-Item .\vsts-*-shared\*.psm1 .\$item -Force
         $taskUpdated = Update-TaskVersion -TaskPath $item
         $updated = ($updated -or $taskUpdated)
         if ($taskUpdated -and $PublishLocal)

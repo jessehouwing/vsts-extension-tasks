@@ -1,95 +1,95 @@
 {
-    "manifestVersion": 1,
-    "id": "jessehouwing-vsts-extension-tasks",
-    "name": "VSTS Extension Tasks",
-    "version": "0.0.0",
-    "publisher": "jessehouwing",
-    "public": false,
-    "galleryFlags": [
-        "Private",
-        "Preview"
-    ],
-    "targets": [
-        {
-            "id": "Microsoft.VisualStudio.Services"
-        }
-    ],
-    "scope": [
-        "vso.build",
-        "vso.release",
-        "vso.serviceendpoint"
-    ],
-    "description": "Build extensions that enable you to interact with TFVC repositories.",
-    "categories": [
-        "Build and release"
-    ],
-    "tags": [
-        "Extension",
-        "Marketplace",
-        "Publish",
-        "Package"
-    ],
-    "screenshots": [
-    ],
-    "content": {
-        "details": {
-            "path": "readme.md"
-        },
-        "license": {
-            "path": "license.txt"
-        }
-    },
-    "links": {
-        "getstarted": {
-            "uri": "https://github.com/jessehouwing/vsts-extension-tasks/wiki"
-        },
-        "support": {
-            "uri": "https://github.com/jessehouwing/vsts-extension-tasks/issues"
-        }
-    },
-    "branding": {
-        "color": "rgb(36, 43, 50)",
-        "theme": "dark"
-    },
-    "icons": {
-        "default": "extension/images/extension-icon.png"
-    },
-    "files": [
-        {
-            "path": "vsts-extension-task"
-        }
-    ],
-    "contributions": [
-        {
-            "id": "vsts-extension-task",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "vsts-extension.task"
-            }
-        },
-        {
-            "id": "marketplace-service-endpoint",
-            "description": "MarketPlaceAuthenticationEndpoint",
-            "type": "ms.vss-endpoint.service-endpoint-type",
-            "targets": [
-                "ms.vss-endpoint.endpoint-types"
-            ],
-            "properties": {
-                "name": "marketplace-auth-key",
-                "displayName": "Marketplace",
-                "url": "https://app.market.visualstudio.com",
-                "authenticationSchemes": [
+    "manifestVersion":  1,
+    "id":  "jessehouwing-vsts-extension-tasks-TEST",
+    "name":  "VSTS Extension Tasks",
+    "version":  "0.0.9",
+    "publisher":  "jessehouwing",
+    "public":  false,
+    "galleryFlags":  [
+                         "Preview"
+                     ],
+    "targets":  [
                     {
-                        "type": "ms.vss-endpoint.endpoint-auth-scheme-basic"
-                    },
-                    {
-                        "type": "ms.vss-endpoint.endpoint-auth-scheme-token"
+                        "id":  "Microsoft.VisualStudio.Services"
                     }
-                ]
-            }
-        }
-    ]
+                ],
+    "scope":  [
+                  "vso.build",
+                  "vso.release",
+                  "vso.serviceendpoint"
+              ],
+    "description":  "Build extensions that enable you to interact with TFVC repositories.",
+    "categories":  [
+                       "Build and release"
+                   ],
+    "tags":  [
+                 "Extension",
+                 "Marketplace",
+                 "Publish",
+                 "Package"
+             ],
+    "screenshots":  [
+
+                    ],
+    "content":  {
+                    "details":  {
+                                    "path":  "readme.md"
+                                },
+                    "license":  {
+                                    "path":  "license.txt"
+                                }
+                },
+    "links":  {
+                  "getstarted":  {
+                                     "uri":  "https://github.com/jessehouwing/vsts-extension-tasks/wiki"
+                                 },
+                  "support":  {
+                                  "uri":  "https://github.com/jessehouwing/vsts-extension-tasks/issues"
+                              }
+              },
+    "branding":  {
+                     "color":  "rgb(36, 43, 50)",
+                     "theme":  "dark"
+                 },
+    "icons":  {
+                  "default":  "extension/images/extension-icon.png"
+              },
+    "files":  [
+                  {
+                      "path":  "vsts-extension-task"
+                  }
+              ],
+    "contributions":  [
+                          {
+                              "id":  "vsts-extension-task",
+                              "type":  "ms.vss-distributed-task.task",
+                              "targets":  [
+                                              "ms.vss-distributed-task.tasks"
+                                          ],
+                              "properties":  {
+                                                 "name":  "vsts-extension-task"
+                                             }
+                          },
+                          {
+                              "id":  "marketplace-service-endpoint",
+                              "description":  "MarketPlaceAuthenticationEndpoint",
+                              "type":  "ms.vss-endpoint.service-endpoint-type",
+                              "targets":  [
+                                              "ms.vss-endpoint.endpoint-types"
+                                          ],
+                              "properties":  {
+                                                 "name":  "marketplace-auth-key",
+                                                 "displayName":  "Marketplace",
+                                                 "url":  "https://app.market.visualstudio.com",
+                                                 "authenticationSchemes":  [
+                                                                               {
+                                                                                   "type":  "ms.vss-endpoint.endpoint-auth-scheme-basic"
+                                                                               },
+                                                                               {
+                                                                                   "type":  "ms.vss-endpoint.endpoint-auth-scheme-token"
+                                                                               }
+                                                                           ]
+                                             }
+                          }
+                      ]
 }

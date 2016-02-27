@@ -3,7 +3,9 @@
 
 *.psm1
 !/vsts-*-shared/*.psm1
-
+.last*
+task.json.last*
+*.vsix
 
 # User-specific files
 *.suo
