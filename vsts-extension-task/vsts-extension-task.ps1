@@ -35,10 +35,10 @@ param(
     [string] $ManifestGlobs = "extension-manifest.json",
 
     [Parameter(Mandatory=$false)]
-    [string] $ExtensionRoot = "$(Build.SourcesDirectory)",
+    [string] $ExtensionRoot,
 
     [Parameter(Mandatory=$false)]
-    [string] $PackagingOutputPath = "$(Build.BinariesDirectory)",
+    [string] $PackagingOutputPath,
 
     [Parameter(Mandatory=$false)]
     [string] $OverrideFile = "",
@@ -56,6 +56,10 @@ param(
     [string] $EnablePublishing = $false,
 
     [Parameter(Mandatory=$false)]
+    [string] $VsixPath,
+    
+
+    [Parameter(Mandatory=$false)]
     [string] $EnableSharing = $false,
 
     [Parameter(Mandatory=$false)]
@@ -68,3 +72,26 @@ $PSBoundParameters.Keys | %{ Write-Verbose "$_ = $($PSBoundParameters[$_])" }
 
 Write-Verbose "Importing modules"
 Import-Module -DisableNameChecking "$PSScriptRoot/vsts-extension-shared.psm1"
+
+$globalOptions = Convert-GlobalOptions $PSBoundParameters
+$packageOptions = Convert-PackageOptions $PSBoundParameters
+$publishOptions = Convert-PublishOptions $PSBoundParameters
+$shareOptions = Convert-ShareOptions $PSBoundParameters
+
+$tfx = Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect:$false
+
+if ($packageOptions.Enabled)
+{
+
+    
+    Invoke-Tool -Path $tfx.Path -Arguments $npmArgs -WorkingFolder $cwd -WarningPattern "^npm WARN"
+}
+
+if ($publishOptions.Enabled)
+{
+
+    if ($shareOptions.Enabled)
+    {
+
+    }
+}
