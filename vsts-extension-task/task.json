@@ -9,7 +9,7 @@
     "version":  {
                     "Major":  0,
                     "Minor":  0,
-                    "Patch":  13
+                    "Patch":  15
                 },
     "visibility":  [
                        "Build",
@@ -25,16 +25,6 @@
                        "name":  "AdvancedOptions",
                        "displayName":  "Advanced",
                        "isExpanded":  false
-                   },
-                   {
-                       "name":  "PackageOptions",
-                       "displayName":  "Package",
-                       "isExpanded":  true
-                   },
-                   {
-                       "name":  "PublishOptions",
-                       "displayName":  "Publish",
-                       "isExpanded":  true
                    },
                    {
                        "name":  "GlobalOptions",
@@ -123,8 +113,7 @@
                        "label":  "Enable Packaging",
                        "defaultValue":  "false",
                        "required":  true,
-                       "helpMarkDown":  "",
-                       "groupName":  "PackageOptions"
+                       "helpMarkDown":  ""
                    },
                    {
                        "name":  "ManifestGlobs",
@@ -133,7 +122,6 @@
                        "defaultValue":  "extension-manifest.json",
                        "required":  true,
                        "helpMarkDown":  "",
-                       "groupName":  "PackageOptions",
                        "visibleRule":  "EnablePackaging = true"
                    },
                    {
@@ -143,7 +131,6 @@
                        "defaultValue":  "$(Build.SourcesDirectory)",
                        "required":  true,
                        "helpMarkDown":  "",
-                       "groupName":  "PackageOptions",
                        "visibleRule":  "EnablePackaging = true"
                    },
                    {
@@ -153,7 +140,6 @@
                        "defaultValue":  "$(Build.BinariesDirectory)",
                        "required":  true,
                        "helpMarkDown":  "",
-                       "groupName":  "PackageOptions",
                        "visibleRule":  "EnablePackaging = true"
                    },
                    {
@@ -198,8 +184,16 @@
                        "label":  "Enable Publishing",
                        "defaultValue":  "false",
                        "required":  true,
+                       "helpMarkDown":  ""
+                   },
+                   {
+                       "name":  "VsixPath",
+                       "type":  "filePath",
+                       "label":  "Path to Vsix",
+                       "defaultValue":  "",
+                       "required":  false,
                        "helpMarkDown":  "",
-                       "groupName":  "PublishOptions"
+                       "VisibleRule":  "EnablePublishing = true"
                    },
                    {
                        "name":  "EnableSharing",
@@ -208,7 +202,6 @@
                        "defaultValue":  "false",
                        "required":  true,
                        "helpMarkDown":  "",
-                       "groupName":  "PublishOptions",
                        "VisibleRule":  "EnablePublishing = true"
                    },
                    {
@@ -218,7 +211,6 @@
                        "defaultValue":  "",
                        "required":  false,
                        "helpMarkDown":  "",
-                       "groupName":  "PublishOptions",
                        "VisibleRule":  "EnableSharing = true"
                    }
                ],
