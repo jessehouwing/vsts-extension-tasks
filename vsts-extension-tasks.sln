@@ -26,6 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Screenshots", "Screenshots"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D974FE1C-6C02-42C5-991E-8720EECD5AB7}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		commands.json = commands.json
 		vsts-tfvc-tasks.vsext = vsts-tfvc-tasks.vsext
 	EndProjectSection

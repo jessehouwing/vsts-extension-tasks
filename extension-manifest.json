@@ -1,14 +1,17 @@
 {
     "manifestVersion": 1,
     "id": "jessehouwing-vsts-extension-tasks",
-    "name": "Extension Tasks",
+    "name": "VSTS Extension Tasks",
     "version": "0.0.0",
     "publisher": "jessehouwing",
-    "public": true,
+    "public": false,
+    "galleryFlags": [
+        "Private",
+        "Preview"
+    ],
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
-
         }
     ],
     "scope": [
@@ -77,7 +80,7 @@
             "properties": {
                 "name": "marketplace-auth-key",
                 "displayName": "Marketplace",
-                "url": "https://marketplace.visualstudio.com/",
+                "url": "https://app.market.visualstudio.com",
                 "authenticationSchemes": [
                     {
                         "type": "ms.vss-endpoint.endpoint-auth-scheme-basic"
