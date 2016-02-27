@@ -9,7 +9,7 @@
     "version":  {
                     "Major":  0,
                     "Minor":  0,
-                    "Patch":  6
+                    "Patch":  12
                 },
     "visibility":  [
                        "Build",
@@ -34,11 +34,6 @@
                    {
                        "name":  "PublishOptions",
                        "displayName":  "Publish",
-                       "isExpanded":  true
-                   },
-                   {
-                       "name":  "ShareOptions",
-                       "displayName":  "Share",
                        "isExpanded":  true
                    },
                    {
@@ -89,7 +84,8 @@
                        "options":  {
                                        "NoOverride":  "Use manifest",
                                        "Private":  "Private",
-                                       "Preview":  "Preview",
+                                       "PrivatePreview":  "Private Preview",
+                                       "PublicPreview":  "Public Preview",
                                        "Public":  "Public"
                                    },
                        "type":  "pickList"
@@ -195,6 +191,35 @@
                        "required":  true,
                        "helpMarkDown":  "",
                        "groupName":  "AdvancedOptions"
+                   },
+                   {
+                       "name":  "EnablePublishing",
+                       "type":  "boolean",
+                       "label":  "Enable Publishing",
+                       "defaultValue":  "false",
+                       "required":  true,
+                       "helpMarkDown":  "",
+                       "groupName":  "PublishOptions"
+                   },
+                   {
+                       "name":  "EnableSharing",
+                       "type":  "boolean",
+                       "label":  "Enable Sharing",
+                       "defaultValue":  "false",
+                       "required":  true,
+                       "helpMarkDown":  "",
+                       "groupName":  "PublishOptions",
+                       "VisibleRule":  "EnablePublishing = true"
+                   },
+                   {
+                       "name":  "ShareWith",
+                       "type":  "multiLine",
+                       "label":  "Share with",
+                       "defaultValue":  "",
+                       "required":  false,
+                       "helpMarkDown":  "",
+                       "groupName":  "PublishOptions",
+                       "VisibleRule":  "EnableSharing = true"
                    }
                ],
     "instanceNameFormat":  "Package and Pusblish VSTS Extension",

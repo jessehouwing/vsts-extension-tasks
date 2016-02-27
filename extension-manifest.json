@@ -2,7 +2,7 @@
     "manifestVersion":  1,
     "id":  "jessehouwing-vsts-extension-tasks-TEST",
     "name":  "VSTS Extension Tasks",
-    "version":  "0.0.9",
+    "version":  "0.0.16",
     "publisher":  "jessehouwing",
     "public":  false,
     "galleryFlags":  [
@@ -15,12 +15,11 @@
                 ],
     "scope":  [
                   "vso.build",
-                  "vso.release",
                   "vso.serviceendpoint"
               ],
     "description":  "Build extensions that enable you to interact with TFVC repositories.",
     "categories":  [
-                       "Build and release"
+                       "Integrate"
                    ],
     "tags":  [
                  "Extension",
