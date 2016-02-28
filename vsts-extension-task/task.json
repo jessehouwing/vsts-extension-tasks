@@ -9,7 +9,7 @@
     "version":  {
                     "Major":  0,
                     "Minor":  0,
-                    "Patch":  42
+                    "Patch":  62
                 },
     "visibility":  [
                        "Build",
@@ -115,6 +115,16 @@
                        "required":  false,
                        "helpMarkDown":  "",
                        "groupName":  "GlobalOptions"
+                   },
+                   {
+                       "name":  "TfxUpdate",
+                       "type":  "boolean",
+                       "label":  "Auto-update Tfx-cli",
+                       "defaultValue":  "false",
+                       "required":  false,
+                       "helpMarkDown":  "",
+                       "groupName":  "GlobalOptions",
+                       "VisibleRule":  "TfxInstall = true"
                    },
                    {
                        "name":  "TfxLocation",

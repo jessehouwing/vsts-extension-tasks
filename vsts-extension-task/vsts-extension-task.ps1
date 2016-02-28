@@ -35,6 +35,10 @@ param(
     [string] $TfxInstall = $false,
 
     [Parameter(Mandatory=$false)]
+    [ValidateSet("true", "false", "1", "0")]
+    [string] $TfxUpdate = $false,
+
+    [Parameter(Mandatory=$false)]
     [string] $TfxLocation = $false,
 
     [Parameter(Mandatory=$true)]
@@ -78,6 +82,8 @@ param(
     [string] $ShareWith = $false
 )
 
+$Preview = $true
+
 Write-Verbose "Entering script $($MyInvocation.MyCommand.Name)"
 Write-Verbose "Parameter Values"
 $PSBoundParameters.Keys | %{ Write-Verbose "$_ = $($PSBoundParameters[$_])" }
@@ -90,7 +96,7 @@ $global:packageOptions = Convert-PackageOptions $PSBoundParameters
 $global:publishOptions = Convert-PublishOptions $PSBoundParameters
 $global:shareOptions = Convert-ShareOptions $PSBoundParameters
 
-Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect
+Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect -TfxUpdate:$globalOptions.TfxUpdate
 
 if ($packageOptions.Enabled)
 {
@@ -116,7 +122,7 @@ if ($packageOptions.Enabled)
 
     if ($packageOptions.OverrideInternalVersions)
     {
-
+        Update-InternalVersion
     }
 
     $output = Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd 
@@ -140,7 +146,7 @@ if ($publishOptions.Enabled)
         $publishOptions.VsixPath = [string] (Find-Files $publishOptions.VsixPath)
     }
 
-    $tfsArgs = @(
+    $tfxArgs = @(
         "extension",
         "publish",
         "--vsix-path",
@@ -158,7 +164,7 @@ if ($publishOptions.Enabled)
         $tfxArgs += "--bypass-validation"
     }
 
-    Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint
+    Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint -Preview:$Preview
 }
 
 if ($shareOptions.Enabled)
@@ -189,6 +195,6 @@ if ($shareOptions.Enabled)
             $tfxArgs += "--bypass-validation"
         }
 
-        Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint
+        Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint -Preview:$Preview
     }
 }

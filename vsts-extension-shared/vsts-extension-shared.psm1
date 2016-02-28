@@ -10,7 +10,9 @@ function Convert-GlobalOptions
 
     $globalOptions = @{
         TfxInstall = ($parameters["TfxInstall"] -eq $true)
-        TfxInstallPath = ($parameters["TfxInstallPath"])
+        TfxInstallUpdate = ($parameters["TfxUpdate"] -eq $true)
+        TfxInstallPath = $parameters["TfxInstallPath"]
+        OverrideType =  $parameters["OverrideType"]
     }
 
     if ($globalOptions.OverrideType = "Json")
@@ -23,13 +25,15 @@ function Convert-GlobalOptions
     }
     else
     {
-        $globalOptions.OverrideJson = ("{}" | convertFrom-Json)
+        $globalOptions.OverrideJson = ("{}" | ConvertFrom-Json)
     }
 
     Write-Debug "GlobalOptions:"
     Write-Debug ($globalOptions | Out-String)
 
-    return $globalOptions
+    $global:globalOptions = $globalOptions
+
+    return $global:globalOptions
 }
 
 
@@ -39,6 +43,13 @@ function Convert-PackageOptions
     (
         $parameters
     )
+
+    $globalOptions = $global:globalOptions
+    $OverrideJson = $global:globalOptions.OverrideJson
+    if ($OverrideJson -eq $null)
+    {
+        $OverrideJson = "{}" | ConvertFrom-Json
+    }
 
     $packageOptions = @{
         Enabled = ($parameters["EnablePackaging"] -eq $true)
@@ -59,10 +70,11 @@ function Convert-PackageOptions
         $packageOptions.ExtensionId = "$($packageOptions.ExtensionId)-$($packageOptions.ExtensionTag)"
     }
 
-    if ($packageOptions.$OverrideExtensionVersion)
+    if ($packageOptions.OverrideExtensionVersion)
     {
         $version = [System.Version]::Parse($packageOptions.ExtensionVersion)
-        Add-Member -InputObject $global:globalOptions.OverrideJson.Version -NotePropertyName "Public" -NotePropertyValue $Version.ToString(3) -Force
+        Write-Debug "Setting 'Version'"
+        Add-Member -InputObject $OverrideJson -NotePropertyName "version" -NotePropertyValue $Version.ToString(3) -Force
     }
     
     $OverridePublic = $null
@@ -97,17 +109,24 @@ function Convert-PackageOptions
     
     if ($OverridePublic -ne $null)
     {
-        Add-Member -InputObject $global:globalOptions.OverrideJson -NotePropertyName "Public" -NotePropertyValue $OverridePublic -Force
+        Write-Debug "Setting 'Public'"
+        Add-Member -InputObject $OverrideJson -NotePropertyName "public" -NotePropertyValue $OverridePublic -Force
     }
     if ($OverrideFlags -ne $null)
     {
-        Add-Member -InputObject $global:globalOptions.OverrideJson -NotePropertyName "GalleryFlags" -NotePropertyValue $OverrideFlags -Force
+        Write-Debug "Setting 'GalleryFlags'"
+        Add-Member -InputObject $OverrideJson -NotePropertyName "galleryFlags" -NotePropertyValue $OverrideFlags -Force
     }
-
+    Write-Debug "GlobalOptions.OverrideJson"
+    $globalOptions.OverrideJson = $OverrideJson
+    Write-Debug ($globalOptions.OverrideJson)
     Write-Debug "PackageOptions:"
     Write-Debug ($packageOptions | Out-String)
 
-    return $packageOptions
+    $global:packageOptions = $packageOptions
+    $global:globalOptions  = $globalOptions
+
+    return $global:packageOptions
 }
 
 function Convert-PublishOptions 
@@ -133,7 +152,8 @@ function Convert-PublishOptions
     Write-Debug "PublishOptions:"
     Write-Debug ($publishOptions | Out-String)
 
-    return $publishOptions
+    $global:publishOptions = $publishOptions
+    return $global:publishOptions
 }
 
 function Convert-ShareOptions 
@@ -160,10 +180,11 @@ function Convert-ShareOptions
     Write-Debug "ShareOptions:"
     Write-Debug ($shareOptions | Out-String)
     
-    return $shareOptions
+    $global:shareOptions = $shareOptions
+    return $global:shareOptions
 }
 
-$global::tfx = $null
+$global:tfx = $null
 
 function Find-Tfx
 {
@@ -171,12 +192,14 @@ function Find-Tfx
     (
         [switch] $DetectTfx = $false,
         [switch] $TfxInstall = $false,
-        [string] $TfxLocation = ""
+        [string] $TfxLocation = "",
+        [switch] $TfxUpdate = $false
     )
 
     Write-Debug "DetectTfx: $DetectTfx"
     Write-Debug "TfxInstall: $TfxInstall"
     Write-Debug "TfxLocation: $TfxLocation"
+    Write-Debug "TfxUpdate: $TfxUpdate"
 
     if ($DetectTfx.IsPresent)
     {
@@ -201,7 +224,11 @@ function Find-Tfx
         $options += "$($env:appdata)\npm"
 
         $npm = Get-Command -Name npm -ErrorAction Ignore
-        if ($npm)
+        if(!$npm)
+        {
+            throw ("Unable to locate npm")
+        }
+        else
         {
             $options += (Get-Item $npm.Path).Directory.FullName
         }
@@ -213,11 +240,12 @@ function Find-Tfx
             if (Test-Path -PathType Leaf $path)
             {
                 Write-Debug "Found: $path"
-                $global:tfx = $tfx.Path
+                $global:tfx = $path
+                break
             }
         }
 
-        if ($TfxInstall.IsPresent)
+        if ($TfxInstall.IsPresent -and ($global:tfx -eq $null))
         {
             if ($TfxLocation -eq "")
             {
@@ -232,69 +260,103 @@ function Find-Tfx
             {
                 New-Item -ItemType Directory -Path $TfxLocation
             }
-
-            if(!$npm)
-            {
-                throw ("Unable to locate npm")
-            }
-
+            
             $npmargs = "install ""tfx-cli"" --prefix ""$TfxLocation"""
             Write-Verbose "Calling: $($npm.Path) $npmargs"
             Invoke-Tool -Path $npm.Path -Arguments $npmArgs -WorkingFolder $cwd -WarningPattern "^npm WARN"
             
-            return Find-Tfx -TfxInstall:$false -TfxLocation $TfxLocation -DetectTfx:$false
+            Find-Tfx -TfxInstall:$false -TfxLocation $TfxLocation -DetectTfx:$false -TfxUpdate:$false
         }
-        throw ("Unable to locate tfx")
+        
+        if ($global:tfx -eq $null)
+        {
+            throw ("Unable to locate tfx")
+        }
     }
+
+    if ($tfxInstall -and $tfxUpdate)
+    {
+        if ($TfxLocation -eq "")
+        {
+            $TfxLocation = "$PSScriptRoot\Tools"
+        }
+        # Trim trailing slashes as NPM doesn't seem to like 'm
+        $TfxLocation = $TfxLocation.TrimEnd(@("/", "\"))
+
+        Write-Debug "Trying to update tfx in: $TfxLocation"
+
+        if(!$npm)
+        {
+            throw ("Unable to locate npm")
+        }
+
+        $npmargs = "update ""tfx-cli"" --prefix ""$TfxLocation"""
+        Write-Verbose "Calling: $($npm.Path) $npmargs"
+        Invoke-Tool -Path $npm.Path -Arguments $npmArgs -WorkingFolder $cwd -WarningPattern "^npm WARN"
+    }
+
 }
 
 function Invoke-Tfx
 {
     param
     (
-        [array] $args = @(),
+        [array] $Arguments = @(),
         [string] $workingFolder,
-        [Microsoft.TeamFoundation.DistributedTask.Agent.Interfaces.ITaskEndpoint] $serviceEndpoint = $null
+        [Microsoft.TeamFoundation.DistributedTask.Agent.Interfaces.ITaskEndpoint] $serviceEndpoint = $null,
+        [switch] $preview = $false
     )
 
-    if ($args -notcontains "--no-prompt")
+    if ($Arguments -notcontains "--no-prompt")
     {
-        $args += "--no-prompt"
+        Write-Debug "Adding --no-prompt"
+        $Arguments += "--no-prompt"
     }
-    if ($args -notcontains "--json")
+    if ($Arguments -notcontains "--json")
     {
-        $args += "--json"
+        Write-Debug "Adding --json"
+        $Arguments += "--json"
     }
 
     if ($serviceEndpoint -ne $null)
     {
-        Write-Debug $endpoint.Authorization.Scheme
-        Write-Debug ($endpoint | Out-String)
-        
-        $args += "--auth-type"
+        Write-Debug "Authorization Scheme: $($endpoint.Authorization.Scheme)"
+        Write-Debug "Adding --auth-type"
+        $Arguments += "--auth-type"
 
         switch ($endpoint.Authorization.Scheme)
         {
             "Basic"
             {
-                $args += "basic"
-                $args += "--username"
-                $args += $endpoint.Authorization.Parameters.Username
-                $args += "--password"
-                $args += $endpoint.Authorization.Parameters.Password
+                $Arguments += "basic"
+                $Arguments += "--username"
+                $Arguments += $endpoint.Authorization.Parameters.Username
+                $Arguments += "--password"
+                $Arguments += $endpoint.Authorization.Parameters.Password
             }
             "Token"
             {
-                $args += "pat"
-                $args += "--token"
-                $args += $endpoint.Authorization.Parameters.AccessToken
+                $Arguments += "pat"
+                $Arguments += "--token"
+                $Arguments += $endpoint.Authorization.Parameters.AccessToken
             }
         }
     }
 
-    $tfxArgs = ($args | %{ Escape-Args $_ } ) -join " "
+    $tfxArgs = ($Arguments | %{ Escape-Args  $_ } ) -join " "
 
-    $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -WorkingFolder $workingFolder 
+    Write-Debug "Calling: $($global:tfx)"
+    Write-Debug "Arguments: $tfxArgs"
+    Write-Debug "Working Directory: $workingFolder"
+
+    if ($preview.IsPresent)
+    {
+        $Output = "{}"
+    }
+    else
+    {
+        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -WorkingFolder $workingFolder 
+    }
 
     $messages = $output -Split "`r?`n" | Take-While { $_ -match "^[^{]" }
     $json = $output -Split "`r?`n" | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
@@ -317,8 +379,7 @@ function Invoke-Tfx
 function Escape-Args
 {
     param()
-
-    $output = $_
+    $output = $_.Trim()
 
     if ($output -match '(?s:)^"[^"]*"$')
     {
@@ -330,9 +391,9 @@ function Escape-Args
         $output = $output -replace '"', '""'
     }
 
-    if ($output -match "\s")
+    if ($output -match '[\s"]')
     {
-        $output = "`"$output`""
+        $output = '"'+$output+'"'
     }
     
     return $output
@@ -378,12 +439,12 @@ function Update-InternalVersion
 {
     param
     (
-        $extensionRoot,
-        $version
+        $extensionRoot = $global:packageOptions.ExtensionRoot,
+        $version = $global:packageOptions.ExtensionVersion
     )
 
     begin{
-        $version = [System.Version]::Parse($version.ExtensionVersion)
+        $version = [System.Version]::Parse($version)
         $files = Find-Files "$extensionRoot\**\task.json"
     }
     process{
@@ -395,11 +456,14 @@ function Update-InternalVersion
             $taskJson.Version.Patch = $version.Build
             $output = $taskjson | ConvertTo-JSON -Depth 255
             
+            Write-Output "Setting version for: $file"
+
             $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($False) 
-            [System.IO.File]::WriteAllText($file.FullName, $output, $Utf8NoBomEncoding)
+            [System.IO.File]::WriteAllText($file, $output, $Utf8NoBomEncoding)
         }
     }
-    end{}
+    end{
+    }
 }
 
 
