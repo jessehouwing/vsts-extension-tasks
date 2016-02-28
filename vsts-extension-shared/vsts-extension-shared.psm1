@@ -71,6 +71,8 @@ function Convert-ShareOptions
     return $shareOptions
 }
 
+$global::tfx = $null
+
 function Find-Tfx
 {
     param
@@ -87,10 +89,14 @@ function Find-Tfx
     if ($DetectTfx.IsPresent)
     {
         Write-Debug "Trying to detect tfx"
-        $tfx = Get-Command "tfx" -ErrorAction SilentlyContinue
+        $tfxCommand = Get-Command "tfx" -ErrorAction SilentlyContinue
     }
 
-    if ($tfx -eq $null)
+    if ($tfxCommand -ne $null)
+    {
+        $global:tfx = $tfx.Path
+    }
+    else
     { 
         Write-Debug "Locating tfx in standard locations"
         $options = @()
@@ -115,7 +121,7 @@ function Find-Tfx
             if (Test-Path -PathType Leaf $path)
             {
                 Write-Debug "Found: $path"
-                return $path
+                $global:tfx = $tfx.Path
             }
         }
 
@@ -140,12 +146,6 @@ function Find-Tfx
                 throw ("Unable to locate npm")
             }
 
-            #$npmargs = @(
-            #    "install",
-            #    "tfx-cli",
-            #    "--prefix",
-            #    "$TfxLocation"
-            #)
             $npmargs = "install ""tfx-cli"" --prefix ""$TfxLocation"""
             Write-Verbose "Calling: $($npm.Path) $npmargs"
             Invoke-Tool -Path $npm.Path -Arguments $npmArgs -WorkingFolder $cwd -WarningPattern "^npm WARN"
@@ -154,11 +154,133 @@ function Find-Tfx
         }
         throw ("Unable to locate tfx")
     }
-    else
-    {
-        Write-Verbose $tfx.Path
-        return $tfx.Path
-    }
 }
+
+function Invoke-Tfx
+{
+    param
+    (
+        [array] $args = @(),
+        [string] $workingFolder,
+        [Microsoft.TeamFoundation.DistributedTask.Agent.Interfaces.ITaskEndpoint] $serviceEndpoint = $null
+    )
+
+    if ($args -notcontains "--no-prompt")
+    {
+        $args += "--no-prompt"
+    }
+    if ($args -notcontains "--json")
+    {
+        $args += "--json"
+    }
+
+    if ($serviceEndpoint -ne $null)
+    {
+        Write-Debug $endpoint.Authorization.Scheme
+        Write-Debug ($endpoint | Out-String)
+        
+        $args += "--auth-type"
+
+        switch ($endpoint.Authorization.Scheme)
+        {
+            "Basic"
+            {
+                $args += "basic"
+                $args += "--username"
+                $args += $endpoint.Authorization.Parameters.Username
+                $args += "--password"
+                $args += $endpoint.Authorization.Parameters.Password
+            }
+            "Token"
+            {
+                $args += "pat"
+                $args += "--token"
+                $args += $endpoint.Authorization.Parameters.AccessToken
+            }
+        }
+    }
+
+    $tfxArgs = ($args | %{ Escape-Args $_ } ) -join " "
+
+    $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -WorkingFolder $workingFolder 
+
+    $messages = $output -Split "`r?`n" | Take-While { $_ -match "^[^{]" }
+    $json = $output -Split "`r?`n" | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
+
+    if ($messages -ne $null)
+    {
+        if ($json -ne $null)
+        {
+            $messages | %{ Write-Warning $_ }
+        }
+        else
+        {
+            $messages | %{ Write-Error $_ }
+        }
+    }
+
+    return $json
+}
+
+function Escape-Args
+{
+    param()
+
+    $output = $_
+
+    if ($output -match '(?s:)^"[^"]*"$')
+    {
+        $output = $output.Trim('"')
+    }
+
+    if ($output -match '"') 
+    {
+        $output = $output -replace '"', '""'
+    }
+
+    if ($output -match "\s")
+    {
+        $output = "`"$output`""
+    }
+    
+    return $output
+}
+
+function Take-While() {
+    param ( [scriptblock]$pred = $(throw "Need a predicate") )
+    begin {
+        $continue = $true
+    }
+    process {
+        if ( $continue )
+        {
+            $continue = & $pred $_
+        }
+
+        if ( $continue ) {
+            $_
+        }
+    }
+    end {}
+}
+
+
+function Skip-While() {
+    param ( [scriptblock]$pred = $(throw "Need a predicate") )
+    begin {
+        $skip = $true
+    }
+    process {
+        if ( $skip ) {
+            $skip = & $pred $_
+        }
+
+        if ( -not $skip ) {
+            $_
+        }
+    }
+    end {}
+}
+
 
 Export-ModuleMember -Function *

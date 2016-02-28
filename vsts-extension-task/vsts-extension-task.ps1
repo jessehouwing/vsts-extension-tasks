@@ -78,31 +78,56 @@ $packageOptions = Convert-PackageOptions $PSBoundParameters
 $publishOptions = Convert-PublishOptions $PSBoundParameters
 $shareOptions = Convert-ShareOptions $PSBoundParameters
 
-[string]$tfx = Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect
+Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect
 
 if ($packageOptions.Enabled)
 {
-    $tfsArgs = "extension create --json --no-prompt --root ."
+    $tfxArgs = @(
+        "extension",
+        "create",
+        "--root",
+        $ExtensionRoot
+    )
     
-    $output = (Invoke-Tool -Path $tfx -Arguments $tfxArgs -WorkingFolder $cwd -WarningPattern "^npm WARN" | ConvertFrom-Json )
-    Write-Debug $output
-    $publishOptions.VsixPath = $output.Path
+    $output = Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd 
+
+    if ($output -ne $null)
+    {
+        $publishOptions.VsixPath = $output.Path
+    }
 }
 
 if ($publishOptions.Enabled)
 {
+    $MarketEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $ServiceEndpoint
+    if (-not $serviceEndpoint)
+    {
+        throw "Could not locate service endpoint $ServiceEndpoint"
+    }
+
     $tfsArgs = @(
         "extension",
-        "publish"
+        "publish",
+        "--vsix-path",
+        $publishOptions.VsixPath
     )
+
+    Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint
 
     if ($shareOptions.Enabled)
     {
         foreach ($account in $shareOptions.Accounts)
         {
-            $tfxArgs = "extension publish --vsix-path ""$publishOptions.VsixPath"" --share-with $account"
+            $tfxArgs = @(
+                "extension",
+                "publish",
+                "--vsix-path",
+                $publishOptions.VsixPath,
+                "--share-with"
+                $account
+            )
 
-            Invoke-Tool -Path $tfx -Arguments $tfxArgs -WorkingFolder $cwd
+            Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint
         }
     }
 }
