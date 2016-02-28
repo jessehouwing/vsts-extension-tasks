@@ -330,7 +330,7 @@ function Invoke-Tfx
             {
                 $Arguments += "pat"
                 $Arguments += "--token"
-                $Arguments += $ServiceEndpoint.Authorization.Parameters.AccessToken
+                $Arguments += $ServiceEndpoint.Authorization.Parameters.apitoken
             }
         }
     }
