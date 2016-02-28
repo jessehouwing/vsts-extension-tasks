@@ -167,17 +167,8 @@ function Convert-ShareOptions
     )
 
     $shareOptions = @{
-        Enabled = $parameters["EnableSharing"] -eq $true
-        ExtensionId = [string]$parameters["ExtensionId"]
-        ExtensionTag = [string]$parameters["Extensiontag"]
-        PublisherId = [string]$parameters["PublisherId"]
-        VsixPath = [string]$parameters["VsixPath"]
+        Enabled = ($parameters["EnableSharing"] -eq $true)
         ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
-    }
-
-    if ($shareOptions.ExtensionTag -ne "")
-    {
-        $shareOptions.ExtensionId = "$($shareOptions.ExtensionId)-$($shareOptions.ExtensionTag)"
     }
 
     Write-Debug "ShareOptions:"
@@ -305,9 +296,8 @@ function Invoke-Tfx
     param
     (
         [array] $Arguments = @(),
-        [string] $workingFolder,
-        $serviceEndpoint = $null,
-        [switch] $preview = $false
+        $ServiceEndpoint,
+        [switch] $Preview = $false
     )
 
     if ($Arguments -notcontains "--no-prompt")
@@ -321,27 +311,26 @@ function Invoke-Tfx
         $Arguments += "--json"
     }
 
-    if ($serviceEndpoint -ne $null)
+    if ($ServiceEndpoint -ne $null)
     {
-        Write-Debug "Authorization Scheme: $($serviceEndpoint.Authorization.Scheme)"
         Write-Debug "Adding --auth-type"
         $Arguments += "--auth-type"
 
-        switch ($serviceEndpoint.Authorization.Scheme)
+        switch ($ServiceEndpoint.Authorization.Scheme)
         {
             "Basic"
             {
                 $Arguments += "basic"
                 $Arguments += "--username"
-                $Arguments += $serviceEndpoint.Authorization.Parameters.Username
+                $Arguments += $ServiceEndpoint.Authorization.Parameters.Username
                 $Arguments += "--password"
-                $Arguments += $serviceEndpoint.Authorization.Parameters.Password
+                $Arguments += $ServiceEndpoint.Authorization.Parameters.Password
             }
             "Token"
             {
                 $Arguments += "pat"
                 $Arguments += "--token"
-                $Arguments += $serviceEndpoint.Authorization.Parameters.AccessToken
+                $Arguments += $ServiceEndpoint.Authorization.Parameters.AccessToken
             }
         }
     }
@@ -358,7 +347,7 @@ function Invoke-Tfx
     }
     else
     {
-        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -WorkingFolder $workingFolder -ErrorPattern "^Error:"
+        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:"
     }
 
     $messages = $output -Split "`r?`n" | Take-While { $_ -match "^[^{]" }

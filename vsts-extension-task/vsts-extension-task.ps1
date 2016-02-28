@@ -125,7 +125,7 @@ if ($packageOptions.Enabled)
         Update-InternalVersion
     }
 
-    $output = Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd 
+    $output = Invoke-Tfx -Arguments $tfxArgs
 
     if ($output -ne $null)
     {
@@ -133,13 +133,21 @@ if ($packageOptions.Enabled)
     }
 }
 
-if ($publishOptions.Enabled)
+if ($publishOptions.Enabled -or $shareOptions.Enabled)
 {
     $MarketEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $ServiceEndpoint
-    if (-not $serviceEndpoint)
+    if ($MarketEndpoint -eq $null)
     {
         throw "Could not locate service endpoint $ServiceEndpoint"
     }
+    else
+    {
+        Write-Debug ($MarketEndpoint | ConvertTo-Json -Depth 255)
+    }
+}
+
+if ($publishOptions.Enabled)
+{
 
     if ($publishOptions.VsixPath -contains "*","?")
     {
@@ -164,13 +172,15 @@ if ($publishOptions.Enabled)
         $tfxArgs += "--bypass-validation"
     }
 
-    Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint -Preview:$Preview
+    Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$Preview
 }
 
 if ($shareOptions.Enabled)
 {
+    Write-Debug "Sharing with:"
     foreach ($account in $shareOptions.ShareWith)
     {
+        Write-Debug "$account"
         $tfxArgs = @(
             "extension",
             "publish",
@@ -195,6 +205,6 @@ if ($shareOptions.Enabled)
             $tfxArgs += "--bypass-validation"
         }
 
-        Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint -Preview:$Preview
+        Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$Preview
     }
 }
