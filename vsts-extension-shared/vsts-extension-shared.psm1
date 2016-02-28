@@ -306,7 +306,7 @@ function Invoke-Tfx
     (
         [array] $Arguments = @(),
         [string] $workingFolder,
-        [Microsoft.TeamFoundation.DistributedTask.Agent.Interfaces.ITaskEndpoint] $serviceEndpoint = $null,
+        $serviceEndpoint = $null,
         [switch] $preview = $false
     )
 
@@ -323,25 +323,25 @@ function Invoke-Tfx
 
     if ($serviceEndpoint -ne $null)
     {
-        Write-Debug "Authorization Scheme: $($endpoint.Authorization.Scheme)"
+        Write-Debug "Authorization Scheme: $($serviceEndpoint.Authorization.Scheme)"
         Write-Debug "Adding --auth-type"
         $Arguments += "--auth-type"
 
-        switch ($endpoint.Authorization.Scheme)
+        switch ($serviceEndpoint.Authorization.Scheme)
         {
             "Basic"
             {
                 $Arguments += "basic"
                 $Arguments += "--username"
-                $Arguments += $endpoint.Authorization.Parameters.Username
+                $Arguments += $serviceEndpoint.Authorization.Parameters.Username
                 $Arguments += "--password"
-                $Arguments += $endpoint.Authorization.Parameters.Password
+                $Arguments += $serviceEndpoint.Authorization.Parameters.Password
             }
             "Token"
             {
                 $Arguments += "pat"
                 $Arguments += "--token"
-                $Arguments += $endpoint.Authorization.Parameters.AccessToken
+                $Arguments += $serviceEndpoint.Authorization.Parameters.AccessToken
             }
         }
     }
