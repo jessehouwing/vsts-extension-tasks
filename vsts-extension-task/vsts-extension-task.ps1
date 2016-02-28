@@ -74,15 +74,19 @@ param(
     [string] $VsixPath,
     
 
-    # Sgaing options
+    # Sharing options
     [Parameter(Mandatory=$false)]
     [string] $EnableSharing = $false,
 
     [Parameter(Mandatory=$false)]
-    [string] $ShareWith = $false
+    [string] $ShareWith = $false,
+
+    #Preview mode for remote call
+    [Parameter(Mandatory=$false)]
+    [string] $Preview = $false
 )
 
-$Preview = $true
+$PreviewMode = ($Preview -eq $true)
 
 Write-Verbose "Entering script $($MyInvocation.MyCommand.Name)"
 Write-Verbose "Parameter Values"
@@ -140,10 +144,6 @@ if ($publishOptions.Enabled -or $shareOptions.Enabled)
     {
         throw "Could not locate service endpoint $ServiceEndpoint"
     }
-    else
-    {
-        Write-Debug ($MarketEndpoint | ConvertTo-Json -Depth 255)
-    }
 }
 
 if ($publishOptions.Enabled)
@@ -172,7 +172,7 @@ if ($publishOptions.Enabled)
         $tfxArgs += "--bypass-validation"
     }
 
-    Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$Preview
+    Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
 }
 
 if ($shareOptions.Enabled)
@@ -205,6 +205,6 @@ if ($shareOptions.Enabled)
             $tfxArgs += "--bypass-validation"
         }
 
-        Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$Preview
+        Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
     }
 }
