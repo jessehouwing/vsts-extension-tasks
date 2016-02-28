@@ -349,10 +349,11 @@ function Invoke-Tfx
     }
     else
     {
-        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:"
+        # Pass -1 as success so we can handle output ourselves.
+        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1)
     }
 
-    $messages = $output -Split "`r?`n" | Skip-While { $_.StartWith("$global:tfx") } |Take-While { $_ -match "^[^{]" }
+    $messages = $output -Split "`r?`n" | Skip-While { $_.StartsWith("$global:tfx") } |Take-While { $_ -match "^[^{]" }
     $json = $output -Split "`r?`n" | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
 
     if ($messages -ne $null)

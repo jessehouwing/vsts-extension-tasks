@@ -2,7 +2,7 @@
     "manifestVersion":  1,
     "id":  "jessehouwing-vsts-extension-tasks-TEST",
     "name":  "VSTS Extension Tasks",
-    "version":  "0.0.68",
+    "version":  "0.0.539",
     "publisher":  "jessehouwing",
     "public":  false,
     "galleryFlags":  [
@@ -89,7 +89,7 @@
                               "properties":  {
                                                  "name":  "marketplace-auth-key",
                                                  "displayName":  "Marketplace",
-                                                 "url":  "https://app.market.visualstudio.com",
+                                                 "url":  "https://app.market.visualstudio.com/_apis/gallery",
                                                  "authenticationSchemes":  [
                                                                                {
                                                                                    "type":  "ms.vss-endpoint.endpoint-auth-scheme-basic"
