@@ -169,7 +169,7 @@ if ($publishOptions.Enabled)
 
 if ($shareOptions.Enabled)
 {
-    foreach ($account in $shareOptions.Accounts)
+    foreach ($account in $shareOptions.ShareWith)
     {
         $tfxArgs = @(
             "extension",
