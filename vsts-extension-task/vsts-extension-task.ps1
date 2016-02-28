@@ -18,6 +18,7 @@ param(
     [ValidateSet("NoOverride", "Private", "PrivatePreview", "PublicPreview", "Public")]
     [string] $ExtensionVisibility = "NoOverride",
 
+    # Global Options
     [Parameter(Mandatory=$false)]
     [string] $ServiceEndpoint,
 
@@ -32,7 +33,7 @@ param(
     [string] $EnablePackaging = $false,
 
     [Parameter(Mandatory=$false)]
-    [string] $ManifestGlobs = "extension-manifest.json",
+    [string] $ManifestGlobs = "vss-extension.json",
 
     [Parameter(Mandatory=$false)]
     [string] $ExtensionRoot,
@@ -40,11 +41,16 @@ param(
     [Parameter(Mandatory=$false)]
     [string] $PackagingOutputPath,
 
+    # Advanced Options
+    [Parameter(Mandatory=$false)]
+    [ValidateSet("None", "File", "Json")]
+    [string] $OverrideType = "None",
+
     [Parameter(Mandatory=$false)]
     [string] $OverrideFile = "",
 
     [Parameter(Mandatory=$false)]
-    [string] $OverrideJson = "",
+    [string] $OverrideJson = "{}",
 
     [Parameter(Mandatory=$false)]
     [string] $OverrideInternalversions = $true,
@@ -59,6 +65,7 @@ param(
     [string] $VsixPath,
     
 
+    # Sgaing options
     [Parameter(Mandatory=$false)]
     [string] $EnableSharing = $false,
 
@@ -73,10 +80,10 @@ $PSBoundParameters.Keys | %{ Write-Verbose "$_ = $($PSBoundParameters[$_])" }
 Write-Verbose "Importing modules"
 Import-Module -DisableNameChecking "$PSScriptRoot/vsts-extension-shared.psm1"
 
-$globalOptions = Convert-GlobalOptions $PSBoundParameters
-$packageOptions = Convert-PackageOptions $PSBoundParameters
-$publishOptions = Convert-PublishOptions $PSBoundParameters
-$shareOptions = Convert-ShareOptions $PSBoundParameters
+$global:globalOptions = Convert-GlobalOptions $PSBoundParameters
+$global:packageOptions = Convert-PackageOptions $PSBoundParameters
+$global:publishOptions = Convert-PublishOptions $PSBoundParameters
+$global:shareOptions = Convert-ShareOptions $PSBoundParameters
 
 Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect
 
@@ -86,9 +93,22 @@ if ($packageOptions.Enabled)
         "extension",
         "create",
         "--root",
-        $ExtensionRoot
+        $packageOptions.ExtensionRoot,
+        "--output-path",
+        $packageOptions.OutputPath,
+        "--extensionid",
+        $packageOptions.ExtensionId,
+        "--publisher",
+        $packageOptions.PublisherId,
+        "--override",
+        ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
     )
     
+    if ($packageOptions.BypassValidation -eq $true)
+    {
+        $tfxArgs += "--bypass-validation"
+    }
+
     $output = Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd 
 
     if ($output -ne $null)
@@ -105,29 +125,56 @@ if ($publishOptions.Enabled)
         throw "Could not locate service endpoint $ServiceEndpoint"
     }
 
+    if ($publishOptions.VsixPath -contains "*","?")
+    {
+        $publishOptions.VsixPath = [string] (Find-Files $publishOptions.VsixPath)
+    }
+
     $tfsArgs = @(
         "extension",
         "publish",
         "--vsix-path",
-        $publishOptions.VsixPath
+        $publishOptions.VsixPath,
+        "--extensionid",
+        $packageOptions.ExtensionId,
+        "--publisher",
+        $packageOptions.PublisherId,
+        "--override",
+        ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
     )
 
-    Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint
-
-    if ($shareOptions.Enabled)
+    if ($BypassValidation -eq $true)
     {
-        foreach ($account in $shareOptions.Accounts)
-        {
-            $tfxArgs = @(
-                "extension",
-                "publish",
-                "--vsix-path",
-                $publishOptions.VsixPath,
-                "--share-with"
-                $account
-            )
+        $tfxArgs += "--bypass-validation"
+    }
 
-            Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint
+    Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint
+}
+
+if ($publishOptions.Enabled -and $shareOptions.Enabled)
+{
+    foreach ($account in $shareOptions.Accounts)
+    {
+        $tfxArgs = @(
+            "extension",
+            "publish",
+            "--vsix-path",
+            $publishOptions.VsixPath,
+            "--share-with",
+            $account,
+            "--extensionid",
+            $packageOptions.ExtensionId,
+            "--publisher",
+            $packageOptions.PublisherId,
+            "--override",
+            ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
+        )
+
+        if ($BypassValidation -eq $true)
+        {
+            $tfxArgs += "--bypass-validation"
         }
+
+        Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint
     }
 }

@@ -13,6 +13,19 @@ function Convert-GlobalOptions
         TfxInstallPath = ($parameters["TfxInstallPath"])
     }
 
+    if ($globalOptions.OverrideType = "Json")
+    {
+        $globalOptions.OverrideJson = ($parameters["OverrideJson"] | Convertfrom-Json)
+    }
+    elseif ($globalOptions.OverrideType = "File")
+    {
+        $globalOptions.OverrideJson = (Get-Content $parameters["OverrideJsonFile"] -raw | Convertfrom-Json)
+    }
+    else
+    {
+        $globalOptions.OverrideJson = ("{}" | convertFrom-Json)
+    }
+
     Write-Debug "GlobalOptions:"
     Write-Debug ($globalOptions | Out-String)
 
@@ -29,6 +42,64 @@ function Convert-PackageOptions
 
     $packageOptions = @{
         Enabled = ($parameters["EnablePackaging"] -eq $true)
+        ExtensionRoot = [string]$parameters["ExtensionRoot"]
+        ExtensionId = [string]$parameters["ExtensionId"]
+        ExtensionTag = [string]$parameters["Extensiontag"]
+        PublisherId = [string]$parameters["PublisherId"]
+        OutputPath = [string]$parameters["PackagingOutputPath"]
+        BypassValidation = ($parameters["BypassValidation"] -eq $true)
+        ExtensionVersion = $parameters["ExtensionVersion"]
+        ExtensionVisibility = $parameters["ExtensionVisibility"]
+    }
+
+    if ($packageOptions.ExtensionTag -ne "")
+    {
+        $packageOptions.ExtensionId = "$($packageOptions.ExtensionId)-$($packageOptions.ExtensionTag)"
+    }
+
+    if ($packageOptions.ExtensionVersion -ne "")
+    {
+        $version = [System.Version]::Parse($extensionJson.Version)
+        Add-Member -InputObject $global:globalOptions.OverrideJson.Version -NotePropertyName "Public" -NotePropertyValue $Version.ToString(3) -Force
+    }
+    
+    $OverridePublic = $null
+    $OverrideFlags  = $null
+
+    switch ($packageOptions.ExtensionVisibility)
+    {
+        "Private"
+        {
+            $OverridePublic = $false
+            $OverrideFlags  = @()
+        }
+
+        "PrivatePreview"
+        {
+            $OverridePublic = $false
+            $OverrideFlags = @( "Preview" )
+        }
+
+        "PubicPreview"
+        {
+            $OverridePublic = $true
+            $OverrideFlags = @( "Preview", "Public" )
+        }
+
+        "Public"
+        {
+            $OverridePublic = $true
+            $OverrideFlags = @( "Public" )
+        }
+    }
+    
+    if ($OverridePublic -ne $null)
+    {
+        Add-Member -InputObject $global:globalOptions.OverrideJson -NotePropertyName "Public" -NotePropertyValue $OverridePublic -Force
+    }
+    if ($OverrideFlags -ne $null)
+    {
+        Add-Member -InputObject $global:globalOptions.OverrideJson -NotePropertyName "GalleryFlags" -NotePropertyValue $OverrideFlags -Force
     }
 
     Write-Debug "PackageOptions:"
@@ -46,6 +117,15 @@ function Convert-PublishOptions
 
     $publishOptions = @{
         Enabled = ($parameters["EnablePublishing"] -eq $true)
+        ExtensionId = [string]$parameters["ExtensionId"]
+        ExtensionTag = [string]$parameters["Extensiontag"]
+        PublisherId = [string]$parameters["PublisherId"]
+        VsixPath = [string]$parameters["VsixPath"]
+    }
+
+    if ($publishOptions.ExtensionTag -ne "")
+    {
+        $publishOptions.ExtensionId = "$($publishOptions.ExtensionId)-$($publishOptions.ExtensionTag)"
     }
 
     Write-Debug "PublishOptions:"
@@ -63,6 +143,16 @@ function Convert-ShareOptions
 
     $shareOptions = @{
         Enabled = $parameters["EnableSharing"] -eq $true
+        ExtensionId = [string]$parameters["ExtensionId"]
+        ExtensionTag = [string]$parameters["Extensiontag"]
+        PublisherId = [string]$parameters["PublisherId"]
+        VsixPath = [string]$parameters["VsixPath"]
+        ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
+    }
+
+    if ($shareOptions.ExtensionTag -ne "")
+    {
+        $shareOptions.ExtensionId = "$($shareOptions.ExtensionId)-$($shareOptions.ExtensionTag)"
     }
 
     Write-Debug "ShareOptions:"
