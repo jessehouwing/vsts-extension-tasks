@@ -2,7 +2,7 @@
     "manifestVersion":  1,
     "id":  "jessehouwing-vsts-extension-tasks-TEST",
     "name":  "VSTS Extension Tasks",
-    "version":  "0.0.41",
+    "version":  "0.0.46",
     "publisher":  "jessehouwing",
     "public":  false,
     "galleryFlags":  [
@@ -53,22 +53,21 @@
     "icons":  {
                   "default":  "extension/images/extension-icon.png"
               },
-    "files": [
-        {
-            "path": "vsts-extension-task/vsts-extension-task.ps1"
-        },
-        {
-            "path": "vsts-extension-task/vsts-extension-shared.psm1",
-            "contentType": "text/plain"
-        },
-        {
-            "path": "vsts-extension-task/task.json"
-        },
-        {
-            "path": "vsts-extension-task/icon.png"
-        }
-
-    ],
+    "files":  [
+                  {
+                      "path":  "vsts-extension-task/vsts-extension-task.ps1"
+                  },
+                  {
+                      "path":  "vsts-extension-task/vsts-extension-shared.psm1",
+                      "contentType":  "text/plain"
+                  },
+                  {
+                      "path":  "vsts-extension-task/task.json"
+                  },
+                  {
+                      "path":  "vsts-extension-task/icon.png"
+                  }
+              ],
     "contributions":  [
                           {
                               "id":  "vsts-extension-task",
