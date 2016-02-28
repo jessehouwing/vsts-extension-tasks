@@ -68,7 +68,10 @@ function Convert-PackageOptions
     if ($packageOptions.ExtensionTag -ne "")
     {
         $packageOptions.ExtensionId = "$($packageOptions.ExtensionId)-$($packageOptions.ExtensionTag)"
+        Add-Member -InputObject $OverrideJson -NotePropertyName "id" -NotePropertyValue $packageOptions.ExtensionId -Force
     }
+
+    Add-Member -InputObject $OverrideJson -NotePropertyName "publisher" -NotePropertyValue $packageOptions.PublisherId -Force
 
     if ($packageOptions.OverrideExtensionVersion)
     {
@@ -355,7 +358,7 @@ function Invoke-Tfx
     }
     else
     {
-        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -WorkingFolder $workingFolder 
+        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -WorkingFolder $workingFolder -ErrorPattern "^Error:"
     }
 
     $messages = $output -Split "`r?`n" | Take-While { $_ -match "^[^{]" }
