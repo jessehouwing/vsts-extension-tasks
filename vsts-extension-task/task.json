@@ -58,12 +58,21 @@
             "type": "string"
         },
         {
-            "defaultValue": "",
+            "defaultValue": "false",
+            "helpMarkdown": "",
+            "label": "Override Extension Version",
+            "name": "OverrideExtensionVersion",
+            "required": false,
+            "type": "boolean"
+        },
+        {
+            "defaultValue": "$(Build.Buildversion)",
             "helpMarkdown": "",
             "label": "Extension Version",
             "name": "ExtensionVersion",
-            "required": false,
-            "type": "string"
+            "required": true,
+            "type": "string",
+            "VisibleRule": "OverrideExtensionVersion = true"
         },
         {
             "defaultValue": "Private",
@@ -151,7 +160,7 @@
             "options": {
                 "None": "None",
                 "Json": "Json",
-                "File": "File",
+                "File": "File"
             },
             "type": "pickList"
         },
@@ -163,7 +172,7 @@
             "required": false,
             "helpMarkDown": "",
             "groupName": "AdvancedOptions",
-            "VisibleRule":  "OverrideType=File"
+            "VisibleRule": "OverrideType=File"
         },
         {
             "name": "OverrideJson",
@@ -216,8 +225,7 @@
             "label": "Enable Sharing",
             "defaultValue": "false",
             "required": true,
-            "helpMarkDown": "",
-            "VisibleRule": "EnablePublishing = true"
+            "helpMarkDown": ""
         },
         {
             "name": "ShareWith",

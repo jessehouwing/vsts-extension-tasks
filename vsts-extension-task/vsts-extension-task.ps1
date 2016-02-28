@@ -12,7 +12,15 @@ param(
     [string] $ExtensionTag,
 
     [Parameter(Mandatory=$false)]
+    [ValidateSet("true", "false", "1", "0")]
+    [string] $OverrideExtensionVersion,
+
+    [Parameter(Mandatory=$false)]
     [string] $ExtensionVersion,
+
+    [Parameter(Mandatory=$false)]
+    [ValidateSet("true", "false", "1", "0")]
+    [string] $OverrideInternalVersions = $true,
 
     [Parameter(Mandatory=$false)]
     [ValidateSet("NoOverride", "Private", "PrivatePreview", "PublicPreview", "Public")]
@@ -52,9 +60,6 @@ param(
     [Parameter(Mandatory=$false)]
     [string] $OverrideJson = "{}",
 
-    [Parameter(Mandatory=$false)]
-    [string] $OverrideInternalversions = $true,
-    
     [Parameter(Mandatory=$false)]
     [string] $BypassValidation = $false,
 
@@ -104,9 +109,14 @@ if ($packageOptions.Enabled)
         ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
     )
     
-    if ($packageOptions.BypassValidation -eq $true)
+    if ($packageOptions.BypassValidation)
     {
         $tfxArgs += "--bypass-validation"
+    }
+
+    if ($packageOptions.OverrideInternalVersions)
+    {
+
     }
 
     $output = Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd 
@@ -151,15 +161,13 @@ if ($publishOptions.Enabled)
     Invoke-Tfx -Arguments $tfxArgs -WorkingFolder $cwd -ServiceEndpoint $MarketEndpoint
 }
 
-if ($publishOptions.Enabled -and $shareOptions.Enabled)
+if ($shareOptions.Enabled)
 {
     foreach ($account in $shareOptions.Accounts)
     {
         $tfxArgs = @(
             "extension",
             "publish",
-            "--vsix-path",
-            $publishOptions.VsixPath,
             "--share-with",
             $account,
             "--extensionid",
@@ -169,6 +177,12 @@ if ($publishOptions.Enabled -and $shareOptions.Enabled)
             "--override",
             ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
         )
+
+        if ($publishOptions.VsixPath -ne "")
+        {
+            $tfxArgs += "--vsix-path"
+            $tfxArgs += $publishOptions.VsixPath
+        }
 
         if ($BypassValidation -eq $true)
         {

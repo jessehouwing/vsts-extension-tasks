@@ -48,6 +48,8 @@ function Convert-PackageOptions
         PublisherId = [string]$parameters["PublisherId"]
         OutputPath = [string]$parameters["PackagingOutputPath"]
         BypassValidation = ($parameters["BypassValidation"] -eq $true)
+        OverrideExtensionVersion = ($parameters["OverrideExtensionVersion"] -eq $true)
+        OverrideInternalVersions = ($parameters["OverrideInternalVersions"] -eq $true)
         ExtensionVersion = $parameters["ExtensionVersion"]
         ExtensionVisibility = $parameters["ExtensionVisibility"]
     }
@@ -57,9 +59,9 @@ function Convert-PackageOptions
         $packageOptions.ExtensionId = "$($packageOptions.ExtensionId)-$($packageOptions.ExtensionTag)"
     }
 
-    if ($packageOptions.ExtensionVersion -ne "")
+    if ($packageOptions.$OverrideExtensionVersion)
     {
-        $version = [System.Version]::Parse($extensionJson.Version)
+        $version = [System.Version]::Parse($packageOptions.ExtensionVersion)
         Add-Member -InputObject $global:globalOptions.OverrideJson.Version -NotePropertyName "Public" -NotePropertyValue $Version.ToString(3) -Force
     }
     
@@ -370,6 +372,34 @@ function Skip-While() {
         }
     }
     end {}
+}
+
+function Update-InternalVersion
+{
+    param
+    (
+        $extensionRoot,
+        $version
+    )
+
+    begin{
+        $version = [System.Version]::Parse($version.ExtensionVersion)
+        $files = Find-Files "$extensionRoot\**\task.json"
+    }
+    process{
+        foreach ($file in $files)
+        {
+            $taskJson = ConvertFrom-Json (Get-Content $file -Raw)
+            $taskJson.Version.Major = $version.Major
+            $taskJson.Version.Minor = $version.Minor
+            $taskJson.Version.Patch = $version.Build
+            $output = $taskjson | ConvertTo-JSON -Depth 255
+            
+            $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($False) 
+            [System.IO.File]::WriteAllText($file.FullName, $output, $Utf8NoBomEncoding)
+        }
+    }
+    end{}
 }
 
 
