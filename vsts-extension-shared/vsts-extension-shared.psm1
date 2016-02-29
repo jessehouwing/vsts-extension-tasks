@@ -300,7 +300,9 @@ function Invoke-Tfx
         $ServiceEndpoint,
         [switch] $Preview = $false
     )
-
+    
+    $workingFolder = $global:packageOptions.OutputPath
+    
     if ($Arguments -notcontains "--no-prompt")
     {
         Write-Debug "Adding --no-prompt"
@@ -351,7 +353,7 @@ function Invoke-Tfx
     else
     {
         # Pass -1 as success so we can handle output ourselves.
-        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1)
+        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1) -WorkingFolder $workingFolder
     }
 
     $messages = $output -Split "`r?`n" | Skip-While { $_.StartsWith("$global:tfx") } | Take-While { $_ -match "^[^{]" }
