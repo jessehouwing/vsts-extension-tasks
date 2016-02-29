@@ -118,6 +118,12 @@ if ($packageOptions.Enabled)
         "--override",
         ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
     )
+
+    if ($packageOptions.ManifestGlobs -ne "")
+    {
+        $tfxArgs += "--manifest-globs"
+        $tfxArgs += $packageOptions.ManifestGlobs
+    }
     
     if ($packageOptions.BypassValidation)
     {
@@ -184,6 +190,8 @@ if ($shareOptions.Enabled)
         $tfxArgs = @(
             "extension",
             "publish",
+            "--root",
+            $packageOptions.ExtensionRoot,
             "--share-with",
             $account,
             "--extensionid",
@@ -194,16 +202,22 @@ if ($shareOptions.Enabled)
             ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
         )
 
-        #if ($publishOptions.VsixPath -ne "")
-        #{
-        #    $tfxArgs += "--vsix-path"
-        #    $tfxArgs += $publishOptions.VsixPath
-        #}
+        if ($packageOptions.ManifestGlobs -ne "")
+        {
+            $tfxArgs += "--manifest-globs"
+            $tfxArgs += $packageOptions.ManifestGlobs
+        }
 
-        #if ($BypassValidation -eq $true)
-        #{
-        #    $tfxArgs += "--bypass-validation"
-        #}
+        if ($publishOptions.VsixPath -ne "")
+        {
+            $tfxArgs += "--vsix-path"
+            $tfxArgs += $publishOptions.VsixPath
+        }
+
+        if ($BypassValidation -eq $true)
+        {
+            $tfxArgs += "--bypass-validation"
+        }
 
         Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
     }

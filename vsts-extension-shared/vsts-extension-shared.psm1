@@ -61,8 +61,9 @@ function Convert-PackageOptions
         BypassValidation = ($parameters["BypassValidation"] -eq $true)
         OverrideExtensionVersion = ($parameters["OverrideExtensionVersion"] -eq $true)
         OverrideInternalVersions = ($parameters["OverrideInternalVersions"] -eq $true)
-        ExtensionVersion = $parameters["ExtensionVersion"]
-        ExtensionVisibility = $parameters["ExtensionVisibility"]
+        ExtensionVersion = [string]$parameters["ExtensionVersion"]
+        ExtensionVisibility = [string]$parameters["ExtensionVisibility"]
+        ManifestGlobs = [string]$parameters["ExtensionVisibility"]
     }
 
     if ($packageOptions.ExtensionTag -ne "")
