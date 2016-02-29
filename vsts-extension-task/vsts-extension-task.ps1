@@ -194,16 +194,16 @@ if ($shareOptions.Enabled)
             ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
         )
 
-        if ($publishOptions.VsixPath -ne "")
-        {
-            $tfxArgs += "--vsix-path"
-            $tfxArgs += $publishOptions.VsixPath
-        }
+        #if ($publishOptions.VsixPath -ne "")
+        #{
+        #    $tfxArgs += "--vsix-path"
+        #    $tfxArgs += $publishOptions.VsixPath
+        #}
 
-        if ($BypassValidation -eq $true)
-        {
-            $tfxArgs += "--bypass-validation"
-        }
+        #if ($BypassValidation -eq $true)
+        #{
+        #    $tfxArgs += "--bypass-validation"
+        #}
 
         Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
     }
