@@ -302,7 +302,11 @@ function Invoke-Tfx
     )
     
     $workingFolder = $global:packageOptions.OutputPath
-    
+    if (-not (Test-Path -PathType Container $workingFolder))
+    {
+        New-Item -Path $workingfolder -ItemType Directory -force
+    }
+
     if ($Arguments -notcontains "--no-prompt")
     {
         Write-Debug "Adding --no-prompt"
