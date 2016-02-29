@@ -1,104 +1,105 @@
 {
-    "manifestVersion":  1,
-    "id":  "jessehouwing-vsts-extension-tasks-TEST",
-    "name":  "VSTS Extension Tasks",
-    "version":  "0.0.580",
-    "publisher":  "jessehouwing",
-    "public":  false,
-    "galleryFlags":  [
-                         "Preview"
-                     ],
-    "targets":  [
-                    {
-                        "id":  "Microsoft.VisualStudio.Services"
-                    }
-                ],
-    "scope":  [
-                  "vso.build",
-                  "vso.serviceendpoint"
-              ],
-    "description":  "Build and Release Management extensions that enable you to package and publish VSTS Extensions to the marketplace.",
-    "categories":  [
-                       "Integrate"
-                   ],
-    "tags":  [
-                 "Extension",
-                 "Marketplace",
-                 "Publish",
-                 "Package"
-             ],
-    "screenshots":  [
+    "manifestVersion": 1,
+    "id": "jessehouwing-vsts-extension-tasks-TEST",
+    "name": "VSTS Extension Tasks",
+    "version": "0.0.580",
+    "publisher": "jessehouwing",
+    "public": false,
+    "galleryFlags": [
+        "Preview"
+    ],
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "scope": [
+        "vso.build",
+        "vso.serviceendpoint"
+    ],
+    "description": "Build and Release Management extensions that enable you to package and publish VSTS Extensions to the marketplace.",
+    "categories": [
+        "Integrate"
+    ],
+    "tags": [
+        "Extension",
+        "Marketplace",
+        "Publish",
+        "Package"
+    ],
+    "screenshots": [
 
-                    ],
-    "content":  {
-                    "details":  {
-                                    "path":  "readme.md"
-                                },
-                    "license":  {
-                                    "path":  "license.txt"
-                                }
-                },
-    "links":  {
-                  "getstarted":  {
-                                     "uri":  "https://github.com/jessehouwing/vsts-extension-tasks/wiki"
-                                 },
-                  "support":  {
-                                  "uri":  "https://github.com/jessehouwing/vsts-extension-tasks/issues"
-                              }
-              },
-    "branding":  {
-                     "color":  "rgb(36, 43, 50)",
-                     "theme":  "dark"
-                 },
-    "icons":  {
-                  "default":  "extension/images/extension-icon.png"
-              },
-    "files":  [
-                  {
-                      "path":  "vsts-extension-task/vsts-extension-task.ps1"
-                  },
-                  {
-                      "path":  "vsts-extension-task/vsts-extension-shared.psm1",
-                      "contentType":  "text/plain"
-                  },
-                  {
-                      "path":  "vsts-extension-task/task.json"
-                  },
-                  {
-                      "path":  "vsts-extension-task/icon.png"
-                  }
-              ],
-    "contributions":  [
-                          {
-                              "id":  "vsts-extension-task",
-                              "type":  "ms.vss-distributed-task.task",
-                              "targets":  [
-                                              "ms.vss-distributed-task.tasks"
-                                          ],
-                              "properties":  {
-                                                 "name":  "vsts-extension-task"
-                                             }
-                          },
-                          {
-                              "id":  "marketplace-service-endpoint",
-                              "description":  "MarketPlaceAuthenticationEndpoint",
-                              "type":  "ms.vss-endpoint.service-endpoint-type",
-                              "targets":  [
-                                              "ms.vss-endpoint.endpoint-types"
-                                          ],
-                              "properties":  {
-                                                 "name":  "marketplace-auth-key",
-                                                 "displayName":  "Marketplace",
-                                                 "url":  "https://app.market.visualstudio.com/_apis/gallery",
-                                                 "authenticationSchemes":  [
-                                                                               {
-                                                                                   "type":  "ms.vss-endpoint.endpoint-auth-scheme-basic"
-                                                                               },
-                                                                               {
-                                                                                   "type":  "ms.vss-endpoint.endpoint-auth-scheme-token"
-                                                                               }
-                                                                           ]
-                                             }
-                          }
-                      ]
+    ],
+    "content": {
+        "details": {
+            "path": "readme.md"
+        },
+        "license": {
+            "path": "license.txt"
+        }
+    },
+    "links": {
+        "getstarted": {
+            "uri": "https://github.com/jessehouwing/vsts-extension-tasks/wiki"
+        },
+        "support": {
+            "uri": "https://github.com/jessehouwing/vsts-extension-tasks/issues"
+        }
+    },
+    "branding": {
+        "color": "rgb(36, 43, 50)",
+        "theme": "dark"
+    },
+    "icons": {
+        "default": "extension/images/extension-icon.png"
+    },
+    "files": [
+        {
+            "path": "vsts-extension-task/vsts-extension-task.ps1"
+        },
+        {
+            "path": "vsts-extension-task/vsts-extension-shared.psm1",
+            "contentType": "text/plain"
+        },
+        {
+            "path": "vsts-extension-task/task.json"
+        },
+        {
+            "path": "vsts-extension-task/icon.png"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "vsts-extension-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "vsts-extension-task"
+            }
+        },
+        {
+            "id": "marketplace-service-endpoint",
+            "description": "MarketPlaceAuthenticationEndpoint",
+            "type": "ms.vss-endpoint.service-endpoint-type",
+            "targets": [
+                "ms.vss-endpoint.endpoint-types"
+            ],
+            "properties": {
+                "name": "marketplace-auth-key",
+                "displayName": "Marketplace",
+                "url": "https://app.market.visualstudio.com/_apis/gallery",
+                "authenticationSchemes": [
+                    {
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-token"
+                    },
+                    {
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-basic"
+                    }
+
+                ]
+            }
+        }
+    ]
 }

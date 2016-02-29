@@ -1,242 +1,242 @@
 {
-    "id":  "eb51abb6-917c-4266-b188-29d75e4dc944",
-    "name":  "ExtensionTask",
-    "friendlyName":  "Package and Publish VSTS Extension.",
-    "description":  "Package and Pusblish VSTS Extension.",
-    "helpMarkDown":  "[More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
-    "category":  "Package",
-    "author":  "Jesse Houwing",
-    "version":  {
-                    "Major":  0,
-                    "Minor":  0,
-                    "Patch":  580
-                },
-    "visibility":  [
-                       "Build",
-                       "Release"
-                   ],
-    "demands":  [
-                    "node.js",
-                    "npm"
-                ],
-    "minimumAgentVersion":  "1.83.0",
-    "groups":  [
-                   {
-                       "name":  "AdvancedOptions",
-                       "displayName":  "Advanced",
-                       "isExpanded":  false
-                   },
-                   {
-                       "name":  "GlobalOptions",
-                       "displayName":  "Global",
-                       "isExpanded":  true
-                   }
-               ],
-    "inputs":  [
-                   {
-                       "defaultValue":  "",
-                       "helpMarkdown":  "",
-                       "label":  "Publisher ID",
-                       "name":  "PublisherID",
-                       "required":  true,
-                       "type":  "string"
-                   },
-                   {
-                       "defaultValue":  "",
-                       "helpMarkdown":  "",
-                       "label":  "Extension ID",
-                       "name":  "ExtensionID",
-                       "required":  true,
-                       "type":  "string"
-                   },
-                   {
-                       "defaultValue":  "",
-                       "helpMarkdown":  "",
-                       "label":  "Extension Tag",
-                       "name":  "ExtensionTag",
-                       "required":  false,
-                       "type":  "string"
-                   },
-                   {
-                       "name":  "ExtensionRoot",
-                       "type":  "filePath",
-                       "label":  "Extension Root",
-                       "defaultValue":  "$(Build.SourcesDirectory)",
-                       "required":  true,
-                       "helpMarkDown":  ""
-                   },
-                   {
-                       "name":  "ManifestGlobs",
-                       "type":  "string",
-                       "label":  "ManifestGlobs",
-                       "defaultValue":  "vss-extension.json",
-                       "required":  true,
-                       "helpMarkDown":  ""
-                   },
-                   {
-                       "defaultValue":  "false",
-                       "helpMarkdown":  "",
-                       "label":  "Override Extension Version",
-                       "name":  "OverrideExtensionVersion",
-                       "required":  false,
-                       "type":  "boolean"
-                   },
-                   {
-                       "defaultValue":  "$(Build.Buildversion)",
-                       "helpMarkdown":  "",
-                       "label":  "Extension Version",
-                       "name":  "ExtensionVersion",
-                       "required":  true,
-                       "type":  "string",
-                       "VisibleRule":  "OverrideExtensionVersion = true"
-                   },
-                   {
-                       "name":  "OverrideInternalVersion",
-                       "type":  "boolean",
-                       "label":  "Override Internal Version",
-                       "defaultValue":  "true",
-                       "required":  false,
-                       "helpMarkDown":  "",
-                       "VisibleRule":  "OverrideExtensionVersion = true"
-                   },
-                   {
-                       "defaultValue":  "Private",
-                       "helpMarkdown":  "",
-                       "label":  "Override Visibility",
-                       "name":  "ExtensionVisibility",
-                       "required":  false,
-                       "options":  {
-                                       "NoOverride":  "Use manifest",
-                                       "Private":  "Private",
-                                       "PrivatePreview":  "Private Preview",
-                                       "PublicPreview":  "Public Preview",
-                                       "Public":  "Public"
-                                   },
-                       "type":  "pickList"
-                   },
-                   {
-                       "name":  "ServiceEndpoint",
-                       "type":  "connectedService:marketplace-auth-key",
-                       "label":  "Service Endpoint",
-                       "defaultValue":  "",
-                       "required":  false,
-                       "helpMarkDown":  "",
-                       "groupName":  "GlobalOptions"
-                   },
-                   {
-                       "name":  "TfxInstall",
-                       "type":  "boolean",
-                       "label":  "Install Tfx-cli",
-                       "defaultValue":  "false",
-                       "required":  false,
-                       "helpMarkDown":  "",
-                       "groupName":  "GlobalOptions"
-                   },
-                   {
-                       "name":  "TfxUpdate",
-                       "type":  "boolean",
-                       "label":  "Auto-update Tfx-cli",
-                       "defaultValue":  "false",
-                       "required":  false,
-                       "helpMarkDown":  "",
-                       "groupName":  "GlobalOptions",
-                       "VisibleRule":  "TfxInstall = true"
-                   },
-                   {
-                       "name":  "TfxLocation",
-                       "type":  "filePath",
-                       "label":  "Tfx Location",
-                       "defaultValue":  "",
-                       "required":  false,
-                       "helpMarkDown":  "",
-                       "groupName":  "GlobalOptions"
-                   },
-                   {
-                       "name":  "EnablePackaging",
-                       "type":  "boolean",
-                       "label":  "Enable Packaging",
-                       "defaultValue":  "false",
-                       "required":  true,
-                       "helpMarkDown":  ""
-                   },
-                   {
-                       "name":  "PackagingOutputPath",
-                       "type":  "filePath",
-                       "label":  "Output path",
-                       "defaultValue":  "$(Build.SourcesDirectory)\\vsix",
-                       "required":  true,
-                       "helpMarkDown":  "",
-                       "visibleRule":  "EnablePackaging = true"
-                   },
-                   {
-                       "defaultValue":  "None",
-                       "helpMarkdown":  "",
-                       "label":  "Override Type",
-                       "name":  "OverrideType",
-                       "required":  false,
-                       "options":  {
-                                       "None":  "None",
-                                       "Json":  "Json",
-                                       "File":  "File"
-                                   },
-                       "type":  "pickList",
-                       "groupName":  "AdvancedOptions"
-                   },
-                   {
-                       "name":  "OverrideFile",
-                       "type":  "filePath",
-                       "label":  "Override File",
-                       "defaultValue":  "",
-                       "required":  true,
-                       "helpMarkDown":  "",
-                       "groupName":  "AdvancedOptions",
-                       "VisibleRule":  "OverrideType=File"
-                   },
-                   {
-                       "name":  "OverrideJson",
-                       "type":  "multiLine",
-                       "label":  "Override Json",
-                       "defaultValue":  "",
-                       "required":  true,
-                       "helpMarkDown":  "",
-                       "groupName":  "AdvancedOptions",
-                       "VisibleRule":  "OverrideType=Json"
-                   },
-                   {
-                       "name":  "BypassValidation",
-                       "type":  "boolean",
-                       "label":  "Bypass Validation",
-                       "defaultValue":  "false",
-                       "required":  true,
-                       "helpMarkDown":  "",
-                       "groupName":  "AdvancedOptions"
-                   },
-                   {
-                       "name":  "Preview",
-                       "type":  "boolean",
-                       "label":  "Preview",
-                       "defaultValue":  "true",
-                       "required":  true,
-                       "helpMarkDown":  "",
-                       "groupName":  "AdvancedOptions"
-                   },
-                   {
-                       "name":  "EnablePublishing",
-                       "type":  "boolean",
-                       "label":  "Enable Publishing",
-                       "defaultValue":  "false",
-                       "required":  true,
-                       "helpMarkDown":  ""
-                   },
-                   {
-                       "name":  "VsixPath",
-                       "type":  "filePath",
-                       "label":  "Path to Vsix",
-                       "defaultValue":  "$(Build.BinariesDirectory)\\**\\*.vsix",
-                       "required":  false,
-                       "helpMarkDown":  "",
-                       "VisibleRule":  "EnablePublishing = true"
-                   },
+    "id": "eb51abb6-917c-4266-b188-29d75e4dc944",
+    "name": "ExtensionTask",
+    "friendlyName": "Package and Publish VSTS Extension.",
+    "description": "Package and Pusblish VSTS Extension.",
+    "helpMarkDown": "[More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
+    "category": "Package",
+    "author": "Jesse Houwing",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 580
+    },
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "node.js",
+        "npm"
+    ],
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "AdvancedOptions",
+            "displayName": "Advanced",
+            "isExpanded": false
+        },
+        {
+            "name": "GlobalOptions",
+            "displayName": "Global",
+            "isExpanded": true
+        }
+    ],
+    "inputs": [
+        {
+            "defaultValue": "",
+            "helpMarkdown": "",
+            "label": "Publisher ID",
+            "name": "PublisherID",
+            "required": true,
+            "type": "string"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "",
+            "label": "Extension ID",
+            "name": "ExtensionID",
+            "required": true,
+            "type": "string"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "",
+            "label": "Extension Tag",
+            "name": "ExtensionTag",
+            "required": false,
+            "type": "string"
+        },
+        {
+            "name": "ExtensionRoot",
+            "type": "filePath",
+            "label": "Extension Root",
+            "defaultValue": "$(Build.SourcesDirectory)",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "ManifestGlobs",
+            "type": "string",
+            "label": "ManifestGlobs",
+            "defaultValue": "vss-extension.json",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "defaultValue": "false",
+            "helpMarkdown": "",
+            "label": "Override Extension Version",
+            "name": "OverrideExtensionVersion",
+            "required": false,
+            "type": "boolean"
+        },
+        {
+            "defaultValue": "$(Build.BuildNumber)",
+            "helpMarkdown": "",
+            "label": "Extension Version",
+            "name": "ExtensionVersion",
+            "required": true,
+            "type": "string",
+            "VisibleRule": "OverrideExtensionVersion = true"
+        },
+        {
+            "name": "OverrideInternalVersion",
+            "type": "boolean",
+            "label": "Override Internal Version",
+            "defaultValue": "true",
+            "required": false,
+            "helpMarkDown": "",
+            "VisibleRule": "OverrideExtensionVersion = true"
+        },
+        {
+            "defaultValue": "Private",
+            "helpMarkdown": "",
+            "label": "Override Visibility",
+            "name": "ExtensionVisibility",
+            "required": false,
+            "options": {
+                "NoOverride": "Use manifest",
+                "Private": "Private",
+                "PrivatePreview": "Private Preview",
+                "PublicPreview": "Public Preview",
+                "Public": "Public"
+            },
+            "type": "pickList"
+        },
+        {
+            "name": "ServiceEndpoint",
+            "type": "connectedService:marketplace-auth-key",
+            "label": "Service Endpoint",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxInstall",
+            "type": "boolean",
+            "label": "Install Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxUpdate",
+            "type": "boolean",
+            "label": "Auto-update Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions",
+            "VisibleRule": "TfxInstall = true"
+        },
+        {
+            "name": "TfxLocation",
+            "type": "filePath",
+            "label": "Tfx Location",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "EnablePackaging",
+            "type": "boolean",
+            "label": "Enable Packaging",
+            "defaultValue": "false",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "PackagingOutputPath",
+            "type": "filePath",
+            "label": "Output path",
+            "defaultValue": "$(Build.SourcesDirectory)\\vsix",
+            "required": true,
+            "helpMarkDown": "",
+            "visibleRule": "EnablePackaging = true"
+        },
+        {
+            "defaultValue": "None",
+            "helpMarkdown": "",
+            "label": "Override Type",
+            "name": "OverrideType",
+            "required": false,
+            "options": {
+                "None": "None",
+                "Json": "Json",
+                "File": "File"
+            },
+            "type": "pickList",
+            "groupName": "AdvancedOptions"
+        },
+        {
+            "name": "OverrideFile",
+            "type": "filePath",
+            "label": "Override File",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions",
+            "VisibleRule": "OverrideType=File"
+        },
+        {
+            "name": "OverrideJson",
+            "type": "multiLine",
+            "label": "Override Json",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions",
+            "VisibleRule": "OverrideType=Json"
+        },
+        {
+            "name": "BypassValidation",
+            "type": "boolean",
+            "label": "Bypass Validation",
+            "defaultValue": "false",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions"
+        },
+        {
+            "name": "Preview",
+            "type": "boolean",
+            "label": "Preview",
+            "defaultValue": "true",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions"
+        },
+        {
+            "name": "EnablePublishing",
+            "type": "boolean",
+            "label": "Enable Publishing",
+            "defaultValue": "false",
+            "required": true,
+            "helpMarkDown": ""
+        },
+        {
+            "name": "VsixPath",
+            "type": "filePath",
+            "label": "Path to Vsix",
+            "defaultValue": "$(Build.BinariesDirectory)\\**\\*.vsix",
+            "required": false,
+            "helpMarkDown": "",
+            "VisibleRule": "EnablePublishing = true"
+        },
         {
             "name": "EnableSharing",
             "type": "boolean",
@@ -246,22 +246,22 @@
             "helpMarkDown": "",
             "VisibleRule": "EnablePublishing = true"
         },
-                   {
-                       "name":  "ShareWith",
-                       "type":  "multiLine",
-                       "label":  "Share with",
-                       "defaultValue":  "",
-                       "required":  false,
-                       "helpMarkDown":  "",
-                       "VisibleRule":  "EnableSharing = true"
-                   }
-               ],
-    "instanceNameFormat":  "Package and Pusblish VSTS Extension",
-    "execution":  {
-                      "PowerShell":  {
-                                         "target":  "$(currentDirectory)\\vsts-extension-task.ps1",
-                                         "argumentFormat":  "",
-                                         "workingDirectory":  "$(Build.SourcesDirectory)"
-                                     }
-                  }
+        {
+            "name": "ShareWith",
+            "type": "multiLine",
+            "label": "Share with",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "VisibleRule": "EnableSharing = true"
+        }
+    ],
+    "instanceNameFormat": "Package and Pusblish VSTS Extension",
+    "execution": {
+        "PowerShell": {
+            "target": "$(currentDirectory)\\vsts-extension-task.ps1",
+            "argumentFormat": "",
+            "workingDirectory": "$(Build.SourcesDirectory)"
+        }
+    }
 }
