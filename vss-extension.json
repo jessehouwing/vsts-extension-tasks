@@ -19,7 +19,7 @@
     ],
     "description": "Build and Release Management extensions that enable you to package and publish VSTS Extensions to the marketplace.",
     "categories": [
-        "Integrate"
+        "Build and release"
     ],
     "tags": [
         "Extension",
