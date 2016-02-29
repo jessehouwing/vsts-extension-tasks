@@ -63,7 +63,7 @@ function Convert-PackageOptions
         OverrideInternalVersions = ($parameters["OverrideInternalVersions"] -eq $true)
         ExtensionVersion = [string]$parameters["ExtensionVersion"]
         ExtensionVisibility = [string]$parameters["ExtensionVisibility"]
-        ManifestGlobs = [string]$parameters["ExtensionVisibility"]
+        ManifestGlobs = [string]$parameters["ManifestGlobs"]
     }
 
     if ($packageOptions.ExtensionTag -ne "")
