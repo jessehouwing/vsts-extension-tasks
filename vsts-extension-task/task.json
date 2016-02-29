@@ -237,14 +237,15 @@
                        "helpMarkDown":  "",
                        "VisibleRule":  "EnablePublishing = true"
                    },
-                   {
-                       "name":  "EnableSharing",
-                       "type":  "boolean",
-                       "label":  "Enable Sharing",
-                       "defaultValue":  "false",
-                       "required":  true,
-                       "helpMarkDown":  ""
-                   },
+        {
+            "name": "EnableSharing",
+            "type": "boolean",
+            "label": "Enable Sharing",
+            "defaultValue": "false",
+            "required": true,
+            "helpMarkDown": "",
+            "VisibleRule": "EnablePublishing = true"
+        },
                    {
                        "name":  "ShareWith",
                        "type":  "multiLine",

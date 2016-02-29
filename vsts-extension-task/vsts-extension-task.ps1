@@ -154,7 +154,6 @@ if ($publishOptions.Enabled -or $shareOptions.Enabled)
 
 if ($publishOptions.Enabled)
 {
-
     if ($publishOptions.VsixPath -contains "*","?")
     {
         $publishOptions.VsixPath = [string] (Find-Files $publishOptions.VsixPath)
@@ -163,8 +162,8 @@ if ($publishOptions.Enabled)
     $tfxArgs = @(
         "extension",
         "publish",
-        "--vsix-path",
-        $publishOptions.VsixPath,
+        "--root",
+        $packageOptions.ExtensionRoot,
         "--extensionid",
         $packageOptions.ExtensionId,
         "--publisher",
@@ -173,52 +172,34 @@ if ($publishOptions.Enabled)
         ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
     )
 
+    if ($shareOptions.Enabled -and ($shareOptions.ShareWith.Length -gt 0))
+    {
+        $tfxArgs += "--share-with"
+
+        Write-Debug "Sharing with:"
+        foreach ($account in $shareOptions.ShareWith)
+        {
+            Write-Debug "$account"
+            $tfxArgs += $account
+        }
+    }
+    
+    if ($packageOptions.ManifestGlobs -ne "")
+    {
+        $tfxArgs += "--manifest-globs"
+        $tfxArgs += $packageOptions.ManifestGlobs
+    }
+
+    if ($publishOptions.VsixPath -ne "")
+    {
+        $tfxArgs += "--vsix-path"
+        $tfxArgs += $publishOptions.VsixPath
+    }
+
     if ($BypassValidation -eq $true)
     {
         $tfxArgs += "--bypass-validation"
     }
 
     Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
-}
-
-if ($shareOptions.Enabled)
-{
-    Write-Debug "Sharing with:"
-    foreach ($account in $shareOptions.ShareWith)
-    {
-        Write-Debug "$account"
-        $tfxArgs = @(
-            "extension",
-            "publish",
-            "--root",
-            $packageOptions.ExtensionRoot,
-            "--share-with",
-            $account,
-            "--extensionid",
-            $packageOptions.ExtensionId,
-            "--publisher",
-            $packageOptions.PublisherId,
-            "--override",
-            ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
-        )
-
-        if ($packageOptions.ManifestGlobs -ne "")
-        {
-            $tfxArgs += "--manifest-globs"
-            $tfxArgs += $packageOptions.ManifestGlobs
-        }
-
-        if ($publishOptions.VsixPath -ne "")
-        {
-            $tfxArgs += "--vsix-path"
-            $tfxArgs += $publishOptions.VsixPath
-        }
-
-        if ($BypassValidation -eq $true)
-        {
-            $tfxArgs += "--bypass-validation"
-        }
-
-        Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
-    }
 }
