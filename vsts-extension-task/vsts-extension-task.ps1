@@ -70,10 +70,6 @@ param(
     [Parameter(Mandatory=$false)]
     [string] $EnablePublishing = $false,
 
-    [Parameter(Mandatory=$false)]
-    [string] $VsixPath,
-    
-
     # Sharing options
     [Parameter(Mandatory=$false)]
     [string] $EnableSharing = $false,
@@ -97,109 +93,68 @@ Import-Module -DisableNameChecking "$PSScriptRoot/vsts-extension-shared.psm1"
 
 $global:globalOptions = Convert-GlobalOptions $PSBoundParameters
 $global:packageOptions = Convert-PackageOptions $PSBoundParameters
-$global:publishOptions = Convert-PublishOptions $PSBoundParameters
-$global:shareOptions = Convert-ShareOptions $PSBoundParameters
 
 Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect -TfxUpdate:$globalOptions.TfxUpdate
 
-if ($packageOptions.Enabled)
+$command = "create"
+if ($packageOptions.PublishEnabled)
 {
-    $tfxArgs = @(
-        "extension",
-        "create",
-        "--root",
-        $packageOptions.ExtensionRoot,
-        "--output-path",
-        $packageOptions.OutputPath,
-        "--extensionid",
-        $packageOptions.ExtensionId,
-        "--publisher",
-        $packageOptions.PublisherId,
-        "--override",
-        ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
-    )
-
-    if ($packageOptions.ManifestGlobs -ne "")
-    {
-        $tfxArgs += "--manifest-globs"
-        $tfxArgs += $packageOptions.ManifestGlobs
-    }
-    
-    if ($packageOptions.BypassValidation)
-    {
-        $tfxArgs += "--bypass-validation"
-    }
-
-    if ($packageOptions.OverrideInternalVersions)
-    {
-        Update-InternalVersion
-    }
-
-    $output = Invoke-Tfx -Arguments $tfxArgs
-
-    if ($output -ne $null)
-    {
-        $publishOptions.VsixPath = $output.Path
-    }
-}
-
-if ($publishOptions.Enabled -or $shareOptions.Enabled)
-{
-    $MarketEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $ServiceEndpoint
+    $command = "publish"
+    $MarketEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $global:globalOptions.ServiceEndpoint
     if ($MarketEndpoint -eq $null)
     {
         throw "Could not locate service endpoint $ServiceEndpoint"
     }
 }
 
-if ($publishOptions.Enabled)
+if ($packageOptions.OverrideInternalVersions)
 {
-    if ($publishOptions.VsixPath -contains "*","?")
+    Update-InternalVersion
+}
+
+$tfxArgs = @(
+    "extension",
+    $command,
+    "--root",
+    $packageOptions.ExtensionRoot,
+    "--output-path",
+    $packageOptions.OutputPath,
+    "--extensionid",
+    $packageOptions.ExtensionId,
+    "--publisher",
+    $packageOptions.PublisherId,
+    "--override",
+    ($packageOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
+)
+
+if ($packageOptions.PublishEnabled -and $packageOptions.ShareEnabled -and ($packageOptions.ShareWith.Length -gt 0))
+{
+    $tfxArgs += "--share-with"
+
+    Write-Debug "Sharing with:"
+    foreach ($account in $packageOptions.ShareWith)
     {
-        $publishOptions.VsixPath = [string] (Find-Files $publishOptions.VsixPath)
+        Write-Debug "$account"
+        $tfxArgs += $account
     }
+}
 
-    $tfxArgs = @(
-        "extension",
-        "publish",
-        "--root",
-        $packageOptions.ExtensionRoot,
-        "--extensionid",
-        $packageOptions.ExtensionId,
-        "--publisher",
-        $packageOptions.PublisherId,
-        "--override",
-        ($globalOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
-    )
-
-    if ($shareOptions.Enabled -and ($shareOptions.ShareWith.Length -gt 0))
-    {
-        $tfxArgs += "--share-with"
-
-        Write-Debug "Sharing with:"
-        foreach ($account in $shareOptions.ShareWith)
-        {
-            Write-Debug "$account"
-            $tfxArgs += $account
-        }
-    }
+if ($packageOptions.ManifestGlobs -ne "")
+{
+    $tfxArgs += "--manifest-globs"
+    $tfxArgs += $packageOptions.ManifestGlobs
+}
     
-    if ($packageOptions.ManifestGlobs -ne "")
-    {
-        $tfxArgs += "--manifest-globs"
-        $tfxArgs += $packageOptions.ManifestGlobs
-    }
+if ($packageOptions.BypassValidation)
+{
+    $tfxArgs += "--bypass-validation"
+}
 
-    if ($publishOptions.VsixPath -ne "")
-    {
-        $tfxArgs += "--vsix-path"
-        $tfxArgs += $publishOptions.VsixPath
-    }
-
-    if ($BypassValidation -eq $true)
-    {
-        $tfxArgs += "--bypass-validation"
-    }
-
-    Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
+if (-not $packageOptions.PublishEnabled)
+{
+    $output = Invoke-Tfx -Arguments
+}
+else
+{
+    $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $packageOptions.MarketEndpoint -Preview:$PreviewMode
 }

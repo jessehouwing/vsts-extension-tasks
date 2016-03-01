@@ -88,7 +88,7 @@
             ],
             "properties": {
                 "name": "marketplace-auth-key",
-                "displayName": "Marketplace",
+                "displayName": "Visual Studio Marketplace",
                 "url": "https://app.market.visualstudio.com/_apis/gallery",
                 "authenticationSchemes": [
                     {

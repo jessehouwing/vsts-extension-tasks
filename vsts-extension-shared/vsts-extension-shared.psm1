@@ -11,21 +11,8 @@ function Convert-GlobalOptions
     $globalOptions = @{
         TfxInstall = ($parameters["TfxInstall"] -eq $true)
         TfxInstallUpdate = ($parameters["TfxUpdate"] -eq $true)
-        TfxInstallPath = $parameters["TfxInstallPath"]
-        OverrideType =  $parameters["OverrideType"]
-    }
-
-    if ($globalOptions.OverrideType = "Json")
-    {
-        $globalOptions.OverrideJson = ($parameters["OverrideJson"] | Convertfrom-Json)
-    }
-    elseif ($globalOptions.OverrideType = "File")
-    {
-        $globalOptions.OverrideJson = (Get-Content $parameters["OverrideJsonFile"] -raw | Convertfrom-Json)
-    }
-    else
-    {
-        $globalOptions.OverrideJson = ("{}" | ConvertFrom-Json)
+        TfxInstallPath = [string]$parameters["TfxInstallPath"]
+        ServiceEndpoint = [string]$parameters["ServiceEndpoint"]
     }
 
     Write-Debug "GlobalOptions:"
@@ -44,15 +31,7 @@ function Convert-PackageOptions
         $parameters
     )
 
-    $globalOptions = $global:globalOptions
-    $OverrideJson = $global:globalOptions.OverrideJson
-    if ($OverrideJson -eq $null)
-    {
-        $OverrideJson = "{}" | ConvertFrom-Json
-    }
-
     $packageOptions = @{
-        Enabled = ($parameters["EnablePackaging"] -eq $true)
         ExtensionRoot = [string]$parameters["ExtensionRoot"]
         ExtensionId = [string]$parameters["ExtensionId"]
         ExtensionTag = [string]$parameters["Extensiontag"]
@@ -64,6 +43,23 @@ function Convert-PackageOptions
         ExtensionVersion = [string]$parameters["ExtensionVersion"]
         ExtensionVisibility = [string]$parameters["ExtensionVisibility"]
         ManifestGlobs = [string]$parameters["ManifestGlobs"]
+        OverrideType =  $parameters["OverrideType"]
+        PublishEnabled = ($parameters["EnablePublishing"] -eq $true)
+        ShareEnabled = ($parameters["EnableSharing"] -eq $true)
+        ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
+    }
+
+    if ($packageOptions.OverrideType = "Json")
+    {
+        $packageOptions.OverrideJson = ($parameters["OverrideJson"] | Convertfrom-Json)
+    }
+    elseif ($packageOptions.OverrideType = "File")
+    {
+        $packageOptions.OverrideJson = (Get-Content $parameters["OverrideJsonFile"] -raw | Convertfrom-Json)
+    }
+    else
+    {
+        $packageOptions.OverrideJson = ("{}" | ConvertFrom-Json)
     }
 
     if ($packageOptions.ExtensionTag -ne "")
@@ -121,62 +117,13 @@ function Convert-PackageOptions
         Write-Debug "Setting 'GalleryFlags'"
         Add-Member -InputObject $OverrideJson -NotePropertyName "galleryFlags" -NotePropertyValue $OverrideFlags -Force
     }
-    Write-Debug "GlobalOptions.OverrideJson"
-    $globalOptions.OverrideJson = $OverrideJson
-    Write-Debug ($globalOptions.OverrideJson)
+
     Write-Debug "PackageOptions:"
     Write-Debug ($packageOptions | Out-String)
 
     $global:packageOptions = $packageOptions
-    $global:globalOptions  = $globalOptions
 
     return $global:packageOptions
-}
-
-function Convert-PublishOptions 
-{
-    param
-    (
-        $parameters
-    )
-
-    $publishOptions = @{
-        Enabled = ($parameters["EnablePublishing"] -eq $true)
-        ExtensionId = [string]$parameters["ExtensionId"]
-        ExtensionTag = [string]$parameters["Extensiontag"]
-        PublisherId = [string]$parameters["PublisherId"]
-        VsixPath = [string]$parameters["VsixPath"]
-    }
-
-    if ($publishOptions.ExtensionTag -ne "")
-    {
-        $publishOptions.ExtensionId = "$($publishOptions.ExtensionId)-$($publishOptions.ExtensionTag)"
-    }
-
-    Write-Debug "PublishOptions:"
-    Write-Debug ($publishOptions | Out-String)
-
-    $global:publishOptions = $publishOptions
-    return $global:publishOptions
-}
-
-function Convert-ShareOptions 
-{
-    param
-    (
-        $parameters
-    )
-
-    $shareOptions = @{
-        Enabled = ($parameters["EnableSharing"] -eq $true)
-        ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
-    }
-
-    Write-Debug "ShareOptions:"
-    Write-Debug ($shareOptions | Out-String)
-    
-    $global:shareOptions = $shareOptions
-    return $global:shareOptions
 }
 
 $global:tfx = $null
@@ -342,7 +289,7 @@ function Invoke-Tfx
         }
     }
 
-    $tfxArgs = ($Arguments | %{ Escape-Args  $_ } ) -join " "
+    $tfxArgs = ($Arguments | %{ Escape-Args $_ } ) -join " "
 
     Write-Debug "Calling: $($global:tfx)"
     Write-Debug "Arguments: $tfxArgs"

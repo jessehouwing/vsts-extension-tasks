@@ -2,7 +2,7 @@
     "id": "eb51abb6-917c-4266-b188-29d75e4dc944",
     "name": "ExtensionTask",
     "friendlyName": "Package and Publish VSTS Extension.",
-    "description": "Package and Pusblish VSTS Extension.",
+    "description": "Package and Publish VSTS Extension.",
     "helpMarkDown": "[More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
     "category": "Package",
     "author": "Jesse Houwing",
@@ -152,14 +152,6 @@
             "groupName": "GlobalOptions"
         },
         {
-            "name": "EnablePackaging",
-            "type": "boolean",
-            "label": "Enable Packaging",
-            "defaultValue": "false",
-            "required": true,
-            "helpMarkDown": ""
-        },
-        {
             "name": "PackagingOutputPath",
             "type": "filePath",
             "label": "Output path",
@@ -227,15 +219,6 @@
             "defaultValue": "false",
             "required": true,
             "helpMarkDown": ""
-        },
-        {
-            "name": "VsixPath",
-            "type": "filePath",
-            "label": "Path to Vsix",
-            "defaultValue": "$(Build.BinariesDirectory)\\**\\*.vsix",
-            "required": false,
-            "helpMarkDown": "",
-            "VisibleRule": "EnablePublishing = true"
         },
         {
             "name": "EnableSharing",
