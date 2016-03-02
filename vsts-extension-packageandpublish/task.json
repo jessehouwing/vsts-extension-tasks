@@ -238,7 +238,7 @@
             "VisibleRule": "EnableSharing = true"
         }
     ],
-    "instanceNameFormat": "Package and Pusblish VSTS Extension",
+    "instanceNameFormat": "Package and Pusblish VSTS Extension: $(PublisherID)-$(ExtensionID)",
     "execution": {
         "PowerShell": {
             "target": "$(currentDirectory)\\vsts-extension-packageandpublish.ps1",
