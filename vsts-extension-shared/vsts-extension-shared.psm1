@@ -360,7 +360,7 @@ function Invoke-Tfx
     {
         Write-Warning "Skipped call due to Preview: True"
         Write-Warning "$($global:tfx) $tfxArgs"
-        $Output = "{}"
+        $Output = @("{}")
     }
     else
     {
@@ -370,8 +370,8 @@ function Invoke-Tfx
 
     $output | %{ Write-Debug $_ }
 
-    $messages = $output -Split "`r?`n" | Skip-While { $_.StartsWith("$global:tfx") } | Take-While { $_ -match "^[^{]" }
-    $json = $output -Split "`r?`n" | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
+    $messages = $output | Skip-While { $_.StartsWith("$global:tfx") } | Take-While { $_ -match "^[^{]" }
+    $json = $output | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
 
     if ($messages -ne $null)
     {
