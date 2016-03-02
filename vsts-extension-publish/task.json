@@ -1,0 +1,108 @@
+{
+    "id": "1f006bf3-931a-4c50-9e0f-c65f5c11d952",
+    "name": "ExtensionPublishTask",
+    "friendlyName": "Publish VSTS Extension.",
+    "description": "Publish VSTS Extension.",
+    "helpMarkDown": "[More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
+    "category": "Package",
+    "author": "Jesse Houwing",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "node.js",
+        "npm"
+    ],
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "AdvancedOptions",
+            "displayName": "Advanced",
+            "isExpanded": false
+        },
+        {
+            "name": "GlobalOptions",
+            "displayName": "Global",
+            "isExpanded": true
+        }
+    ],
+    "inputs": [
+        {
+            "defaultValue": "",
+            "helpMarkdown": "",
+            "label": "VSIX path",
+            "name": "VsixPath",
+            "required": false,
+            "type": "filePath"
+        },
+        {
+            "name": "ServiceEndpoint",
+            "type": "connectedService:marketplace-auth-key",
+            "label": "Service Endpoint",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxInstall",
+            "type": "boolean",
+            "label": "Install Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxUpdate",
+            "type": "boolean",
+            "label": "Auto-update Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions",
+            "VisibleRule": "TfxInstall = true"
+        },
+        {
+            "name": "TfxLocation",
+            "type": "filePath",
+            "label": "Tfx Location",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "BypassValidation",
+            "type": "boolean",
+            "label": "Bypass Validation",
+            "defaultValue": "false",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions"
+        },
+        {
+            "name": "Preview",
+            "type": "boolean",
+            "label": "Preview",
+            "defaultValue": "true",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions"
+        }
+    ],
+    "instanceNameFormat": "Pusblish VSTS Extension: $(PublisherID)-$(ExtensionID)",
+    "execution": {
+        "PowerShell": {
+            "target": "$(currentDirectory)\\vsts-extension-publish.ps1",
+            "argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+        }
+    }
+}

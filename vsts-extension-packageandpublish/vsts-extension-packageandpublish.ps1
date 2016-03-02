@@ -100,10 +100,10 @@ $command = "create"
 if ($packageOptions.PublishEnabled)
 {
     $command = "publish"
-    $MarketEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $global:globalOptions.ServiceEndpoint
+    $MarketEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $globalOptions.ServiceEndpoint
     if ($MarketEndpoint -eq $null)
     {
-        throw "Could not locate service endpoint $ServiceEndpoint"
+        throw "Could not locate service endpoint $globalOptions.ServiceEndpoint"
     }
 }
 
@@ -156,5 +156,5 @@ if (-not $packageOptions.PublishEnabled)
 }
 else
 {
-    $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $packageOptions.MarketEndpoint -Preview:$PreviewMode
+    $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
 }

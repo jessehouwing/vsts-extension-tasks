@@ -22,6 +22,16 @@
     "minimumAgentVersion": "1.83.0",
     "groups": [
         {
+            "name": "OverrideVersion",
+            "displayName": "Override - Version",
+            "isExpanded": true
+        },
+        {
+            "name": "OverrideAdvanced",
+            "displayName": "Override - Advanced",
+            "isExpanded": false
+        },
+        {
             "name": "AdvancedOptions",
             "displayName": "Advanced",
             "isExpanded": false
@@ -79,7 +89,8 @@
             "label": "Override Extension Version",
             "name": "OverrideExtensionVersion",
             "required": false,
-            "type": "boolean"
+            "type": "boolean",
+            "groupName": "AdvancedOptions"
         },
         {
             "defaultValue": "$(Build.BuildNumber)",
@@ -88,7 +99,8 @@
             "name": "ExtensionVersion",
             "required": true,
             "type": "string",
-            "VisibleRule": "OverrideExtensionVersion = true"
+            "VisibleRule": "OverrideExtensionVersion = true",
+            "groupName": "AdvancedOptions"
         },
         {
             "name": "OverrideInternalVersion",
@@ -97,7 +109,8 @@
             "defaultValue": "true",
             "required": false,
             "helpMarkDown": "",
-            "VisibleRule": "OverrideExtensionVersion = true"
+            "VisibleRule": "OverrideExtensionVersion = true",
+            "groupName": "AdvancedOptions"
         },
         {
             "defaultValue": "Private",
@@ -155,7 +168,7 @@
             "name": "PackagingOutputPath",
             "type": "filePath",
             "label": "Output path",
-            "defaultValue": "$(Build.SourcesDirectory)\\vsix",
+            "defaultValue": "$(Build.ArtefactStagingDirectory)\\vsix",
             "required": true,
             "helpMarkDown": ""
         },
@@ -171,7 +184,7 @@
                 "File": "File"
             },
             "type": "pickList",
-            "groupName": "AdvancedOptions"
+            "groupName": "OverrideAdvanced"
         },
         {
             "name": "OverrideFile",
@@ -180,7 +193,7 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "",
-            "groupName": "AdvancedOptions",
+            "groupName": "OverrideAdvanced",
             "VisibleRule": "OverrideType=File"
         },
         {
@@ -190,7 +203,7 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "",
-            "groupName": "AdvancedOptions",
+            "groupName": "OverrideAdvanced",
             "VisibleRule": "OverrideType=Json"
         },
         {

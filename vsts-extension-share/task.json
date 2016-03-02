@@ -1,0 +1,156 @@
+{
+    "id": "6401fe41-27b8-4595-b93e-ff5f63e62d49",
+    "name": "ExtensionShareTask",
+    "friendlyName": "Share VSTS Extension.",
+    "description": "Share VSTS Extension.",
+    "helpMarkDown": "[More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
+    "category": "Package",
+    "author": "Jesse Houwing",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 580
+    },
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "node.js",
+        "npm"
+    ],
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "AdvancedOptions",
+            "displayName": "Advanced",
+            "isExpanded": false
+        },
+        {
+            "name": "GlobalOptions",
+            "displayName": "Global",
+            "isExpanded": true
+        }
+    ],
+    "inputs": [
+        {
+            "defaultValue": "ID",
+            "helpMarkdown": "",
+            "label": "Share using",
+            "name": "ShareUsing",
+            "required": true,
+            "options": {
+                "ID": "Publisher + Extension ID",
+                "VSIX": "VSIX file"
+            },
+            "type": "pickList"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "",
+            "label": "Publisher ID",
+            "name": "PublisherID",
+            "required": true,
+            "type": "string",
+            "VisibleRule": "ShareUsing = ID"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "",
+            "label": "Extension ID",
+            "name": "ExtensionID",
+            "required": true,
+            "type": "string",
+            "VisibleRule": "ShareUsing = ID"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "",
+            "label": "Extension Tag",
+            "name": "ExtensionTag",
+            "required": false,
+            "type": "string",
+            "VisibleRule": "ShareUsing = ID"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "",
+            "label": "VSIX path",
+            "name": "VsixPath",
+            "required": true,
+            "type": "filePath",
+            "VisibleRule": "ShareUsing = VSIX"
+        },
+        {
+            "name": "ServiceEndpoint",
+            "type": "connectedService:marketplace-auth-key",
+            "label": "Service Endpoint",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxInstall",
+            "type": "boolean",
+            "label": "Install Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxUpdate",
+            "type": "boolean",
+            "label": "Auto-update Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions",
+            "VisibleRule": "TfxInstall = true"
+        },
+        {
+            "name": "TfxLocation",
+            "type": "filePath",
+            "label": "Tfx Location",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "BypassValidation",
+            "type": "boolean",
+            "label": "Bypass Validation",
+            "defaultValue": "false",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions"
+        },
+        {
+            "name": "Preview",
+            "type": "boolean",
+            "label": "Preview",
+            "defaultValue": "true",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions"
+        },
+        {
+            "name": "ShareWith",
+            "type": "multiLine",
+            "label": "Share with",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": ""
+        }
+    ],
+    "instanceNameFormat": "Share VSTS Extension: $(PublisherID)-$(ExtensionID) with $(ShareWith)",
+    "execution": {
+        "PowerShell": {
+            "target": "$(currentDirectory)\\vsts-extension-share.ps1",
+            "argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+        }
+    }
+}

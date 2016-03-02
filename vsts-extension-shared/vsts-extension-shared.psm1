@@ -23,7 +23,6 @@ function Convert-GlobalOptions
     return $global:globalOptions
 }
 
-
 function Convert-PackageOptions 
 {
     param
@@ -124,6 +123,56 @@ function Convert-PackageOptions
     $global:packageOptions = $packageOptions
 
     return $global:packageOptions
+}
+
+function Convert-ShareOptions 
+{
+    param
+    (
+        $parameters
+    )
+
+    $shareOptions = @{
+        ShareUsing = [string]$parameters["ShareUsing"]
+        VsixPath = [string]$parameters["VsixPath"]
+        ExtensionId = [string]$parameters["ExtensionId"]
+        ExtensionTag = [string]$parameters["Extensiontag"]
+        PublisherId = [string]$parameters["PublisherId"]
+        BypassValidation = ($parameters["BypassValidation"] -eq $true)
+        ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
+    }
+
+    if ($shareOptions.ExtensionTag -ne "")
+    {
+        $shareOptions.ExtensionId = "$($shareOptions.ExtensionId)-$($shareOptions.ExtensionTag)"
+    }
+
+    Write-Debug "ShareOptions:"
+    Write-Debug ($shareOptions | Out-String)
+
+    $global:shareOptions = $shareOptions
+
+    return $global:shareOptions
+}
+
+function Convert-PublishOptions 
+{
+    param
+    (
+        $parameters
+    )
+
+    $publishOptions = @{
+        VsixPath = [string]$parameters["VsixPath"]
+        BypassValidation = ($parameters["BypassValidation"] -eq $true)
+    }
+
+    Write-Debug "PublishOptions:"
+    Write-Debug ($publishOptions | Out-String)
+
+    $global:publishOptions = $publishOptions
+
+    return $global:publishOptions
 }
 
 $global:tfx = $null

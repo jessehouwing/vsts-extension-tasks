@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "jessehouwing-vsts-extension-tasks-TEST",
     "name": "VSTS Extension Tasks",
-    "version": "0.0.580",
+    "version": "0.0.0",
     "publisher": "jessehouwing",
     "public": false,
     "galleryFlags": [
@@ -17,7 +17,7 @@
         "vso.build",
         "vso.serviceendpoint"
     ],
-    "description": "Build and Release Management extensions that enable you to package and publish VSTS Extensions to the marketplace.",
+    "description": "Build and Release Management extensions that enable you to package, publish and share VSTS Extensions to the marketplace.",
     "categories": [
         "Build and release"
     ],
@@ -58,7 +58,7 @@
             "path": "vsts-extension-packageandpublish/vsts-extension-packageandpublish.ps1"
         },
         {
-            "path": "vsts-extension-task/vsts-extension-shared.psm1",
+            "path": "vsts-extension-packageandpublish/vsts-extension-shared.psm1",
             "contentType": "text/plain"
         },
         {
@@ -66,6 +66,34 @@
         },
         {
             "path": "vsts-extension-packageandpublish/icon.png"
+        },
+
+        {
+            "path": "vsts-extension-share/vsts-extension-share.ps1"
+        },
+        {
+            "path": "vsts-extension-share/vsts-extension-shared.psm1",
+            "contentType": "text/plain"
+        },
+        {
+            "path": "vsts-extension-share/task.json"
+        },
+        {
+            "path": "vsts-extension-share/icon.png"
+        },
+
+        {
+            "path": "vsts-extension-publish/vsts-extension-publish.ps1"
+        },
+        {
+            "path": "vsts-extension-share/vsts-extension-shared.psm1",
+            "contentType": "text/plain"
+        },
+        {
+            "path": "vsts-extension-publish/task.json"
+        },
+        {
+            "path": "vsts-extension-publish/icon.png"
         }
     ],
     "contributions": [
@@ -77,6 +105,16 @@
             ],
             "properties": {
                 "name": "vsts-extension-packageandpublish"
+            }
+        },
+        {
+            "id": "vsts-extension-share",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "vsts-extension-share"
             }
         },
         {

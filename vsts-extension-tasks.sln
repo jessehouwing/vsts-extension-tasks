@@ -32,6 +32,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "vsts-extension-packageandpublish", "vsts-extension-packageandpublish\vsts-extension-packageandpublish.pssproj", "{5030B877-02C0-459F-91CA-4DD0C5236BE7}"
 EndProject
+Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "vsts-extension-share", "vsts-extension-share\vsts-extension-share.pssproj", "{7F1C6C06-CFD3-4648-9A8A-A189C14A6E69}"
+EndProject
+Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "vsts-extension-publish", "vsts-extension-publish\vsts-extension-publish.pssproj", "{4FFA570C-3AC4-4DAE-A498-069E5F2D2EEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,14 @@ Global
 		{5030B877-02C0-459F-91CA-4DD0C5236BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5030B877-02C0-459F-91CA-4DD0C5236BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5030B877-02C0-459F-91CA-4DD0C5236BE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F1C6C06-CFD3-4648-9A8A-A189C14A6E69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F1C6C06-CFD3-4648-9A8A-A189C14A6E69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F1C6C06-CFD3-4648-9A8A-A189C14A6E69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F1C6C06-CFD3-4648-9A8A-A189C14A6E69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FFA570C-3AC4-4DAE-A498-069E5F2D2EEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FFA570C-3AC4-4DAE-A498-069E5F2D2EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FFA570C-3AC4-4DAE-A498-069E5F2D2EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FFA570C-3AC4-4DAE-A498-069E5F2D2EEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
