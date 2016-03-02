@@ -7,7 +7,8 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>MyApplication</RootNamespace>
     <AssemblyName>MyApplication</AssemblyName>
-    <Name>vsts-extension-task</Name>
+    <Name>vsts-extension-packageandpublish</Name>
+    <ProjectHome />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,7 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="icon.png" />
-    <Compile Include="vsts-extension-task.ps1" />
+    <Compile Include="vsts-extension-packageandpublish.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\vsts-extension-shared\vsts-extension-shared.pssproj">

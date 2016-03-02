@@ -55,33 +55,33 @@
     },
     "files": [
         {
-            "path": "vsts-extension-task/vsts-extension-task.ps1"
+            "path": "vsts-extension-packageandpublish/vsts-extension-packageandpublish.ps1"
         },
         {
             "path": "vsts-extension-task/vsts-extension-shared.psm1",
             "contentType": "text/plain"
         },
         {
-            "path": "vsts-extension-task/task.json"
+            "path": "vsts-extension-packageandpublish/task.json"
         },
         {
-            "path": "vsts-extension-task/icon.png"
+            "path": "vsts-extension-packageandpublish/icon.png"
         }
     ],
     "contributions": [
         {
-            "id": "vsts-extension-task",
+            "id": "vsts-extension-packageandpublish",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "vsts-extension-task"
+                "name": "vsts-extension-packageandpublish"
             }
         },
         {
             "id": "marketplace-service-endpoint",
-            "description": "MarketPlaceAuthenticationEndpoint",
+            "description": "Visual Studio Marketplace",
             "type": "ms.vss-endpoint.service-endpoint-type",
             "targets": [
                 "ms.vss-endpoint.endpoint-types"
