@@ -365,7 +365,7 @@ function Invoke-Tfx
     else
     {
         # Pass -1 as success so we can handle output ourselves.
-        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1) -WorkingFolder $workingFolder
+        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1,255) -WorkingFolder $workingFolder
     }
 
     Write-Debug $output
