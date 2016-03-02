@@ -169,7 +169,7 @@
             "name": "PackagingOutputPath",
             "type": "filePath",
             "label": "Output path",
-            "defaultValue": "$(Build.ArtefactStagingDirectory)\\vsix",
+            "defaultValue": "$(Build.ArtifactStagingDirectory)\\vsix",
             "required": true,
             "helpMarkDown": "Output path to write the packaged VSIX file to. The file name will be auto generated."
         },
