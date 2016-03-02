@@ -368,7 +368,7 @@ function Invoke-Tfx
         $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1,255) -WorkingFolder $workingFolder
     }
 
-    Write-Debug $output
+    $output | %{ Write-Debug }
 
     $messages = $output -Split "`r?`n" | Skip-While { $_.StartsWith("$global:tfx") } | Take-While { $_ -match "^[^{]" }
     $json = $output -Split "`r?`n" | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
