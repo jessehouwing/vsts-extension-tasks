@@ -118,6 +118,16 @@
             }
         },
         {
+            "id": "vsts-extension-publish",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "vsts-extension-publish"
+            }
+        },
+        {
             "id": "marketplace-service-endpoint",
             "description": "Visual Studio Marketplace",
             "type": "ms.vss-endpoint.service-endpoint-type",
