@@ -360,18 +360,18 @@ function Invoke-Tfx
     {
         Write-Warning "Skipped call due to Preview: True"
         Write-Warning "$($global:tfx) $tfxArgs"
-        $Output = @("{}")
+        [string] $Output = "{}"
     }
     else
     {
         # Pass -1 as success so we can handle output ourselves.
-        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1,255) -WorkingFolder $workingFolder
+        [string] $output = (Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1,255) -WorkingFolder $workingFolder) -join "`r`n"
     }
 
     $output | %{ Write-Debug $_ }
 
-    $messages = $output | Skip-While { $_.StartsWith("$global:tfx") } | Take-While { $_ -match "^[^{]" }
-    $json = $output | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
+    $messages = $output -split "`r?`n" | Skip-While { $_.StartsWith("$global:tfx") } | Take-While { $_ -match "^[^{]" }
+    $json = $output -split "`r?`n" | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
 
     if ($messages -ne $null)
     {
