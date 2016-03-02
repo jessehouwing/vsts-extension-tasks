@@ -51,15 +51,15 @@ function Convert-PackageOptions
 
     if ($packageOptions.OverrideType = "Json")
     {
-        $packageOptions.OverrideJson = ($parameters["OverrideJson"] | Convertfrom-Json)
+        $OverrideJson = ($parameters["OverrideJson"] | Convertfrom-Json)
     }
     elseif ($packageOptions.OverrideType = "File")
     {
-        $packageOptions.OverrideJson = (Get-Content $parameters["OverrideJsonFile"] -raw | Convertfrom-Json)
+        $OverrideJson = (Get-Content $parameters["OverrideJsonFile"] -raw | Convertfrom-Json)
     }
     else
     {
-        $packageOptions.OverrideJson = ("{}" | ConvertFrom-Json)
+        $OverrideJson = ("{}" | ConvertFrom-Json)
     }
 
     if ($packageOptions.ExtensionTag -ne "")
@@ -117,6 +117,7 @@ function Convert-PackageOptions
         Write-Debug "Setting 'GalleryFlags'"
         Add-Member -InputObject $OverrideJson -NotePropertyName "galleryFlags" -NotePropertyValue $OverrideFlags -Force
     }
+    $packageOptions.OverrideJson = $OverrideJson
 
     Write-Debug "PackageOptions:"
     Write-Debug ($packageOptions | Out-String)
