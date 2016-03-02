@@ -275,7 +275,7 @@
         "PowerShell": {
             "target": "$(currentDirectory)\\vsts-extension-packageandpublish.ps1",
             "argumentFormat": "",
-            "workingDirectory": "$(Build.SourcesDirectory)"
+            "workingDirectory": "$(currentDirectory)"
         }
     }
 }

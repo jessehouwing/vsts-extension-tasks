@@ -42,21 +42,21 @@ function Convert-PackageOptions
         ExtensionVersion = [string]$parameters["ExtensionVersion"]
         ExtensionVisibility = [string]$parameters["ExtensionVisibility"]
         ManifestGlobs = [string]$parameters["ManifestGlobs"]
-        OverrideType =  $parameters["OverrideType"]
+        OverrideType = [string]$parameters["OverrideType"]
         PublishEnabled = ($parameters["EnablePublishing"] -eq $true)
         ShareEnabled = ($parameters["EnableSharing"] -eq $true)
         ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
         LocalizationRoot = [string]$parameters["LocalizationRoot"]
     }
 
-    [PSCustomObject] $OverrideJson = [pscustomobject]@{}
+    [PSCustomObject] $OverrideJson = ( "{}" | Convertfrom-Json)
 
-    if ($packageOptions.OverrideType = "Json")
+    if ($packageOptions.OverrideType -eq "Json")
     {
         Write-Debug "Initializing Override from specified Json"
         $OverrideJson = ($parameters["OverrideJson"] | Convertfrom-Json)
     }
-    elseif ($packageOptions.OverrideType = "File")
+    elseif ($packageOptions.OverrideType -eq "File")
     {
         Write-Debug "Initializing Override from specified file"
         $OverrideJson = (Get-Content $parameters["OverrideJsonFile"] -raw | Convertfrom-Json)
