@@ -217,6 +217,15 @@
             "groupName": "AdvancedOptions"
         },
         {
+            "name": "LocalizationRoot",
+            "type": "filePath",
+            "label": "Localization Root",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions"
+        },
+        {
             "name": "Preview",
             "type": "boolean",
             "label": "Preview",

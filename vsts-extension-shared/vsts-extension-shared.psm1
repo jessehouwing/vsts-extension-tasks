@@ -46,6 +46,7 @@ function Convert-PackageOptions
         PublishEnabled = ($parameters["EnablePublishing"] -eq $true)
         ShareEnabled = ($parameters["EnableSharing"] -eq $true)
         ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
+        LocalizationRoot = [string]$parameters["LocalizationRoot"]
     }
 
     if ($packageOptions.OverrideType = "Json")

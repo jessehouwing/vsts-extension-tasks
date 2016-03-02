@@ -41,16 +41,13 @@ param(
     [Parameter(Mandatory=$false)]
     [string] $TfxLocation = $false,
 
-    [Parameter(Mandatory=$true)]
-    [string] $EnablePackaging = $false,
-
     [Parameter(Mandatory=$false)]
     [string] $ManifestGlobs = "vss-extension.json",
 
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true)]
     [string] $ExtensionRoot,
 
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory=$true)]
     [string] $PackagingOutputPath,
 
     # Advanced Options
@@ -82,7 +79,11 @@ param(
     [string] $Preview = $false,
 
     [Parameter(Mandatory=$false)]
-    [string] $OutputVariable = "CreateExtension.OutputPath"
+    [string] $OutputVariable = "CreateExtension.OutputPath",
+
+    [Parameter(Mandatory=$false)]
+    [string] $LocalizationRoot
+    
 )
 
 $PreviewMode = ($Preview -eq $true)
@@ -146,6 +147,12 @@ if ($packageOptions.ManifestGlobs -ne "")
 {
     $tfxArgs += "--manifest-globs"
     $tfxArgs += $packageOptions.ManifestGlobs
+}
+
+if ($packageOptions.LocalizationRoot -ne "")
+{
+    $tfxArgs += "--loc-root"
+    $tfxArgs += $packageOptions.LocalizationRoot
 }
     
 if ($packageOptions.BypassValidation)
