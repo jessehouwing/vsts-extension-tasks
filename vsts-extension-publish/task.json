@@ -97,7 +97,7 @@
             "groupName": "AdvancedOptions"
         }
     ],
-    "instanceNameFormat": "Pusblish VSTS Extension: $(VsixPath)",
+    "instanceNameFormat": "Publish VSTS Extension: $(VsixPath)",
     "execution": {
         "PowerShell": {
             "target": "$(currentDirectory)\\vsts-extension-publish.ps1",
