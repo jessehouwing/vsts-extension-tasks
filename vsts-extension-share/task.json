@@ -145,7 +145,7 @@
             "helpMarkDown": ""
         }
     ],
-    "instanceNameFormat": "Share VSTS Extension: $(PublisherID)-$(ExtensionID) with: $(ShareWith)",
+    "instanceNameFormat": "Share VSTS Extension: $(PublisherID).$(ExtensionID) with: $(ShareWith)",
     "execution": {
         "PowerShell": {
             "target": "$(currentDirectory)\\vsts-extension-share.ps1",
