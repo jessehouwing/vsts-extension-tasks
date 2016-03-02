@@ -157,8 +157,7 @@
             "label": "Output path",
             "defaultValue": "$(Build.SourcesDirectory)\\vsix",
             "required": true,
-            "helpMarkDown": "",
-            "visibleRule": "EnablePackaging = true"
+            "helpMarkDown": ""
         },
         {
             "defaultValue": "None",
