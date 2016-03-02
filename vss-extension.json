@@ -86,7 +86,7 @@
             "path": "vsts-extension-publish/vsts-extension-publish.ps1"
         },
         {
-            "path": "vsts-extension-share/vsts-extension-shared.psm1",
+            "path": "vsts-extension-publish/vsts-extension-shared.psm1",
             "contentType": "text/plain"
         },
         {
