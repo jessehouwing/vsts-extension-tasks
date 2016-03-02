@@ -112,3 +112,5 @@ else
 }
     
 $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
+
+##vso[task.complete result=Succeeded;]DONE

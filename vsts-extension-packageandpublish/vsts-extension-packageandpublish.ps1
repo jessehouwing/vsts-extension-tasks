@@ -79,12 +79,10 @@ param(
 
     #Preview mode for remote call
     [Parameter(Mandatory=$false)]
-    [string] $Preview = $false
+    [string] $Preview = $false,
 
-    #Preview mode for remote call
     [Parameter(Mandatory=$false)]
     [string] $OutputVariable = "CreateExtension.OutputPath"
-    
 )
 
 $PreviewMode = ($Preview -eq $true)
@@ -165,3 +163,4 @@ else
 }
 
 ##vso[task.setvariable variable=CreateExtension.OutputPath;]$($output.Path)
+##vso[task.complete result=Succeeded;]DONE
