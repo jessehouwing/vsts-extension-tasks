@@ -80,6 +80,11 @@ param(
     #Preview mode for remote call
     [Parameter(Mandatory=$false)]
     [string] $Preview = $false
+
+    #Preview mode for remote call
+    [Parameter(Mandatory=$false)]
+    [string] $OutputVariable = "CreateExtension.OutputPath"
+    
 )
 
 $PreviewMode = ($Preview -eq $true)
@@ -158,3 +163,5 @@ else
 {
     $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
 }
+
+##vso[task.setvariable variable=CreateExtension.OutputPath;]$($output.Path)

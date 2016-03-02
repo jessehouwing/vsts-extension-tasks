@@ -226,6 +226,15 @@
             "groupName": "AdvancedOptions"
         },
         {
+            "name": "OutputVariable",
+            "type": "string",
+            "label": "Output Variable",
+            "defaultValue": "CreateExtension.OutputPath",
+            "required": true,
+            "helpMarkDown": "",
+            "groupName": "AdvancedOptions"
+        },
+        {
             "name": "EnablePublishing",
             "type": "boolean",
             "label": "Enable Publishing",
