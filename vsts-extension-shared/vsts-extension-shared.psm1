@@ -307,7 +307,7 @@ function Invoke-Tfx
         [switch] $Preview = $false
     )
     
-    $workingFolder = $global:packageOptions.OutputPath
+    $workingFolder = $ens:System_DefaultWorkingDirectory
     if (-not (Test-Path -PathType Container $workingFolder))
     {
         New-Item -Path $workingfolder -ItemType Directory -force

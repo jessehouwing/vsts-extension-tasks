@@ -99,7 +99,7 @@ if ($shareOptions.ShareWith.Length -gt 0)
 {
     $tfxArgs += "--share-with"
 
-    Write-Debug "Sharing with:"
+    Write-Debug "--share-with"
     foreach ($account in $shareOptions.ShareWith)
     {
         Write-Debug "$account"
