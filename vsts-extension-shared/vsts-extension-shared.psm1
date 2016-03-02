@@ -49,17 +49,17 @@ function Convert-PackageOptions
         LocalizationRoot = [string]$parameters["LocalizationRoot"]
     }
 
+    [PSCustomObject] $OverrideJson = [pscustomobject]@{}
+
     if ($packageOptions.OverrideType = "Json")
     {
+        Write-Debug "Initializing Override from specified Json"
         $OverrideJson = ($parameters["OverrideJson"] | Convertfrom-Json)
     }
     elseif ($packageOptions.OverrideType = "File")
     {
+        Write-Debug "Initializing Override from specified file"
         $OverrideJson = (Get-Content $parameters["OverrideJsonFile"] -raw | Convertfrom-Json)
-    }
-    else
-    {
-        $OverrideJson = ("{}" | ConvertFrom-Json)
     }
 
     if ($packageOptions.ExtensionTag -ne "")
