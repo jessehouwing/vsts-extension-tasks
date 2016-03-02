@@ -31,7 +31,7 @@
     <Content Include="task.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="vsts-extennsion-share.ps1" />
+    <Compile Include="vsts-extension-share.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="Build" />
