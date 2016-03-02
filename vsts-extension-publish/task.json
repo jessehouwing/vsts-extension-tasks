@@ -38,7 +38,7 @@
             "helpMarkdown": "",
             "label": "VSIX path",
             "name": "VsixPath",
-            "required": false,
+            "required": true,
             "type": "filePath"
         },
         {
@@ -46,7 +46,7 @@
             "type": "connectedService:marketplace-auth-key",
             "label": "Service Endpoint",
             "defaultValue": "",
-            "required": false,
+            "required": true,
             "helpMarkDown": "",
             "groupName": "GlobalOptions"
         },

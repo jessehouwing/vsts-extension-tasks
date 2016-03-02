@@ -147,6 +147,11 @@ function Convert-ShareOptions
         $shareOptions.ExtensionId = "$($shareOptions.ExtensionId)-$($shareOptions.ExtensionTag)"
     }
 
+    if ($shareOptions.VsixPath -match "[?*]")
+    {
+        $shareOptions.VsixPath = [string](Find-Files $shareOptions.VsixPath)
+    }
+
     Write-Debug "ShareOptions:"
     Write-Debug ($shareOptions | Out-String)
 
@@ -165,6 +170,11 @@ function Convert-PublishOptions
     $publishOptions = @{
         VsixPath = [string]$parameters["VsixPath"]
         BypassValidation = ($parameters["BypassValidation"] -eq $true)
+    }
+
+    if ($shareOptions.VsixPath -match "[?*]")
+    {
+        $shareOptions.VsixPath = [string](Find-Files $shareOptions.VsixPath)
     }
 
     Write-Debug "PublishOptions:"

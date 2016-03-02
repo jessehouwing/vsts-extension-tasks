@@ -90,7 +90,7 @@
             "name": "OverrideExtensionVersion",
             "required": false,
             "type": "boolean",
-            "groupName": "AdvancedOptions"
+            "groupName": "OverrideVersion"
         },
         {
             "defaultValue": "$(Build.BuildNumber)",
@@ -100,7 +100,7 @@
             "required": true,
             "type": "string",
             "VisibleRule": "OverrideExtensionVersion = true",
-            "groupName": "AdvancedOptions"
+            "groupName": "OverrideVersion"
         },
         {
             "name": "OverrideInternalVersion",
@@ -110,7 +110,7 @@
             "required": false,
             "helpMarkDown": "",
             "VisibleRule": "OverrideExtensionVersion = true",
-            "groupName": "AdvancedOptions"
+            "groupName": "OverrideVersion"
         },
         {
             "defaultValue": "Private",
@@ -125,7 +125,8 @@
                 "PublicPreview": "Public Preview",
                 "Public": "Public"
             },
-            "type": "pickList"
+            "type": "pickList",
+            "groupName": "OverrideVersion"
         },
         {
             "name": "ServiceEndpoint",
