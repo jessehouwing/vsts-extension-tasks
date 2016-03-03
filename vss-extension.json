@@ -4,10 +4,6 @@
     "name": "VSTS Extension Tasks",
     "version": "0.0.0",
     "publisher": "jessehouwing",
-    "public": false,
-    "galleryFlags": [
-        "Preview"
-    ],
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
