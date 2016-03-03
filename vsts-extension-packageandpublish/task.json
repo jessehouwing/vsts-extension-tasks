@@ -1,9 +1,9 @@
 {
     "id": "eb51abb6-917c-4266-b188-29d75e4dc944",
     "name": "ExtensionPackageAndPublishTask",
-    "friendlyName": "Package and Publish VSTS Extension. #{ExtensionTag}#",
+    "friendlyName": "Package and Publish VSTS Extension. #{Extension.Tag}#",
     "description": "Package and Publish VSTS Extension.",
-    "helpMarkDown": "Version: #{ExtensionVersion}#. [More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
+    "helpMarkDown": "Version: #{Build.BuildNumber}#. [More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
     "category": "Package",
     "author": "Jesse Houwing",
     "version": {

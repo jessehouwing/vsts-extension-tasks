@@ -1,9 +1,9 @@
 {
     "id": "6401fe41-27b8-4595-b93e-ff5f63e62d49",
     "name": "ExtensionShareTask",
-    "friendlyName": "Share VSTS Extension. #{ExtensionTag}#",
+    "friendlyName": "Share VSTS Extension. #{Extension.Tag}#",
     "description": "Share VSTS Extension.",
-    "helpMarkDown": "Version: #{ExtensionVersion}#. [More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
+    "helpMarkDown": "Version: #{Build.BuildNumber}#. [More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
     "category": "Package",
     "author": "Jesse Houwing",
     "version": {
