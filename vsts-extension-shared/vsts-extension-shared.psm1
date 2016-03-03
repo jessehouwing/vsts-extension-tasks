@@ -47,6 +47,7 @@ function Convert-PackageOptions
         ShareEnabled = ($parameters["EnableSharing"] -eq $true)
         ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
         LocalizationRoot = [string]$parameters["LocalizationRoot"]
+        OutputVariable = [string]$parameters["OutputVariable"]
     }
 
     [PSCustomObject] $OverrideJson = ( "{}" | Convertfrom-Json)
