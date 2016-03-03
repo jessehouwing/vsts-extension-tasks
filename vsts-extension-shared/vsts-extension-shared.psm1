@@ -98,7 +98,7 @@ function Convert-PackageOptions
         "PublicPreview"
         {
             $OverridePublic = $true
-            $OverrideFlags = @( "Preview", "Public" )
+            $OverrideFlags = @( "Preview" )
         }
 
         "Public"
