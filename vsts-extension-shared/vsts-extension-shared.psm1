@@ -365,10 +365,8 @@ function Invoke-Tfx
     else
     {
         # Pass -1 as success so we can handle output ourselves.
-        [string[]] $output = @()
-        Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1,255) -WorkingFolder $workingFolder | % { 
-            $output += [string] $_
-        }
+        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -SuccessfulExitCodes @(0,-1,255) -WorkingFolder $workingFolder
+        
     }
 
     return Handle-TfxOutput $output
@@ -381,11 +379,15 @@ function Handle-TfxOutput{
 
     begin{
         $output | %{ Write-Debug $_ }
+        if ($output.Count -eq 1)
+        {
+            $output = $output -split "`r?`n"
+        }
     }
     process
     {
         $messages = $output | Skip-While { $_.StartsWith("$global:tfx") } | Take-While { $_ -match "^[^{]" }
-        $json = $output | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
+        $json = $output | Skip-While { $_ -match "^[^{]" } -join "" | ConvertFrom-Json
 
         if ($messages -ne $null)
         {
