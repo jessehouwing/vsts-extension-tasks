@@ -171,7 +171,8 @@ else
 
 if ($packageOptions.OutputVariable -ne "")
 {
-    Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$($output.Packaged)"
+    Write-Debug "Setting output variable '$($packageOptions.OutputVariable)' to '$($output.packaged)'"
+    Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$($output.packaged)"
 }
 
 Write-Host "##vso[task.complete result=Succeeded;]DONE"
