@@ -79,7 +79,7 @@ param(
     [string] $Preview = $false,
 
     [Parameter(Mandatory=$false)]
-    [string] $OutputVariable = "CreateExtension.OutputPath",
+    [string] $OutputVariable = "",
 
     [Parameter(Mandatory=$false)]
     [string] $LocalizationRoot
@@ -169,5 +169,9 @@ else
     $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
 }
 
-Write-Host "##vso[task.setvariable variable=CreateExtension.OutputPath;]$($output.Packaged)"
+if ($packageOptions.OutputVariable -ne "")
+{
+    Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$($output.Packaged)"
+}
+
 Write-Host "##vso[task.complete result=Succeeded;]DONE"
