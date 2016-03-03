@@ -383,11 +383,43 @@ function Handle-TfxOutput{
         {
             $output = $output -split "`r?`n"
         }
+
+        $commandProcessed = $false
+        $messagesProcessed = $false
+        $jsonStarted = $false
+        $messages = @()
+        $json = ""
     }
     process
     {
-        $messages = $output | Skip-While { $_.StartsWith("$global:tfx") } | Take-While { $_ -match "^[^{]" }
-        $json = $output | Skip-While { $_ -match "^[^{]" } -join "" | ConvertFrom-Json
+        foreach ($line in $output)
+        {
+            if (-not $commandProcessed -and $line.StartsWith("$global:tfx"))
+            {
+                $command = $line
+                $commandProcessed = $true
+            }
+            elseif (-not $messagesProcessed -and -not $line.StartsWith("{"))
+            {
+                $messages += $line
+            }
+            elseif (-not $jsonStarted -and $line.StartsWith("{"))
+            {
+                $messagesProcessed = $true
+                $jsonStarted = $true
+                $json += $line
+            }
+            elseif ($jsonStarted -and -not $line.StartsWith("}"))
+            {
+                $json += $line
+            }
+            elseif ($jsonStarted -and $line.StartsWith("}"))
+            {
+                $json += $line
+                $json = $json | ConvertFrom-Json
+                break
+            }
+        }
 
         if ($messages -ne $null)
         {
@@ -428,42 +460,6 @@ function Escape-Args
     }
     
     return $output
-}
-
-function Take-While() {
-    param ( [scriptblock]$pred = $(throw "Need a predicate") )
-    begin {
-        $continue = $true
-    }
-    process {
-        if ( $continue )
-        {
-            $continue = & $pred $_
-        }
-
-        if ( $continue ) {
-            $_
-        }
-    }
-    end {}
-}
-
-
-function Skip-While() {
-    param ( [scriptblock]$pred = $(throw "Need a predicate") )
-    begin {
-        $skip = $true
-    }
-    process {
-        if ( $skip ) {
-            $skip = & $pred $_
-        }
-
-        if ( -not $skip ) {
-            $_
-        }
-    }
-    end {}
 }
 
 function Update-InternalVersion

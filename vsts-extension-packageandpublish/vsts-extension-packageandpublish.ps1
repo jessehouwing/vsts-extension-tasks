@@ -169,5 +169,5 @@ else
     $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
 }
 
-##vso[task.setvariable variable=CreateExtension.OutputPath;]$($output.Path)
+##vso[task.setvariable variable=CreateExtension.OutputPath;]$($output.Packaged)
 ##vso[task.complete result=Succeeded;]DONE
