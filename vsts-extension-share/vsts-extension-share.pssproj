@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5030b877-02c0-459f-91ca-4dd0c5236be7}</ProjectGuid>
+    <ProjectGuid>{7f1c6c06-cfd3-4648-9a8a-a189c14a6e69}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>MyApplication</RootNamespace>
     <AssemblyName>MyApplication</AssemblyName>
-    <Name>vsts-extension-task</Name>
+    <Name>vsts-extension-share</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,18 +27,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="icon.png" />
     <Content Include="task.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="icon.png" />
-    <Compile Include="vsts-extension-task.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\vsts-extension-shared\vsts-extension-shared.pssproj">
-      <Name>vsts-extension-shared</Name>
-      <Project>{6cafc0c6-a428-4d30-a9f9-700e829fea51}</Project>
-      <Private>True</Private>
-    </ProjectReference>
+    <Compile Include="vsts-extension-share.ps1" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="Build" />

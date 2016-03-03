@@ -1,6 +1,6 @@
 [cmdletbinding()]
 param(
-    [string[]] $Items = @(".\vsts-extension-task"),
+    [string[]] $Items = @(".\vsts-extension-packageandpublish"),
     [switch] $Force = $false,
     [switch] $Package = $false,
     [switch] $PublishLocal = $false,

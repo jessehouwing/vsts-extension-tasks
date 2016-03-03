@@ -11,21 +11,8 @@ function Convert-GlobalOptions
     $globalOptions = @{
         TfxInstall = ($parameters["TfxInstall"] -eq $true)
         TfxInstallUpdate = ($parameters["TfxUpdate"] -eq $true)
-        TfxInstallPath = $parameters["TfxInstallPath"]
-        OverrideType =  $parameters["OverrideType"]
-    }
-
-    if ($globalOptions.OverrideType = "Json")
-    {
-        $globalOptions.OverrideJson = ($parameters["OverrideJson"] | Convertfrom-Json)
-    }
-    elseif ($globalOptions.OverrideType = "File")
-    {
-        $globalOptions.OverrideJson = (Get-Content $parameters["OverrideJsonFile"] -raw | Convertfrom-Json)
-    }
-    else
-    {
-        $globalOptions.OverrideJson = ("{}" | ConvertFrom-Json)
+        TfxInstallPath = [string]$parameters["TfxInstallPath"]
+        ServiceEndpoint = [string]$parameters["ServiceEndpoint"]
     }
 
     Write-Debug "GlobalOptions:"
@@ -36,7 +23,6 @@ function Convert-GlobalOptions
     return $global:globalOptions
 }
 
-
 function Convert-PackageOptions 
 {
     param
@@ -44,15 +30,7 @@ function Convert-PackageOptions
         $parameters
     )
 
-    $globalOptions = $global:globalOptions
-    $OverrideJson = $global:globalOptions.OverrideJson
-    if ($OverrideJson -eq $null)
-    {
-        $OverrideJson = "{}" | ConvertFrom-Json
-    }
-
     $packageOptions = @{
-        Enabled = ($parameters["EnablePackaging"] -eq $true)
         ExtensionRoot = [string]$parameters["ExtensionRoot"]
         ExtensionId = [string]$parameters["ExtensionId"]
         ExtensionTag = [string]$parameters["Extensiontag"]
@@ -64,6 +42,25 @@ function Convert-PackageOptions
         ExtensionVersion = [string]$parameters["ExtensionVersion"]
         ExtensionVisibility = [string]$parameters["ExtensionVisibility"]
         ManifestGlobs = [string]$parameters["ManifestGlobs"]
+        OverrideType = [string]$parameters["OverrideType"]
+        PublishEnabled = ($parameters["EnablePublishing"] -eq $true)
+        ShareEnabled = ($parameters["EnableSharing"] -eq $true)
+        ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
+        LocalizationRoot = [string]$parameters["LocalizationRoot"]
+        OutputVariable = [string]$parameters["OutputVariable"]
+    }
+
+    [PSCustomObject] $OverrideJson = ( "{}" | Convertfrom-Json)
+
+    if ($packageOptions.OverrideType -eq "Json")
+    {
+        Write-Debug "Initializing Override from specified Json"
+        $OverrideJson = ($parameters["OverrideJson"] | Convertfrom-Json)
+    }
+    elseif ($packageOptions.OverrideType -eq "File")
+    {
+        Write-Debug "Initializing Override from specified file"
+        $OverrideJson = (Get-Content $parameters["OverrideJsonFile"] -raw | Convertfrom-Json)
     }
 
     if ($packageOptions.ExtensionTag -ne "")
@@ -121,43 +118,14 @@ function Convert-PackageOptions
         Write-Debug "Setting 'GalleryFlags'"
         Add-Member -InputObject $OverrideJson -NotePropertyName "galleryFlags" -NotePropertyValue $OverrideFlags -Force
     }
-    Write-Debug "GlobalOptions.OverrideJson"
-    $globalOptions.OverrideJson = $OverrideJson
-    Write-Debug ($globalOptions.OverrideJson)
+    $packageOptions.OverrideJson = $OverrideJson
+
     Write-Debug "PackageOptions:"
     Write-Debug ($packageOptions | Out-String)
 
     $global:packageOptions = $packageOptions
-    $global:globalOptions  = $globalOptions
 
     return $global:packageOptions
-}
-
-function Convert-PublishOptions 
-{
-    param
-    (
-        $parameters
-    )
-
-    $publishOptions = @{
-        Enabled = ($parameters["EnablePublishing"] -eq $true)
-        ExtensionId = [string]$parameters["ExtensionId"]
-        ExtensionTag = [string]$parameters["Extensiontag"]
-        PublisherId = [string]$parameters["PublisherId"]
-        VsixPath = [string]$parameters["VsixPath"]
-    }
-
-    if ($publishOptions.ExtensionTag -ne "")
-    {
-        $publishOptions.ExtensionId = "$($publishOptions.ExtensionId)-$($publishOptions.ExtensionTag)"
-    }
-
-    Write-Debug "PublishOptions:"
-    Write-Debug ($publishOptions | Out-String)
-
-    $global:publishOptions = $publishOptions
-    return $global:publishOptions
 }
 
 function Convert-ShareOptions 
@@ -168,15 +136,56 @@ function Convert-ShareOptions
     )
 
     $shareOptions = @{
-        Enabled = ($parameters["EnableSharing"] -eq $true)
+        ShareUsing = [string]$parameters["ShareUsing"]
+        VsixPath = [string]$parameters["VsixPath"]
+        ExtensionId = [string]$parameters["ExtensionId"]
+        ExtensionTag = [string]$parameters["Extensiontag"]
+        PublisherId = [string]$parameters["PublisherId"]
+        BypassValidation = ($parameters["BypassValidation"] -eq $true)
         ShareWith = @( $parameters["ShareWith"] -split ';|\r?\n' )
+    }
+
+    if ($shareOptions.ExtensionTag -ne "")
+    {
+        $shareOptions.ExtensionId = "$($shareOptions.ExtensionId)-$($shareOptions.ExtensionTag)"
+    }
+
+    if ($shareOptions.VsixPath -match "[?*]")
+    {
+        $shareOptions.VsixPath = [string](Find-Files $shareOptions.VsixPath)
     }
 
     Write-Debug "ShareOptions:"
     Write-Debug ($shareOptions | Out-String)
-    
+
     $global:shareOptions = $shareOptions
+
     return $global:shareOptions
+}
+
+function Convert-PublishOptions 
+{
+    param
+    (
+        $parameters
+    )
+
+    $publishOptions = @{
+        VsixPath = [string]$parameters["VsixPath"]
+        BypassValidation = ($parameters["BypassValidation"] -eq $true)
+    }
+
+    if ($shareOptions.VsixPath -match "[?*]")
+    {
+        $shareOptions.VsixPath = [string](Find-Files $shareOptions.VsixPath)
+    }
+
+    Write-Debug "PublishOptions:"
+    Write-Debug ($publishOptions | Out-String)
+
+    $global:publishOptions = $publishOptions
+
+    return $global:publishOptions
 }
 
 $global:tfx = $null
@@ -301,7 +310,7 @@ function Invoke-Tfx
         [switch] $Preview = $false
     )
     
-    $workingFolder = $global:packageOptions.OutputPath
+    $workingFolder = $env:SYSTEM_DEFAULTWORKINGDIRECTORY
     if (-not (Test-Path -PathType Container $workingFolder))
     {
         New-Item -Path $workingfolder -ItemType Directory -force
@@ -342,7 +351,7 @@ function Invoke-Tfx
         }
     }
 
-    $tfxArgs = ($Arguments | %{ Escape-Args  $_ } ) -join " "
+    $tfxArgs = ($Arguments | %{ Escape-Args $_ } ) -join " "
 
     Write-Debug "Calling: $($global:tfx)"
     Write-Debug "Arguments: $tfxArgs"
@@ -352,30 +361,83 @@ function Invoke-Tfx
     {
         Write-Warning "Skipped call due to Preview: True"
         Write-Warning "$($global:tfx) $tfxArgs"
-        $Output = "{}"
+        [string[]] $Output = @("{}")
     }
     else
     {
         # Pass -1 as success so we can handle output ourselves.
-        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -ErrorPattern "^Error:" -SuccessfulExitCodes @(0,-1) -WorkingFolder $workingFolder
+        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -SuccessfulExitCodes @(0,-1,255) -WorkingFolder $workingFolder
+        
     }
 
-    $messages = $output -Split "`r?`n" | Skip-While { $_.StartsWith("$global:tfx") } | Take-While { $_ -match "^[^{]" }
-    $json = $output -Split "`r?`n" | Skip-While { $_ -match "^[^{]" } | ConvertFrom-Json
+    return Handle-TfxOutput $output
+}
 
-    if ($messages -ne $null)
+function Handle-TfxOutput{
+    param(
+        [string[]]$output
+    )
+
+    begin{
+        $output | %{ Write-Debug $_ }
+        if ($output.Count -eq 1)
+        {
+            $output = $output -split "`r?`n"
+        }
+
+        $commandProcessed = $false
+        $messagesProcessed = $false
+        $jsonStarted = $false
+        $messages = @()
+        $json = ""
+    }
+    process
     {
-        if ($json -ne $null)
+        foreach ($line in $output)
         {
-            $messages | %{ Write-Warning $_ }
+            if (-not $commandProcessed -and $line.StartsWith("$global:tfx"))
+            {
+                $command = $line
+                $commandProcessed = $true
+            }
+            elseif (-not $messagesProcessed -and -not $line.StartsWith("{"))
+            {
+                $messages += $line
+            }
+            elseif (-not $jsonStarted -and $line.StartsWith("{"))
+            {
+                $messagesProcessed = $true
+                $jsonStarted = $true
+                $json += $line
+            }
+            elseif ($jsonStarted -and -not $line.StartsWith("}"))
+            {
+                $json += $line
+            }
+            elseif ($jsonStarted -and $line.StartsWith("}"))
+            {
+                $json += $line
+                $json = $json | ConvertFrom-Json
+                break
+            }
         }
-        else
+
+        if ($messages -ne $null)
         {
-            $messages | %{ Write-Error $_ }
+            if ($json -ne $null)
+            {
+                $messages | %{ Write-Warning $_ }
+            }
+            else
+            {
+                $messages | %{ Write-Error $_ }
+            }
         }
     }
-
-    return $json
+    end
+    {
+        return $json
+    }
 }
 
 function Escape-Args
@@ -399,42 +461,6 @@ function Escape-Args
     }
     
     return $output
-}
-
-function Take-While() {
-    param ( [scriptblock]$pred = $(throw "Need a predicate") )
-    begin {
-        $continue = $true
-    }
-    process {
-        if ( $continue )
-        {
-            $continue = & $pred $_
-        }
-
-        if ( $continue ) {
-            $_
-        }
-    }
-    end {}
-}
-
-
-function Skip-While() {
-    param ( [scriptblock]$pred = $(throw "Need a predicate") )
-    begin {
-        $skip = $true
-    }
-    process {
-        if ( $skip ) {
-            $skip = & $pred $_
-        }
-
-        if ( -not $skip ) {
-            $_
-        }
-    }
-    end {}
 }
 
 function Update-InternalVersion
