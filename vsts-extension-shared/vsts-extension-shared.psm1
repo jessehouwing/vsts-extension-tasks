@@ -66,9 +66,9 @@ function Convert-PackageOptions
     if ($packageOptions.ExtensionTag -ne "")
     {
         $packageOptions.ExtensionId = "$($packageOptions.ExtensionId)-$($packageOptions.ExtensionTag)"
-        Add-Member -InputObject $OverrideJson -NotePropertyName "id" -NotePropertyValue $packageOptions.ExtensionId -Force
     }
-
+    
+    Add-Member -InputObject $OverrideJson -NotePropertyName "id" -NotePropertyValue $packageOptions.ExtensionId -Force
     Add-Member -InputObject $OverrideJson -NotePropertyName "publisher" -NotePropertyValue $packageOptions.PublisherId -Force
 
     if ($packageOptions.OverrideExtensionVersion)
@@ -95,7 +95,7 @@ function Convert-PackageOptions
             $OverrideFlags = @( "Preview" )
         }
 
-        "PubicPreview"
+        "PublicPreview"
         {
             $OverridePublic = $true
             $OverrideFlags = @( "Preview", "Public" )

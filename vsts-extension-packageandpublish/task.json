@@ -191,9 +191,9 @@
             "name": "OverrideFile",
             "type": "filePath",
             "label": "Override File",
-            "defaultValue": "File with additional overrides of the extension manifest. (JSON)",
+            "defaultValue": "",
             "required": true,
-            "helpMarkDown": "",
+            "helpMarkDown": "File with additional overrides of the extension manifest. (JSON)",
             "groupName": "OverrideAdvanced",
             "VisibleRule": "OverrideType=File"
         },
