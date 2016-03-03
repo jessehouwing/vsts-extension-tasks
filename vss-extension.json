@@ -28,7 +28,9 @@
         "Package"
     ],
     "screenshots": [
-
+        {
+            "path": "extension/Images/Screenshots/packageandpublish.png"
+        }
     ],
     "content": {
         "details": {
