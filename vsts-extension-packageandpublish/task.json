@@ -85,7 +85,7 @@
         },
         {
             "defaultValue": "false",
-            "helpMarkdown": "Allows you to override the version of the extension at build time.",
+            "helpMarkdown": "Allows you to override the version of the extension at build time. The version in the extension manifest will ignored.",
             "label": "Override Extension Version",
             "name": "OverrideExtensionVersion",
             "required": false,
@@ -93,22 +93,22 @@
             "groupName": "OverrideVersion"
         },
         {
-            "defaultValue": "$(Build.BuildNumber)",
-            "helpMarkdown": "The version number to use as override. Must be in `0.0.0` format. Default: `$(Build.BuildNumber)`.",
-            "label": "Extension Version",
-            "name": "ExtensionVersion",
-            "required": true,
-            "type": "string",
+            "name": "OverrideInternalVersion",
+            "type": "boolean",
+            "label": "Override Build Task Versions",
+            "defaultValue": "true",
+            "required": false,
+            "helpMarkDown": "Search all folders under the extension and updates the version specified in any Build and Release task manifest.",
             "VisibleRule": "OverrideExtensionVersion = true",
             "groupName": "OverrideVersion"
         },
         {
-            "name": "OverrideInternalVersion",
-            "type": "boolean",
-            "label": "Override Internal Version",
-            "defaultValue": "true",
-            "required": false,
-            "helpMarkDown": "Search all folders under the extension and updates the version specified in any Build and Release task manifest.",
+            "defaultValue": "$(Build.BuildNumber)",
+            "helpMarkdown": "The version number to use as override. Must be in `0.0.0` format. Default: `$(Build.BuildNumber)`.",
+            "label": "Version",
+            "name": "ExtensionVersion",
+            "required": true,
+            "type": "string",
             "VisibleRule": "OverrideExtensionVersion = true",
             "groupName": "OverrideVersion"
         },
