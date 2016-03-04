@@ -431,8 +431,7 @@ function Handle-TfxOutput{
             else
             {
                 $messages | %{ Write-Error $_ }
-                Write-Host "##vso[task.complete result=Failed;]"
-                exit
+                throw
             }
         }
     }

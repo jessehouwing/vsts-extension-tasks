@@ -162,7 +162,7 @@ if ($packageOptions.BypassValidation)
 
 if (-not $packageOptions.PublishEnabled)
 {
-    $output = Invoke-Tfx -Arguments
+    $output = Invoke-Tfx -Arguments $tfxArgs
 }
 else
 {
