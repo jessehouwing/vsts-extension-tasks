@@ -1,8 +1,7 @@
 # Description
 [![Gitter](https://badges.gitter.im/jessehouwing/vsts-extension-tasks.svg)](https://gitter.im/jessehouwing/vsts-extension-tasks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
-The VSTS Extension tasks help you to Package, Publish and Share your Extensions for Visual Studio Online and Team Foudnation Server 2015 update 2
-using Build and Release Management.
+The VSTS Extension tasks help you to Package, Publish and Share your Extensions for Visual Studio Online and Team Foudnation Server 2015 update 2 using Build and Release Management.
 
 Additional features include:
 
