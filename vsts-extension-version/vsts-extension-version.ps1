@@ -73,7 +73,7 @@ if ($versionOptions.OutputVariable -ne "")
     if ($version -ne $null)
     {
         Write-Debug "Setting output variable '$($versionOptions.OutputVariable)' to '$($version.version)'"
-        Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$($version.version)"
+        Write-Host "##vso[task.setvariable variable=$($versionOptions.OutputVariable);]$($version.version)"
     }
     else
     {
