@@ -110,6 +110,21 @@
             "defaultValue": "Extension.Version",
             "required": true,
             "helpMarkDown": "The variable name to assign the version to."
+        },
+
+        {
+            "defaultValue": "None",
+            "helpMarkdown": "Update the version.",
+            "label": "Auto increase",
+            "name": "UpdateVersion",
+            "required": true,
+            "options": {
+                "None": "None",
+                "Patch": "Patch",
+                "Minor": "Minor",
+                "Major": "Major"
+            },
+            "type": "pickList"
         }
     ],
     "instanceNameFormat": "Detect VSTS Extension version: $(PublisherID).$(ExtensionID)",

@@ -30,6 +30,10 @@ param(
     [string] $Preview = $false,
 
     [Parameter(Mandatory=$false)]
+    [ValidateSet("Major", "Minor", "Patch", "None")]
+    [string] $UpdateVersion = "None",
+
+    [Parameter(Mandatory=$false)]
     [string] $OutputVariable = ""
 )
 
@@ -69,11 +73,39 @@ $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Previ
 if ($versionOptions.OutputVariable -ne "")
 {
     $version = ($output.versions | Select-Object -Last 1)
+    
+    Write-Output "Current version '$($version.version)'"
 
     if ($version -ne $null)
     {
-        Write-Debug "Setting output variable '$($versionOptions.OutputVariable)' to '$($version.version)'"
-        Write-Host "##vso[task.setvariable variable=$($versionOptions.OutputVariable);]$($version.version)"
+        $parsedVersion =  [System.Version]::Parse($version.version)
+        switch ($versionOptions.UpdateVersion)
+        {
+            "None"{}
+            "Major"
+            {
+                $parsedVersion.Major = $parsedVersion.Major + 1
+                $parsedVersion.Minor = 0
+                $parsedVersion.Build = 0
+            }
+
+            "Minor"
+            {
+                $parsedVersion.Minor = $parsedVersion.Minor + 1
+                $parsedVersion.Build = 0
+            }
+
+            "Patch"
+            {
+                $parsedVersion.Build = $parsedVersion.Minor + 1
+            }
+
+        }
+
+        $newVersion = $parsedVersion.ToString(3)
+
+        Write-Output "Setting output variable '$($versionOptions.OutputVariable)' to '$($newVersion)'"
+        Write-Host "##vso[task.setvariable variable=$($versionOptions.OutputVariable);]$($newVersion)"
     }
     else
     {

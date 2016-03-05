@@ -175,6 +175,7 @@ function Convert-VersionOptions
         ExtensionTag = [string]$parameters["Extensiontag"]
         PublisherId = [string]$parameters["PublisherId"]
         OutputVariable = [string]$parameters["OutputVariable"]
+        UpdateVersion = [string]$parameters["UpdateVersion"]
     }
 
     if ($versionOptions.ExtensionTag -ne "")
