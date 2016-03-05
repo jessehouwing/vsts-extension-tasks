@@ -140,9 +140,9 @@
             "name": "ShareWith",
             "type": "multiLine",
             "label": "Share with",
-            "defaultValue": "Share with these accountnames. Specify one account per line or use `;` or `,`' to separate the accounts. Only enter the highlighted value: **youraccount**.visualstudio.com.",
+            "defaultValue": "",
             "required": true,
-            "helpMarkDown": ""
+            "helpMarkDown": "Share with these accountnames. Specify one account per line or use `;` or `,`' to separate the accounts. Only enter the highlighted value: **youraccount**.visualstudio.com."
         }
     ],
     "instanceNameFormat": "Share VSTS Extension: $(PublisherID).$(ExtensionID) with: $(ShareWith)",
