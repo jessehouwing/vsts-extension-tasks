@@ -13,6 +13,8 @@ Additional features include:
 
 These tasks depend on the Cross Platform Commandline Tools and they can optionally pull down these tools automatically when they're not available.
 
+Check out the project wiki for a [walkthrough explaining the setup of your build definition](https://github.com/jessehouwing/vsts-extension-tasks/wiki/How-to-Setup-build).
+
 # Preview Notice
 
 These tasks are currently in preview. In order to actually publish anything on the marketplace you need to open the Advanced section and uncheck the Preview option.
