@@ -163,6 +163,33 @@ function Convert-ShareOptions
     return $global:shareOptions
 }
 
+function Convert-VersionOptions 
+{
+    param
+    (
+        $parameters
+    )
+
+    $versionOptions = @{
+        ExtensionId = [string]$parameters["ExtensionId"]
+        ExtensionTag = [string]$parameters["Extensiontag"]
+        PublisherId = [string]$parameters["PublisherId"]
+        OutputVariable = [string]$parameters["OutputVariable"]
+    }
+
+    if ($versionOptions.ExtensionTag -ne "")
+    {
+        $versionOptions.ExtensionId = "$($versionOptions.ExtensionId)-$($versionOptions.ExtensionTag)"
+    }
+
+    Write-Debug "VersionOptions:"
+    Write-Debug ($versionOptions | Out-String)
+
+    $global:versionOptions = $versionOptions
+
+    return $global:versionOptions
+}
+
 function Convert-PublishOptions 
 {
     param

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25008.0
+VisualStudioVersion = 14.0.25029.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "vsts-extension-shared", "vsts-extension-shared\vsts-extension-shared.pssproj", "{6CAFC0C6-A428-4D30-A9F9-700E829FEA51}"
 EndProject
@@ -39,6 +39,8 @@ Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "vsts-extension-share", "vst
 EndProject
 Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "vsts-extension-publish", "vsts-extension-publish\vsts-extension-publish.pssproj", "{4FFA570C-3AC4-4DAE-A498-069E5F2D2EEC}"
 EndProject
+Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "vsts-extension-version", "vsts-extension-version\vsts-extension-version.pssproj", "{C5678169-B732-45DA-B5BE-55A3CDFABA67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{4FFA570C-3AC4-4DAE-A498-069E5F2D2EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FFA570C-3AC4-4DAE-A498-069E5F2D2EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FFA570C-3AC4-4DAE-A498-069E5F2D2EEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5678169-B732-45DA-B5BE-55A3CDFABA67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5678169-B732-45DA-B5BE-55A3CDFABA67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5678169-B732-45DA-B5BE-55A3CDFABA67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5678169-B732-45DA-B5BE-55A3CDFABA67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

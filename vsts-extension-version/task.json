@@ -1,0 +1,115 @@
+{
+    "id": "936c5073-456e-49f2-a1df-ef6e7c2b3327",
+    "name": "ExtensionVersionTask",
+    "friendlyName": "Detect VSTS Extension version #{Extension.Tag}#",
+    "description": "Detect VSTS Extension version.",
+    "helpMarkDown": "Version: #{Build.BuildNumber}#. [More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
+    "category": "Package",
+    "author": "Jesse Houwing",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "node.js",
+        "npm"
+    ],
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "AdvancedOptions",
+            "displayName": "Advanced",
+            "isExpanded": false
+        },
+        {
+            "name": "GlobalOptions",
+            "displayName": "Global",
+            "isExpanded": true
+        }
+    ],
+    "inputs": [
+        {
+            "defaultValue": "",
+            "helpMarkdown": "Your publisher ID.",
+            "label": "Publisher ID",
+            "name": "PublisherID",
+            "required": true,
+            "type": "string"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "The extension ID.",
+            "label": "Extension ID",
+            "name": "ExtensionID",
+            "required": true,
+            "type": "string"
+        },
+        {
+            "name": "ServiceEndpoint",
+            "type": "connectedService:marketplace-auth-key",
+            "label": "Service Endpoint",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The Visual Studio marketplace authorization to use.",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxInstall",
+            "type": "boolean",
+            "label": "Install Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Will install `tfx-cli` if it can't be found. Optionally install `tfx-cli` yourself by adding an `npm install tfx-cli` task before calling any of the VSTS Extension tasks",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxUpdate",
+            "type": "boolean",
+            "label": "Auto-update Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Issues a call to `npm update tfx-cli` to ensure you're using the latest version of tfx.",
+            "groupName": "GlobalOptions",
+            "VisibleRule": "TfxInstall = true"
+        },
+        {
+            "name": "TfxLocation",
+            "type": "filePath",
+            "label": "Tfx Location",
+            "defaultValue": "$(Agent.WorkFolder)\\Tools",
+            "required": false,
+            "helpMarkDown": "The location were tfx can be found. If it can't be found and Tfx Install is checked, tfx will be installed here.",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "Preview",
+            "type": "boolean",
+            "label": "Preview",
+            "defaultValue": "true",
+            "required": true,
+            "helpMarkDown": "When Preview is specified all calls to the Marketplace will be logged, but never executed.",
+            "groupName": "AdvancedOptions"
+        },
+        {
+            "name": "OutputVariable",
+            "type": "string",
+            "label": "Output Variable",
+            "defaultValue": "Extension.Version",
+            "required": true,
+            "helpMarkDown": "The variable name to assign the version to."
+        }
+    ],
+    "instanceNameFormat": "Detect VSTS Extension version: $(PublisherID).$(ExtensionID)",
+    "execution": {
+        "PowerShell": {
+            "target": "$(currentDirectory)\\vsts-extension-version.ps1",
+            "argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+        }
+    }
+}

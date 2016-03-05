@@ -92,6 +92,20 @@
         },
         {
             "path": "vsts-extension-publish/icon.png"
+        },
+
+        {
+            "path": "vsts-extension-version/vsts-extension-version.ps1"
+        },
+        {
+            "path": "vsts-extension-version/vsts-extension-shared.psm1",
+            "contentType": "text/plain"
+        },
+        {
+            "path": "vsts-extension-version/task.json"
+        },
+        {
+            "path": "vsts-extension-version/icon.png"
         }
     ],
     "contributions": [
@@ -123,6 +137,16 @@
             ],
             "properties": {
                 "name": "vsts-extension-publish"
+            }
+        },
+        {
+            "id": "vsts-extension-version",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "vsts-extension-version"
             }
         },
         {
