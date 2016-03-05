@@ -58,6 +58,7 @@ $tfxArgs = @(
     $versionOptions.ExtensionId,        
     "--publisher",
     $versionOptions.PublisherId
+)
 
 $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
 

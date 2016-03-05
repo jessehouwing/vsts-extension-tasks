@@ -50,6 +50,14 @@
             "type": "string"
         },
         {
+            "defaultValue": "",
+            "helpMarkdown": "A value which will be added to the extension ID `extension-tag`, this enables you to easily upload both a private and a public version.",
+            "label": "Extension Tag",
+            "name": "ExtensionTag",
+            "required": false,
+            "type": "string"
+        },
+        {
             "name": "ServiceEndpoint",
             "type": "connectedService:marketplace-auth-key",
             "label": "Service Endpoint",
