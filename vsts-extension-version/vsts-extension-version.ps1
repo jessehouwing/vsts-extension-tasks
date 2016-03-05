@@ -84,20 +84,17 @@ if ($versionOptions.OutputVariable -ne "")
             "None"{}
             "Major"
             {
-                $parsedVersion.Major = $parsedVersion.Major + 1
-                $parsedVersion.Minor = 0
-                $parsedVersion.Build = 0
+                $parsedVersion = New-Object System.Version -ArgumentList ($parsedVersion.Major + 1), 0, 0
             }
 
             "Minor"
             {
-                $parsedVersion.Minor = $parsedVersion.Minor + 1
-                $parsedVersion.Build = 0
+                $parsedVersion = New-Object System.Version -ArgumentList $parsedVersion.Major, ($parsedVersion.Minor + 1), 0
             }
 
             "Patch"
             {
-                $parsedVersion.Build = $parsedVersion.Minor + 1
+                $parsedVersion = New-Object System.Version -ArgumentList $parsedVersion.Major, $parsedVersion.Minor, ($parsedVersion.Build + 1)
             }
 
         }
