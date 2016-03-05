@@ -68,7 +68,7 @@ $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Previ
 
 if ($versionOptions.OutputVariable -ne "")
 {
-    $version = ($json.versions | Select-Object -Last 1)
+    $version = ($output.versions | Select-Object -Last 1)
 
     if ($version -ne $null)
     {
