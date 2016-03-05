@@ -47,12 +47,13 @@ $global:versionOptions = Convert-VersionOptions $PSBoundParameters
 
 Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect -TfxUpdate:$globalOptions.TfxUpdate
 
-$command = "view"
 $MarketEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $globalOptions.ServiceEndpoint
 if ($MarketEndpoint -eq $null)
 {
     throw "Could not locate service endpoint $globalOptions.ServiceEndpoint"
 }
+
+$command = "show"
 
 $tfxArgs = @(
     "extension",
