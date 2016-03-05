@@ -27,7 +27,10 @@ param(
     #Preview mode for remote call
     [Parameter(Mandatory=$false)]
     [ValidateSet("true", "false", "1", "0")]
-    [string] $Preview = $false
+    [string] $Preview = $false,
+
+    [Parameter(Mandatory=$false)]
+    [string] $OutputVariable = ""
 )
 
 $PreviewMode = ($Preview -eq $true)
@@ -66,8 +69,15 @@ if ($versionOptions.OutputVariable -ne "")
 {
     $version = ($json.versions | Select-Object -Last 1)
 
-    Write-Debug "Setting output variable '$($versionOptions.OutputVariable)' to '$($version.version)'"
-    Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$($version.version)"
+    if ($version -ne $null)
+    {
+        Write-Debug "Setting output variable '$($versionOptions.OutputVariable)' to '$($version.version)'"
+        Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$($version.version)"
+    }
+    else
+    {
+        throw "Error reading version from Marketplace"
+    }
 }
 
 Write-Host "##vso[task.complete result=Succeeded;]DONE"
