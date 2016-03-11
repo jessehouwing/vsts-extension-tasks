@@ -171,8 +171,23 @@ else
 
 if ($packageOptions.OutputVariable -ne "")
 {
-    Write-Debug "Setting output variable '$($packageOptions.OutputVariable)' to '$($output.packaged)'"
-    Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$($output.packaged)"
+    switch($command)
+    {
+        "create"
+        {
+            Write-Output "Setting output variable '$($packageOptions.OutputVariable)' using: path"
+            $location = $output.path
+        }
+        "publish"
+        {
+            Write-Output "Setting output variable '$($packageOptions.OutputVariable)' using: packaged"
+            $location = $output.packaged
+        }
+    }
+    
+    Write-Output "Setting output variable '$($packageOptions.OutputVariable)' to '$location'"
+    Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$location"
 }
 
 Write-Host "##vso[task.complete result=Succeeded;]DONE"
+Write-Output "Done."
