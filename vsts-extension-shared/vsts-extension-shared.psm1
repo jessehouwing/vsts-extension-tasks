@@ -494,7 +494,7 @@ function Handle-TfxOutput{
             else
             {
                 $messages | %{ Write-Error $_ }
-                throw
+                throw "Tfx returned an error."
             }
         }
     }
