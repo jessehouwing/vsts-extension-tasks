@@ -106,6 +106,20 @@
         },
         {
             "path": "vsts-extension-version/icon.png"
+        },
+
+        {
+            "path": "vsts-extension-install/vsts-extension-install.ps1"
+        },
+        {
+            "path": "vsts-extension-install/vsts-extension-shared.psm1",
+            "contentType": "text/plain"
+        },
+        {
+            "path": "vsts-extension-install/task.json"
+        },
+        {
+            "path": "vsts-extension-install/icon.png"
         }
     ],
     "contributions": [
@@ -147,6 +161,16 @@
             ],
             "properties": {
                 "name": "vsts-extension-version"
+            }
+        },
+        {
+            "id": "vsts-extension-install",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "vsts-extension-install"
             }
         },
         {
