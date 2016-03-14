@@ -32,7 +32,7 @@ param(
     [string] $TfxLocation = $false,
 
     [Parameter(Mandatory=$true)]
-    [string] $InstallWith = $false,
+    [string] $InstallTo,
 
     #Preview mode for remote call
     [Parameter(Mandatory=$false)]

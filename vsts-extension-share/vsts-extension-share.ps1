@@ -32,7 +32,7 @@ param(
     [string] $TfxLocation = $false,
 
     [Parameter(Mandatory=$true)]
-    [string] $ShareWith = $false,
+    [string] $ShareWith,
 
     #Preview mode for remote call
     [Parameter(Mandatory=$false)]
