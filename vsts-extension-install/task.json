@@ -1,0 +1,156 @@
+{
+    "id": "6401fe41-27b8-4595-b93e-ff5f63e62d49",
+    "name": "ExtensionShareTask",
+    "friendlyName": "Install VSTS Extension #{Extension.Tag}#",
+    "description": "Install VSTS Extension.",
+    "helpMarkDown": "Version: #{Build.BuildNumber}#. [More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
+    "category": "Package",
+    "author": "Jesse Houwing",
+    "version": {
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 0
+    },
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "node.js",
+        "npm"
+    ],
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "AdvancedOptions",
+            "displayName": "Advanced",
+            "isExpanded": false
+        },
+        {
+            "name": "GlobalOptions",
+            "displayName": "Global",
+            "isExpanded": true
+        }
+    ],
+    "inputs": [
+        {
+            "defaultValue": "ID",
+            "helpMarkdown": "Install your extension using the Publisher and Extension ID or by referencing a previusly generated VSIX file.",
+            "label": "Install using",
+            "name": "InstallUsing",
+            "required": true,
+            "options": {
+                "ID": "Publisher + Extension ID",
+                "VSIX": "VSIX file"
+            },
+            "type": "pickList"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "Your publisher ID.",
+            "label": "Publisher ID",
+            "name": "PublisherID",
+            "required": true,
+            "type": "string",
+            "VisibleRule": "InstallUsing = ID"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "The extension ID.",
+            "label": "Extension ID",
+            "name": "ExtensionID",
+            "required": true,
+            "type": "string",
+            "VisibleRule": "InstallUsing = ID"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "A value which will be added to the extension ID `extension-tag`, this enables you to easily upload both a private and a public version.",
+            "label": "Extension Tag",
+            "name": "ExtensionTag",
+            "required": false,
+            "type": "string",
+            "VisibleRule": "InstallUsing = ID"
+        },
+        {
+            "defaultValue": "",
+            "helpMarkdown": "Path to a previously packaged VSIX. Supports wildcards `**`, `*` and `?`.",
+            "label": "VSIX path",
+            "name": "VsixPath",
+            "required": true,
+            "type": "filePath",
+            "VisibleRule": "InstallUsing = VSIX"
+        },
+        {
+            "name": "ServiceEndpoint",
+            "type": "connectedService:marketplace-auth-key",
+            "label": "Service Endpoint",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The Visual Studio marketplace authorization to use.",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxInstall",
+            "type": "boolean",
+            "label": "Install Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Will install `tfx-cli` if it can't be found. Optionally install `tfx-cli` yourself by adding an `npm install tfx-cli` task before calling any of the VSTS Extension tasks",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "TfxUpdate",
+            "type": "boolean",
+            "label": "Auto-update Tfx-cli",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Issues a call to `npm update tfx-cli` to ensure you're using the latest version of tfx.",
+            "groupName": "GlobalOptions",
+            "VisibleRule": "TfxInstall = true"
+        },
+        {
+            "name": "TfxLocation",
+            "type": "filePath",
+            "label": "Tfx Location",
+            "defaultValue": "$(Agent.WorkFolder)\\Tools",
+            "required": false,
+            "helpMarkDown": "The location were tfx can be found. If it can't be found and Tfx Install is checked, tfx will be installed here.",
+            "groupName": "GlobalOptions"
+        },
+        {
+            "name": "BypassValidation",
+            "type": "boolean",
+            "label": "Bypass Validation",
+            "defaultValue": "false",
+            "required": true,
+            "helpMarkDown": "By-passes local validation.",
+            "groupName": "AdvancedOptions"
+        },
+        {
+            "name": "Preview",
+            "type": "boolean",
+            "label": "Preview",
+            "defaultValue": "true",
+            "required": true,
+            "helpMarkDown": "When Preview is specified all calls to the Marketplace will be logged, but never executed.",
+            "groupName": "AdvancedOptions"
+        },
+        {
+            "name": "Install to",
+            "type": "multiLine",
+            "label": "Install to",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Install to these accountnames. Specify one account per line or use `;` or `,`' to separate the accounts. Only enter the highlighted value: **youraccount**.visualstudio.com."
+        }
+    ],
+    "instanceNameFormat": "Install VSTS Extension: $(PublisherID).$(ExtensionID) to: $(ShareWith)",
+    "execution": {
+        "PowerShell": {
+            "target": "$(currentDirectory)\\vsts-extension-install.ps1",
+            "argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+        }
+    }
+}
