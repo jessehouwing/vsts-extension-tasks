@@ -35,7 +35,7 @@
     "inputs": [
         {
             "defaultValue": "ID",
-            "helpMarkdown": "Share your extension using te Publisher and Extension ID or by referencing a previusly generated VSIX file.",
+            "helpMarkdown": "Share your extension using the Publisher and Extension ID or by referencing a previusly generated VSIX file.",
             "label": "Share using",
             "name": "ShareUsing",
             "required": true,
