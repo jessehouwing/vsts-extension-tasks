@@ -95,12 +95,12 @@ if ($installOptions.BypassValidation)
     $tfxArgs += "--bypass-validation"
 }
 
-if ($installOptions.InstallWith.Length -gt 0)
+if ($installOptions.InstallTo.Length -gt 0)
 {
-    $tfxArgs += "--Install-with"
+    $tfxArgs += "--accounts"
 
-    Write-Debug "--Install-with"
-    foreach ($account in $installOptions.InstallWith)
+    Write-Debug "--accounts"
+    foreach ($account in $installOptions.InstallTo)
     {
         Write-Debug "$account"
         $tfxArgs += $account
@@ -108,7 +108,7 @@ if ($installOptions.InstallWith.Length -gt 0)
 }
 else
 {
-    throw "Please specify the accounts to Install with"
+    throw "Please specify the accounts to Install to."
 }
     
 $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
