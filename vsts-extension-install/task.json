@@ -137,7 +137,7 @@
             "groupName": "AdvancedOptions"
         },
         {
-            "name": "Install to",
+            "name": "InstallTo",
             "type": "multiLine",
             "label": "Install to",
             "defaultValue": "",
