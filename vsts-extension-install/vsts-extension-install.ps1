@@ -51,21 +51,21 @@ Write-Verbose "Parameter Values"
 $PSBoundParameters.Keys | %{ Write-Verbose "$_ = $($PSBoundParameters[$_])" }
 
 Write-Verbose "Importing modules"
-Import-Module -DisableNameChecking "$PSScriptRoot/vsts-extension-Installd.psm1"
+Import-Module -DisableNameChecking "$PSScriptRoot/vsts-extension-shared.psm1"
 
 $global:globalOptions = Convert-GlobalOptions $PSBoundParameters
-$global:InstallOptions = Convert-InstallOptions $PSBoundParameters
+$global:installOptions = Convert-InstallOptions $PSBoundParameters
 
 Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect -TfxUpdate:$globalOptions.TfxUpdate
 
-$command = "Install"
+$command = "install"
 $MarketEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $globalOptions.ServiceEndpoint
 if ($MarketEndpoint -eq $null)
 {
     throw "Could not locate service endpoint $globalOptions.ServiceEndpoint"
 }
 
-switch ($InstallOptions.InstallUsing)
+switch ($installOptions.InstallUsing)
 {
     "VSIX"
     {
@@ -73,7 +73,7 @@ switch ($InstallOptions.InstallUsing)
             "extension",
             $command,
             "--vsix-path",
-            $InstallOptions.VsixPath
+            $installOptions.VsixPath
         )
     }
 
@@ -83,24 +83,24 @@ switch ($InstallOptions.InstallUsing)
             "extension",
             $command,
             "--extension-id"
-            $InstallOptions.ExtensionId,        
+            $installOptions.ExtensionId,        
             "--publisher",
-            $InstallOptions.PublisherId
+            $installOptions.PublisherId
         )
     }
 }
 
-if ($InstallOptions.BypassValidation)
+if ($installOptions.BypassValidation)
 {
     $tfxArgs += "--bypass-validation"
 }
 
-if ($InstallOptions.InstallWith.Length -gt 0)
+if ($installOptions.InstallWith.Length -gt 0)
 {
     $tfxArgs += "--Install-with"
 
     Write-Debug "--Install-with"
-    foreach ($account in $InstallOptions.InstallWith)
+    foreach ($account in $installOptions.InstallWith)
     {
         Write-Debug "$account"
         $tfxArgs += $account
