@@ -1,5 +1,5 @@
 {
-    "id": "6401fe41-27b8-4595-b93e-ff5f63e62d49",
+    "id": "5dce6642-c8d6-4cb1-9b6e-3e65cdcbfb43",
     "name": "ExtensionShareTask",
     "friendlyName": "Install VSTS Extension #{Extension.Tag}#",
     "description": "Install VSTS Extension.",
