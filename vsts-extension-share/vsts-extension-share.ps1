@@ -72,7 +72,7 @@ switch ($shareOptions.ShareUsing)
         $tfxArgs = @(
             "extension",
             $command,
-            "--vsix-path",
+            "--vsix",
             $shareOptions.VsixPath
         )
     }

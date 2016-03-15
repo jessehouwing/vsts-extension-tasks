@@ -52,7 +52,7 @@ if ($MarketEndpoint -eq $null)
 $tfxArgs = @(
     "extension",
     $command,
-    "--vsix-path",
+    "--vsix",
     $publishOptions.VsixPath
 )
 

@@ -72,7 +72,7 @@ switch ($installOptions.InstallUsing)
         $tfxArgs = @(
             "extension",
             $command,
-            "--vsix-path",
+            "--vsix",
             $installOptions.VsixPath,
             "--extension-id"
             $installOptions.ExtensionId,     
