@@ -59,8 +59,7 @@
             "label": "Extension ID",
             "name": "ExtensionID",
             "required": true,
-            "type": "string",
-            "VisibleRule": "InstallUsing = ID"
+            "type": "string"
         },
         {
             "defaultValue": "",
@@ -68,8 +67,7 @@
             "label": "Extension Tag",
             "name": "ExtensionTag",
             "required": false,
-            "type": "string",
-            "VisibleRule": "InstallUsing = ID"
+            "type": "string"
         },
         {
             "defaultValue": "",

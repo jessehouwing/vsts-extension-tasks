@@ -73,7 +73,11 @@ switch ($installOptions.InstallUsing)
             "extension",
             $command,
             "--vsix-path",
-            $installOptions.VsixPath
+            $installOptions.VsixPath,
+            "--extension-id"
+            $installOptions.ExtensionId,     
+            "--publisher",
+            $installOptions.PublisherId
         )
     }
 
