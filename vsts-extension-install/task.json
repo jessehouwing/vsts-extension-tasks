@@ -1,6 +1,6 @@
 {
     "id": "5dce6642-c8d6-4cb1-9b6e-3e65cdcbfb43",
-    "name": "ExtensionShareTask",
+    "name": "ExtensionInstallTask",
     "friendlyName": "Install VSTS Extension #{Extension.Tag}#",
     "description": "Install VSTS Extension.",
     "helpMarkDown": "Version: #{Build.BuildNumber}#. [More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
