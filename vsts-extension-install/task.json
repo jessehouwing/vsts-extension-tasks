@@ -51,8 +51,7 @@
             "label": "Publisher ID",
             "name": "PublisherID",
             "required": true,
-            "type": "string",
-            "VisibleRule": "InstallUsing = ID"
+            "type": "string"
         },
         {
             "defaultValue": "",
@@ -145,7 +144,7 @@
             "helpMarkDown": "Install to these accountnames. Specify one account per line or use `;` or `,`' to separate the accounts. Only enter the highlighted value: **youraccount**.visualstudio.com."
         }
     ],
-    "instanceNameFormat": "Install VSTS Extension: $(PublisherID).$(ExtensionID) to: $(ShareWith)",
+    "instanceNameFormat": "Install VSTS Extension: $(PublisherID).$(ExtensionID) to: $(InstallTo)",
     "execution": {
         "PowerShell": {
             "target": "$(currentDirectory)\\vsts-extension-install.ps1",
