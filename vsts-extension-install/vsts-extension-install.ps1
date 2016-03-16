@@ -1,7 +1,20 @@
 ﻿[cmdletbinding()]
 param(
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
+    [string] $PublisherID,
+    
+    [Parameter(Mandatory=$false)]
+    [string] $ExtensionID,
+
+    [Parameter(Mandatory=$false)]
+    [string] $ExtensionTag,
+    
+    [Parameter(Mandatory=$false)]
     [string] $VsixPath,
+
+    [Parameter(Mandatory=$true)]
+    [ValidateSet("VSIX", "ID")]
+    [string] $InstallUsing,
 
     # Global Options
     [Parameter(Mandatory=$true)]
@@ -17,6 +30,9 @@ param(
 
     [Parameter(Mandatory=$false)]
     [string] $TfxLocation = $false,
+
+    [Parameter(Mandatory=$true)]
+    [string] $InstallTo,
 
     #Preview mode for remote call
     [Parameter(Mandatory=$false)]
@@ -38,27 +54,61 @@ Write-Verbose "Importing modules"
 Import-Module -DisableNameChecking "$PSScriptRoot/vsts-extension-shared.psm1"
 
 $global:globalOptions = Convert-GlobalOptions $PSBoundParameters
-$global:publishOptions = Convert-PublishOptions $PSBoundParameters
+$global:installOptions = Convert-InstallOptions $PSBoundParameters
 
 Find-Tfx -TfxInstall:$globalOptions.TfxInstall -TfxLocation $globalOptions.TfxLocation -Detect -TfxUpdate:$globalOptions.TfxUpdate
 
-$command = "publish"
+$command = "install"
 $MarketEndpoint = Get-ServiceEndpoint -Context $distributedTaskContext -Name $globalOptions.ServiceEndpoint
 if ($MarketEndpoint -eq $null)
 {
     throw "Could not locate service endpoint $globalOptions.ServiceEndpoint"
 }
 
-$tfxArgs = @(
-    "extension",
-    $command,
-    "--vsix",
-    $publishOptions.VsixPath
-)
+switch ($installOptions.InstallUsing)
+{
+    "VSIX"
+    {
+        $tfxArgs = @(
+            "extension",
+            $command,
+            "--vsix",
+            $installOptions.VsixPath
+        )
+    }
 
-if ($publishOptions.BypassValidation)
+    "ID"
+    {
+        $tfxArgs = @(
+            "extension",
+            $command,
+            "--extension-id"
+            $installOptions.ExtensionId,        
+            "--publisher",
+            $installOptions.PublisherId
+        )
+    }
+}
+
+if ($installOptions.BypassValidation)
 {
     $tfxArgs += "--bypass-validation"
+}
+
+if ($installOptions.InstallTo.Length -gt 0)
+{
+    $tfxArgs += "--accounts"
+
+    Write-Debug "--accounts"
+    foreach ($account in $installOptions.InstallTo)
+    {
+        Write-Debug "$account"
+        $tfxArgs += $account
+    }
+}
+else
+{
+    throw "Please specify the accounts to Install to."
 }
     
 $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode

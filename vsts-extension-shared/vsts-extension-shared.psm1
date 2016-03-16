@@ -163,6 +163,41 @@ function Convert-ShareOptions
     return $global:shareOptions
 }
 
+function Convert-InstallOptions 
+{
+    param
+    (
+        $parameters
+    )
+
+    $installOptions = @{
+        InstallUsing = [string]$parameters["InstallUsing"]
+        VsixPath = [string]$parameters["VsixPath"]
+        ExtensionId = [string]$parameters["ExtensionId"]
+        ExtensionTag = [string]$parameters["Extensiontag"]
+        PublisherId = [string]$parameters["PublisherId"]
+        BypassValidation = ($parameters["BypassValidation"] -eq $true)
+        InstallTo = @( $parameters["InstallTo"] -split ';|\r?\n' )
+    }
+
+    if ($installOptions.ExtensionTag -ne "")
+    {
+        $installOptions.ExtensionId = "$($installOptions.ExtensionId)-$($installOptions.ExtensionTag)"
+    }
+
+    if ($installOptions.VsixPath -match "[?*]")
+    {
+        $installOptions.VsixPath = [string](Find-Files $installOptions.VsixPath)
+    }
+
+    Write-Debug "ShareOptions:"
+    Write-Debug ($installOptions | Out-String)
+
+    $global:installOptions = $installOptions
+
+    return $global:installOptions
+}
+
 function Convert-VersionOptions 
 {
     param
@@ -459,7 +494,7 @@ function Handle-TfxOutput{
             else
             {
                 $messages | %{ Write-Error $_ }
-                throw
+                throw "Tfx returned an error."
             }
         }
     }

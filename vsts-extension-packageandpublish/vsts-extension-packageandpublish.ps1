@@ -175,12 +175,12 @@ if ($packageOptions.OutputVariable -ne "")
     {
         "create"
         {
-            Write-Output "Setting output variable '$($packageOptions.OutputVariable)' using: path"
+            Write-Debug "Setting output variable '$($packageOptions.OutputVariable)' using: path"
             $location = $output.path
         }
         "publish"
         {
-            Write-Output "Setting output variable '$($packageOptions.OutputVariable)' using: packaged"
+            Write-Debug "Setting output variable '$($packageOptions.OutputVariable)' using: packaged"
             $location = $output.packaged
         }
     }

@@ -1,8 +1,8 @@
 {
-    "id": "6401fe41-27b8-4595-b93e-ff5f63e62d49",
-    "name": "ExtensionShareTask",
-    "friendlyName": "Share VSTS Extension #{Extension.Tag}#",
-    "description": "Share VSTS Extension.",
+    "id": "5dce6642-c8d6-4cb1-9b6e-3e65cdcbfb43",
+    "name": "ExtensionInstallTask",
+    "friendlyName": "Install VSTS Extension #{Extension.Tag}#",
+    "description": "Install VSTS Extension.",
     "helpMarkDown": "Version: #{Build.BuildNumber}#. [More Information](https://github.com/jessehouwing/vsts-extension-tasks/wiki/)",
     "category": "Package",
     "author": "Jesse Houwing",
@@ -35,9 +35,9 @@
     "inputs": [
         {
             "defaultValue": "ID",
-            "helpMarkdown": "Share your extension using the Publisher and Extension ID or by referencing a previusly generated VSIX file.",
-            "label": "Share using",
-            "name": "ShareUsing",
+            "helpMarkdown": "Install your extension using the Publisher and Extension ID or by referencing a previusly generated VSIX file.",
+            "label": "Install using",
+            "name": "InstallUsing",
             "required": true,
             "options": {
                 "ID": "Publisher + Extension ID",
@@ -52,7 +52,7 @@
             "name": "PublisherID",
             "required": true,
             "type": "string",
-            "VisibleRule": "ShareUsing = ID"
+            "VisibleRule": "InstallUsing = ID"
         },
         {
             "defaultValue": "",
@@ -61,7 +61,7 @@
             "name": "ExtensionID",
             "required": true,
             "type": "string",
-            "VisibleRule": "ShareUsing = ID"
+            "VisibleRule": "InstallUsing = ID"
         },
         {
             "defaultValue": "",
@@ -70,7 +70,7 @@
             "name": "ExtensionTag",
             "required": false,
             "type": "string",
-            "VisibleRule": "ShareUsing = ID"
+            "VisibleRule": "InstallUsing = ID"
         },
         {
             "defaultValue": "",
@@ -79,7 +79,7 @@
             "name": "VsixPath",
             "required": true,
             "type": "filePath",
-            "VisibleRule": "ShareUsing = VSIX"
+            "VisibleRule": "InstallUsing = VSIX"
         },
         {
             "name": "ServiceEndpoint",
@@ -137,18 +137,18 @@
             "groupName": "AdvancedOptions"
         },
         {
-            "name": "ShareWith",
+            "name": "InstallTo",
             "type": "multiLine",
-            "label": "Share with",
+            "label": "Install to",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "Share with these accountnames. Specify one account per line or use `;` or `,`' to separate the accounts. Only enter the highlighted value: **youraccount**.visualstudio.com."
+            "helpMarkDown": "Install to these accountnames. Specify one account per line or use `;` or `,`' to separate the accounts. Only enter the highlighted value: **youraccount**.visualstudio.com."
         }
     ],
-    "instanceNameFormat": "Share VSTS Extension: $(PublisherID).$(ExtensionID) with: $(ShareWith)",
+    "instanceNameFormat": "Install VSTS Extension: $(PublisherID).$(ExtensionID) to: $(InstallTo)",
     "execution": {
         "PowerShell": {
-            "target": "$(currentDirectory)\\vsts-extension-share.ps1",
+            "target": "$(currentDirectory)\\vsts-extension-install.ps1",
             "argumentFormat": "",
             "workingDirectory": "$(currentDirectory)"
         }
