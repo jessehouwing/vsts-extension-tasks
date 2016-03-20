@@ -422,7 +422,7 @@ function Invoke-Tfx
 
     if ($preview.IsPresent)
     {
-        Write-Warning "Skipped call due to Preview: True"
+        Write-Warning "Skipped call due to Preview: True. Review the call below and disable Advanced\Preview on your task definition to publish/share/install."
         Write-Warning "$($global:tfx) $tfxArgs"
         [string[]] $Output = @("{}")
     }
