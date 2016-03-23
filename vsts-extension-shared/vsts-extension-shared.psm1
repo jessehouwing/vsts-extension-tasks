@@ -494,12 +494,11 @@ function Handle-TfxOutput{
             else
             {
                 $messages | %{ Write-Error $_ }
+                Write-Host "##vso[task.complete result=Failed;]"
                 throw "Tfx returned an error."
             }
         }
-    }
-    end
-    {
+
         return $json
     }
 }
@@ -557,6 +556,5 @@ function Update-InternalVersion
     end{
     }
 }
-
 
 Export-ModuleMember -Function *
