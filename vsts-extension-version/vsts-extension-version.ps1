@@ -118,4 +118,5 @@ if ("$output" -ne "")
 else
 {
     Write-Host "##vso[task.complete result=Failed;]"
+    throw ("Failed.")
 }
