@@ -118,3 +118,7 @@ if ("$output" -ne "")
     Write-Host "##vso[task.complete result=Succeeded;]"
     Write-Output "Done."
 }
+else
+{
+    Write-Host "##vso[task.complete result=Failed;]"
+}
