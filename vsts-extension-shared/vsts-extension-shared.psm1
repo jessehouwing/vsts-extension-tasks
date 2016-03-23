@@ -441,66 +441,62 @@ function Handle-TfxOutput{
         [string[]]$output
     )
 
-    begin{
-        $output | %{ Write-Debug $_ }
-        if ($output.Count -eq 1)
-        {
-            $output = $output -split "`r?`n"
-        }
-
-        $commandProcessed = $false
-        $messagesProcessed = $false
-        $jsonStarted = $false
-        $messages = @()
-        $json = ""
-    }
-    process
+    $output | %{ Write-Debug $_ }
+    if ($output.Count -eq 1)
     {
-        foreach ($line in $output)
-        {
-            if (-not $commandProcessed -and $line.StartsWith("$global:tfx"))
-            {
-                $command = $line
-                $commandProcessed = $true
-            }
-            elseif (-not $messagesProcessed -and -not $line.StartsWith("{"))
-            {
-                $messages += $line
-            }
-            elseif (-not $jsonStarted -and $line.StartsWith("{"))
-            {
-                $messagesProcessed = $true
-                $jsonStarted = $true
-                $json += $line
-            }
-            elseif ($jsonStarted -and -not $line.StartsWith("}"))
-            {
-                $json += $line
-            }
-            elseif ($jsonStarted -and $line.StartsWith("}"))
-            {
-                $json += $line
-                $json = $json | ConvertFrom-Json
-                break
-            }
-        }
-
-        if ($messages -ne $null)
-        {
-            if ($json -ne $null)
-            {
-                $messages | %{ Write-Warning $_ }
-            }
-            else
-            {
-                $messages | %{ Write-Error $_ }
-                Write-Host "##vso[task.complete result=Failed;]"
-                throw "Tfx returned an error."
-            }
-        }
-
-        return $json
+        $output = $output -split "`r?`n"
     }
+
+    $commandProcessed = $false
+    $messagesProcessed = $false
+    $jsonStarted = $false
+    $messages = @()
+    $json = ""
+ 
+    foreach ($line in $output)
+    {
+        if (-not $commandProcessed -and $line.StartsWith("$global:tfx"))
+        {
+            $command = $line
+            $commandProcessed = $true
+        }
+        elseif (-not $messagesProcessed -and -not $line.StartsWith("{"))
+        {
+            $messages += $line
+        }
+        elseif (-not $jsonStarted -and $line.StartsWith("{"))
+        {
+            $messagesProcessed = $true
+            $jsonStarted = $true
+            $json += $line
+        }
+        elseif ($jsonStarted -and -not $line.StartsWith("}"))
+        {
+            $json += $line
+        }
+        elseif ($jsonStarted -and $line.StartsWith("}"))
+        {
+            $json += $line
+            $json = $json | ConvertFrom-Json
+            break
+        }
+    }
+
+    if ($messages -ne $null)
+    {
+        if ($json -ne $null)
+        {
+            $messages | %{ Write-Warning $_ }
+        }
+        else
+        {
+            $messages | %{ Write-Error $_ }
+            Write-Host "##vso[task.complete result=Failed;]"
+            throw ("Call to tfx failed.")
+        }
+    }
+
+    return $json
 }
 
 function Escape-Args

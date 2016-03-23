@@ -113,5 +113,13 @@ else
     
 $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Preview:$PreviewMode
 
-Write-Host "##vso[task.complete result=Succeeded;]"
-Write-Output "Done."
+if ("$output" -ne "")
+{
+    Write-Host "##vso[task.complete result=Succeeded;]"
+    Write-Output "Done."
+}
+else
+{
+    Write-Host "##vso[task.complete result=Failed;]"
+    throw ("Failed.")
+}
