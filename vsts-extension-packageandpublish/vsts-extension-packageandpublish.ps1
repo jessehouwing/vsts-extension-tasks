@@ -189,5 +189,8 @@ if ($packageOptions.OutputVariable -ne "")
     Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$location"
 }
 
-Write-Host "##vso[task.complete result=Succeeded;]"
-Write-Output "Done."
+if ("$output" -ne "")
+{
+    Write-Host "##vso[task.complete result=Succeeded;]"
+    Write-Output "Done."
+}

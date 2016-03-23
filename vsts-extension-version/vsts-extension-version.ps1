@@ -110,5 +110,8 @@ if ($versionOptions.OutputVariable -ne "")
     }
 }
 
-Write-Host "##vso[task.complete result=Succeeded;]"
-Write-Output "Done."
+if ("$output" -ne "")
+{
+    Write-Host "##vso[task.complete result=Succeeded;]"
+    Write-Output "Done."
+}
