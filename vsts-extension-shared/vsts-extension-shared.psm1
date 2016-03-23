@@ -429,8 +429,7 @@ function Invoke-Tfx
     else
     {
         # Pass -1 as success so we can handle output ourselves.
-        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -SuccessfulExitCodes @(0,-1,255) -WorkingFolder $workingFolder
-        
+        $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -SuccessfulExitCodes @(0) -WorkingFolder $workingFolder
     }
 
     return Handle-TfxOutput $output
@@ -490,12 +489,6 @@ function Handle-TfxOutput{
             if ($json -ne $null)
             {
                 $messages | %{ Write-Warning $_ }
-            }
-            else
-            {
-                $messages | %{ Write-Error $_ }
-                Write-Host "##vso[task.complete result=Failed;]"
-                exit -1
             }
         }
 
