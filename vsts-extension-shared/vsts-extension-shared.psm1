@@ -276,7 +276,8 @@ function Find-Tfx
 
     if ($tfxCommand -ne $null)
     {
-        $global:tfx = $tfx.Path
+        Write-Debug "Found: $tfx.Source"
+        $global:tfx = $tfxCommand.Source
     }
     else
     { 
