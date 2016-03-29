@@ -131,7 +131,7 @@
             "name": "Preview",
             "type": "boolean",
             "label": "Preview",
-            "defaultValue": "true",
+            "defaultValue": "false",
             "required": true,
             "helpMarkDown": "When Preview is specified all calls to the Marketplace will be logged, but never executed.",
             "groupName": "AdvancedOptions"
