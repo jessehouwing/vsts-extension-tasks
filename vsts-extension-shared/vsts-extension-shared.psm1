@@ -10,8 +10,8 @@ function Convert-GlobalOptions
 
     $globalOptions = @{
         TfxInstall = ($parameters["TfxInstall"] -eq $true)
-        TfxInstallUpdate = ($parameters["TfxUpdate"] -eq $true)
-        TfxInstallPath = [string]$parameters["TfxInstallPath"]
+        TfxUpdate = ($parameters["TfxUpdate"] -eq $true)
+        TfxLocation = [string]$parameters["TfxLocation"]
         ServiceEndpoint = [string]$parameters["ServiceEndpoint"]
     }
 
