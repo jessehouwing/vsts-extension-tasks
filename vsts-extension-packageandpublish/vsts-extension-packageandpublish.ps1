@@ -111,7 +111,7 @@ if ($packageOptions.PublishEnabled)
     }
 }
 
-if ($packageOptions.OverrideInternalVersions)
+if ($packageOptions.OverrideExtensionVersion -and $packageOptions.OverrideInternalVersions)
 {
     Update-InternalVersion
 }
