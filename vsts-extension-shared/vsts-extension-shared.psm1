@@ -543,7 +543,7 @@ function Update-InternalVersion
             $taskJson.Version.Major = $version.Major
             $taskJson.Version.Minor = $version.Minor
             $taskJson.Version.Patch = $version.Build
-            $output = $taskjson | ConvertTo-JSON -Depth 255
+            $output = $taskjson | ConvertTo-JSON -Depth 100
             
             Write-Output "Setting version for: $file"
 

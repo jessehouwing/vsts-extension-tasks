@@ -128,7 +128,7 @@ $tfxArgs = @(
     "--publisher",
     $packageOptions.PublisherId,
     "--override",
-    ($packageOptions.OverrideJson | ConvertTo-Json -Depth 255 -Compress)
+    ($packageOptions.OverrideJson | ConvertTo-Json -Depth 100 -Compress)
 )
 
 if ($packageOptions.PublishEnabled -and $packageOptions.ShareEnabled -and ($packageOptions.ShareWith.Length -gt 0))
