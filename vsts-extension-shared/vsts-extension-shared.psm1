@@ -286,6 +286,7 @@ function Find-Tfx
         if ($TfxLocation -ne "")
         {
             $options += $TfxLocation
+            $options += "$TfxLocation\node_modules\.bin"
         }
         
         $options += "$PSScriptRoot\Tools\node_modules\.bin"
