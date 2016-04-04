@@ -72,7 +72,7 @@ $output = Invoke-Tfx -Arguments $tfxArgs -ServiceEndpoint $MarketEndpoint -Previ
 
 if ($versionOptions.OutputVariable -ne "")
 {
-    $version = ($output.versions | Select-Object -Last 1)
+    $version = ($output.versions | Select-Object -First 1)
     
     Write-Output "Current version '$($version.version)'"
 
