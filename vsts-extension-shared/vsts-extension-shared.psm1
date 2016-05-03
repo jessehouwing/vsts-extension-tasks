@@ -416,6 +416,14 @@ function Invoke-Tfx
         }
     }
 
+    if ($Arguments -notcontains "--service-url")
+    {
+        Write-Debug "Adding --service-url"
+        $Arguments += "--service-url"
+        $Arguments += "https://marketplace.visualstudio.com/"
+    }
+     
+
     $tfxArgs = ($Arguments | %{ Escape-Args $_ } ) -join " "
 
     Write-Debug "Calling: $($global:tfx)"
