@@ -462,21 +462,21 @@ function Handle-TfxOutput{
             $command = $line
             $commandProcessed = $true
         }
-        elseif (-not $messagesProcessed -and -not $line.StartsWith("{"))
+        elseif (-not $messagesProcessed -and -not ($line.StartsWith("{") -or $line.StartsWith("[")))
         {
             $messages += $line
         }
-        elseif (-not $jsonStarted -and $line.StartsWith("{"))
+        elseif (-not $jsonStarted -and ($line.StartsWith("{") -or $line.StartsWith("[")))
         {
             $messagesProcessed = $true
             $jsonStarted = $true
             $json += $line
         }
-        elseif ($jsonStarted -and -not $line.StartsWith("}"))
+        elseif ($jsonStarted -and -not ($line.StartsWith("}") -or $line.StartsWith("]")))
         {
             $json += $line
         }
-        elseif ($jsonStarted -and $line.StartsWith("}"))
+        elseif ($jsonStarted -and ($line.StartsWith("}") -or $line.StartsWith("]")))
         {
             $json += $line
             $json = $json | ConvertFrom-Json
