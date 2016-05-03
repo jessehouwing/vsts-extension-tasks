@@ -1,6 +1,11 @@
 [![Gitter](https://badges.gitter.im/jessehouwing/vsts-extension-tasks.svg)](https://gitter.im/jessehouwing/vsts-extension-tasks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 # Release Notes
+> **3-5-2016**
+
+> - Fixed issue: Marketplace URI has changed
+> - Fixed issue: Come tfx commands no longer return a JSON object but a JSON array
+
 > **7-4-2016**
 
 > - Fixed issue: Query Version no longer retrieves the latest, but the first version.
