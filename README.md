@@ -4,7 +4,7 @@
 > **3-5-2016**
 
 > - Fixed issue: Marketplace URI has changed
-> - Fixed issue: Come tfx commands no longer return a JSON object but a JSON array
+> - Fixed issue: Some tfx commands no longer return a JSON object but a JSON array
 
 > **7-4-2016**
 
