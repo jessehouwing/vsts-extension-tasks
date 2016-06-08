@@ -1,6 +1,11 @@
 [![Gitter](https://badges.gitter.im/jessehouwing/vsts-extension-tasks.svg)](https://gitter.im/jessehouwing/vsts-extension-tasks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
 
 # Release Notes
+> **8-6-2016**
+
+> - Added: Additional Arguments option to pass extra options to tfx
+> - Added: Publish to TFS 2015 update 2 (requires Basic Authentication)
+
 > **3-5-2016**
 
 > - Fixed issue: Marketplace URI has changed
