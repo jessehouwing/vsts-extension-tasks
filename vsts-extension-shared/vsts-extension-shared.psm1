@@ -397,10 +397,10 @@ function Invoke-Tfx
     {
         Write-Debug "Adding --auth-type"
         $Arguments += "--auth-type"
-
+        Write-Debug " Selected authorization scheme: $($ServiceEndpoint.Authorization.Scheme)."
         switch ($ServiceEndpoint.Authorization.Scheme)
         {
-            "Basic"
+            "UsernamePassword"
             {
                 $Arguments += "basic"
                 $Arguments += "--username"
@@ -408,7 +408,7 @@ function Invoke-Tfx
                 $Arguments += "--password"
                 $Arguments += $ServiceEndpoint.Authorization.Parameters.Password
                 $Arguments += "--service-url"
-                $Arguments += $ServiceEndpoint.Authorization.Parameters.serverUri
+                $Arguments += $ServiceEndpoint.Authorization.Parameters.ServerUri
             }
             "Token"
             {

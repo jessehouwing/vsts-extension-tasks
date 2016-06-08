@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "jessehouwing-vsts-extension-tasks-TEST",
   "name": "VSTS Extension Tasks",
-  "version": "200.0.0",
+  "version": "0.0.0",
   "publisher": "jessehouwing",
   "targets": [
     {
@@ -192,11 +192,10 @@
             "type": "ms.vss-endpoint.endpoint-auth-scheme-basic",
             "inputDescriptors": [
               {
-                "id": "serverUri",
+                "id": "serveruri",
                 "name": "Server Location",
                 "description": "TFS Server location",
                 "inputMode": "textbox",
-                "isConfidential": false,
                 "validation": {
                   "isRequired": true,
                   "dataType": "string"
@@ -208,7 +207,6 @@
                 "name": "Username",
                 "description": "Username",
                 "inputMode": "textbox",
-                "isConfidential": false,
                 "validation": {
                   "isRequired": true,
                   "dataType": "string"
