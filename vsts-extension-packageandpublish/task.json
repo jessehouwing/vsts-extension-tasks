@@ -42,234 +42,243 @@
             "isExpanded": true
         }
     ],
-    "inputs": [
-        {
-            "defaultValue": "",
-            "helpMarkdown": "The publisher ID. This value will override the value in the `vss-extension.json`.",
-            "label": "Publisher ID",
-            "name": "PublisherID",
-            "required": true,
-            "type": "string"
-        },
-        {
-            "defaultValue": "",
-            "helpMarkdown": "The extension ID. This value will override the value in the `vss-extension.json`.",
-            "label": "Extension ID",
-            "name": "ExtensionID",
-            "required": true,
-            "type": "string"
-        },
-        {
-            "defaultValue": "",
-            "helpMarkdown": "A value which will be added to the extension ID `extension-tag`, this enables you to easily upload both a private and a public version.",
-            "label": "Extension Tag",
-            "name": "ExtensionTag",
-            "required": false,
-            "type": "string"
-        },
-        {
-            "name": "ExtensionRoot",
-            "type": "filePath",
-            "label": "Extension Root",
-            "defaultValue": "$(Build.SourcesDirectory)",
-            "required": true,
-            "helpMarkDown": "Root of the extension's sources. Default: `$(Build.SourcesDirectory)`."
-        },
-        {
-            "name": "ManifestGlobs",
-            "type": "string",
-            "label": "ManifestGlobs",
-            "defaultValue": "vss-extension.json",
-            "required": true,
-            "helpMarkDown": "The name of the extension manifest JSON file. Default: `vss-extension.json`."
-        },
-        {
-            "defaultValue": "false",
-            "helpMarkdown": "Allows you to override the version of the extension at build time. The version in the extension manifest will ignored.",
-            "label": "Override Extension Version",
-            "name": "OverrideExtensionVersion",
-            "required": false,
-            "type": "boolean",
-            "groupName": "OverrideVersion"
-        },
-        {
-            "name": "OverrideInternalVersion",
-            "type": "boolean",
-            "label": "Override Build Task Versions",
-            "defaultValue": "true",
-            "required": false,
-            "helpMarkDown": "Search all folders under the extension and updates the version specified in any Build and Release task manifest.",
-            "VisibleRule": "OverrideExtensionVersion = true",
-            "groupName": "OverrideVersion"
-        },
-        {
-            "defaultValue": "$(Build.BuildNumber)",
-            "helpMarkdown": "The version number to use as override. Must be in `0.0.0` format. Default: `$(Build.BuildNumber)`.",
-            "label": "Version",
-            "name": "ExtensionVersion",
-            "required": true,
-            "type": "string",
-            "VisibleRule": "OverrideExtensionVersion = true",
-            "groupName": "OverrideVersion"
-        },
-        {
-            "defaultValue": "Private",
-            "helpMarkdown": "Allows you to override the Visibility and Preview flag for the extension. Default: Use the values specified in the extension manifest.",
-            "label": "Override Visibility",
-            "name": "ExtensionVisibility",
-            "required": false,
-            "options": {
-                "NoOverride": "Use manifest",
-                "Private": "Private",
-                "PrivatePreview": "Private Preview",
-                "PublicPreview": "Public Preview",
-                "Public": "Public"
-            },
-            "type": "pickList",
-            "groupName": "OverrideVersion"
-        },
-        {
-            "name": "ServiceEndpoint",
-            "type": "connectedService:marketplace-auth-key",
-            "label": "Service Endpoint",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "The Visual Studio marketplace authorization to use.",
-            "groupName": "GlobalOptions"
-        },
-        {
-            "name": "TfxInstall",
-            "type": "boolean",
-            "label": "Install Tfx-cli",
-            "defaultValue": "false",
-            "required": false,
-            "helpMarkDown": "Will install `tfx-cli` if it can't be found. Optionally install `tfx-cli` yourself by adding an `npm install tfx-cli` task before calling any of the VSTS Extension tasks.",
-            "groupName": "GlobalOptions"
-        },
-        {
-            "name": "TfxUpdate",
-            "type": "boolean",
-            "label": "Auto-update Tfx-cli",
-            "defaultValue": "false",
-            "required": false,
-            "helpMarkDown": "Issues a call to `npm update tfx-cli` to ensure you're using the latest version of tfx.",
-            "groupName": "GlobalOptions",
-            "VisibleRule": "TfxInstall = true"
-        },
-        {
-            "name": "TfxLocation",
-            "type": "filePath",
-            "label": "Tfx Location",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "The location were tfx can be found. If it can't be found and Tfx Install is checked, tfx will be installed here.",
-            "groupName": "GlobalOptions"
-        },
-        {
-            "name": "PackagingOutputPath",
-            "type": "filePath",
-            "label": "Output path",
-            "defaultValue": "$(Build.ArtifactStagingDirectory)\\vsix",
-            "required": true,
-            "helpMarkDown": "Output path to write the packaged VSIX file to. The file name will be auto generated."
-        },
-        {
-            "defaultValue": "None",
-            "helpMarkdown": "To override additional values in the extension manifest you can either specify a snippet of JSON or point to a file containing the overrides.",
-            "label": "Override Type",
-            "name": "OverrideType",
-            "required": false,
-            "options": {
-                "None": "None",
-                "Json": "Json",
-                "File": "File"
-            },
-            "type": "pickList",
-            "groupName": "OverrideAdvanced"
-        },
-        {
-            "name": "OverrideFile",
-            "type": "filePath",
-            "label": "Override File",
-            "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "File with additional overrides of the extension manifest. (JSON)",
-            "groupName": "OverrideAdvanced",
-            "VisibleRule": "OverrideType=File"
-        },
-        {
-            "name": "OverrideJson",
-            "type": "multiLine",
-            "label": "Override Json",
-            "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "Snippet with additional overrides of the extension manifest. (JSON)",
-            "groupName": "OverrideAdvanced",
-            "VisibleRule": "OverrideType=Json"
-        },
-        {
-            "name": "BypassValidation",
-            "type": "boolean",
-            "label": "Bypass Validation",
-            "defaultValue": "false",
-            "required": true,
-            "helpMarkDown": "By-passes local validation.",
-            "groupName": "AdvancedOptions"
-        },
-        {
-            "name": "LocalizationRoot",
-            "type": "filePath",
-            "label": "Localization Root",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Path to the localization files.",
-            "groupName": "AdvancedOptions"
-        },
-        {
-            "name": "Preview",
-            "type": "boolean",
-            "label": "Preview",
-            "defaultValue": "false",
-            "required": true,
-            "helpMarkDown": "When Preview is specified all calls to the Marketplace will be logged, but never executed.",
-            "groupName": "AdvancedOptions"
-        },
-        {
-            "name": "OutputVariable",
-            "type": "string",
-            "label": "Output Variable",
-            "defaultValue": "CreateExtension.OutputPath",
-            "required": true,
-            "helpMarkDown": "Stores the path to the generated VSIX to the specified variable.",
-            "groupName": "AdvancedOptions"
-        },
-        {
-            "name": "EnablePublishing",
-            "type": "boolean",
-            "label": "Enable Publishing",
-            "defaultValue": "false",
-            "required": true,
-            "helpMarkDown": "When checked publishes the extension to the marketplace."
-        },
-        {
-            "name": "EnableSharing",
-            "type": "boolean",
-            "label": "Enable Sharing",
-            "defaultValue": "false",
-            "required": true,
-            "helpMarkDown": "When checked shares the extension with the specified Visual Studio Team Services acounts.",
-            "VisibleRule": "EnablePublishing = true"
-        },
-        {
-            "name": "ShareWith",
-            "type": "multiLine",
-            "label": "Share with",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Share with these accountnames. Specify one account per line or use `;` or `,`' to separate the accounts. Only enter the highlighted value: **youraccount**.visualstudio.com.",
-            "VisibleRule": "EnableSharing = true"
-        }
-    ],
+  "inputs": [
+    {
+      "defaultValue": "",
+      "helpMarkdown": "The publisher ID. This value will override the value in the `vss-extension.json`.",
+      "label": "Publisher ID",
+      "name": "PublisherID",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "defaultValue": "",
+      "helpMarkdown": "The extension ID. This value will override the value in the `vss-extension.json`.",
+      "label": "Extension ID",
+      "name": "ExtensionID",
+      "required": true,
+      "type": "string"
+    },
+    {
+      "defaultValue": "",
+      "helpMarkdown": "A value which will be added to the extension ID `extension-tag`, this enables you to easily upload both a private and a public version.",
+      "label": "Extension Tag",
+      "name": "ExtensionTag",
+      "required": false,
+      "type": "string"
+    },
+    {
+      "name": "ExtensionRoot",
+      "type": "filePath",
+      "label": "Extension Root",
+      "defaultValue": "$(Build.SourcesDirectory)",
+      "required": true,
+      "helpMarkDown": "Root of the extension's sources. Default: `$(Build.SourcesDirectory)`."
+    },
+    {
+      "name": "ManifestGlobs",
+      "type": "string",
+      "label": "ManifestGlobs",
+      "defaultValue": "vss-extension.json",
+      "required": true,
+      "helpMarkDown": "The name of the extension manifest JSON file. Default: `vss-extension.json`."
+    },
+    {
+      "defaultValue": "false",
+      "helpMarkdown": "Allows you to override the version of the extension at build time. The version in the extension manifest will ignored.",
+      "label": "Override Extension Version",
+      "name": "OverrideExtensionVersion",
+      "required": false,
+      "type": "boolean",
+      "groupName": "OverrideVersion"
+    },
+    {
+      "name": "OverrideInternalVersion",
+      "type": "boolean",
+      "label": "Override Build Task Versions",
+      "defaultValue": "true",
+      "required": false,
+      "helpMarkDown": "Search all folders under the extension and updates the version specified in any Build and Release task manifest.",
+      "VisibleRule": "OverrideExtensionVersion = true",
+      "groupName": "OverrideVersion"
+    },
+    {
+      "defaultValue": "$(Build.BuildNumber)",
+      "helpMarkdown": "The version number to use as override. Must be in `0.0.0` format. Default: `$(Build.BuildNumber)`.",
+      "label": "Version",
+      "name": "ExtensionVersion",
+      "required": true,
+      "type": "string",
+      "VisibleRule": "OverrideExtensionVersion = true",
+      "groupName": "OverrideVersion"
+    },
+    {
+      "defaultValue": "Private",
+      "helpMarkdown": "Allows you to override the Visibility and Preview flag for the extension. Default: Use the values specified in the extension manifest.",
+      "label": "Override Visibility",
+      "name": "ExtensionVisibility",
+      "required": false,
+      "options": {
+        "NoOverride": "Use manifest",
+        "Private": "Private",
+        "PrivatePreview": "Private Preview",
+        "PublicPreview": "Public Preview",
+        "Public": "Public"
+      },
+      "type": "pickList",
+      "groupName": "OverrideVersion"
+    },
+    {
+      "name": "ServiceEndpoint",
+      "type": "connectedService:marketplace-auth-key",
+      "label": "Service Endpoint",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "The Visual Studio marketplace authorization to use.",
+      "groupName": "GlobalOptions"
+    },
+    {
+      "name": "TfxInstall",
+      "type": "boolean",
+      "label": "Install Tfx-cli",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Will install `tfx-cli` if it can't be found. Optionally install `tfx-cli` yourself by adding an `npm install tfx-cli` task before calling any of the VSTS Extension tasks.",
+      "groupName": "GlobalOptions"
+    },
+    {
+      "name": "TfxUpdate",
+      "type": "boolean",
+      "label": "Auto-update Tfx-cli",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Issues a call to `npm update tfx-cli` to ensure you're using the latest version of tfx.",
+      "groupName": "GlobalOptions",
+      "VisibleRule": "TfxInstall = true"
+    },
+    {
+      "name": "TfxLocation",
+      "type": "filePath",
+      "label": "Tfx Location",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "The location were tfx can be found. If it can't be found and Tfx Install is checked, tfx will be installed here.",
+      "groupName": "GlobalOptions"
+    },
+    {
+      "name": "PackagingOutputPath",
+      "type": "filePath",
+      "label": "Output path",
+      "defaultValue": "$(Build.ArtifactStagingDirectory)\\vsix",
+      "required": true,
+      "helpMarkDown": "Output path to write the packaged VSIX file to. The file name will be auto generated."
+    },
+    {
+      "defaultValue": "None",
+      "helpMarkdown": "To override additional values in the extension manifest you can either specify a snippet of JSON or point to a file containing the overrides.",
+      "label": "Override Type",
+      "name": "OverrideType",
+      "required": false,
+      "options": {
+        "None": "None",
+        "Json": "Json",
+        "File": "File"
+      },
+      "type": "pickList",
+      "groupName": "OverrideAdvanced"
+    },
+    {
+      "name": "OverrideFile",
+      "type": "filePath",
+      "label": "Override File",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "File with additional overrides of the extension manifest. (JSON)",
+      "groupName": "OverrideAdvanced",
+      "VisibleRule": "OverrideType=File"
+    },
+    {
+      "name": "OverrideJson",
+      "type": "multiLine",
+      "label": "Override Json",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Snippet with additional overrides of the extension manifest. (JSON)",
+      "groupName": "OverrideAdvanced",
+      "VisibleRule": "OverrideType=Json"
+    },
+    {
+      "name": "BypassValidation",
+      "type": "boolean",
+      "label": "Bypass Validation",
+      "defaultValue": "false",
+      "required": true,
+      "helpMarkDown": "By-passes local validation.",
+      "groupName": "AdvancedOptions"
+    },
+    {
+      "name": "LocalizationRoot",
+      "type": "filePath",
+      "label": "Localization Root",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Path to the localization files.",
+      "groupName": "AdvancedOptions"
+    },
+    {
+      "name": "TfxArguments",
+      "type": "string",
+      "label": "Additional arguments",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Additional arguments to pass to `tfx`.",
+      "groupName": "AdvancedOptions"
+    },
+    {
+      "name": "Preview",
+      "type": "boolean",
+      "label": "Preview",
+      "defaultValue": "false",
+      "required": true,
+      "helpMarkDown": "When Preview is specified all calls to the Marketplace will be logged, but never executed.",
+      "groupName": "AdvancedOptions"
+    },
+    {
+      "name": "OutputVariable",
+      "type": "string",
+      "label": "Output Variable",
+      "defaultValue": "CreateExtension.OutputPath",
+      "required": true,
+      "helpMarkDown": "Stores the path to the generated VSIX to the specified variable.",
+      "groupName": "AdvancedOptions"
+    },
+    {
+      "name": "EnablePublishing",
+      "type": "boolean",
+      "label": "Enable Publishing",
+      "defaultValue": "false",
+      "required": true,
+      "helpMarkDown": "When checked publishes the extension to the marketplace."
+    },
+    {
+      "name": "EnableSharing",
+      "type": "boolean",
+      "label": "Enable Sharing",
+      "defaultValue": "false",
+      "required": true,
+      "helpMarkDown": "When checked shares the extension with the specified Visual Studio Team Services acounts.",
+      "VisibleRule": "EnablePublishing = true"
+    },
+    {
+      "name": "ShareWith",
+      "type": "multiLine",
+      "label": "Share with",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Share with these accountnames. Specify one account per line or use `;` or `,`' to separate the accounts. Only enter the highlighted value: **youraccount**.visualstudio.com.",
+      "VisibleRule": "EnableSharing = true"
+    }
+  ],
     "instanceNameFormat": "Package and Publish VSTS Extension: $(PublisherID).$(ExtensionID)",
     "execution": {
         "PowerShell": {
