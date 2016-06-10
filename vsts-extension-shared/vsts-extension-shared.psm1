@@ -13,6 +13,7 @@ function Convert-GlobalOptions
         TfxUpdate = ($parameters["TfxUpdate"] -eq $true)
         TfxLocation = [string]$parameters["TfxLocation"]
         ServiceEndpoint = [string]$parameters["ServiceEndpoint"]
+        TfxArguments = [string]$parameters["TfxArguments"]
     }
 
     Write-Debug "GlobalOptions:"
@@ -396,16 +397,18 @@ function Invoke-Tfx
     {
         Write-Debug "Adding --auth-type"
         $Arguments += "--auth-type"
-
+        Write-Debug " Selected authorization scheme: $($ServiceEndpoint.Authorization.Scheme)."
         switch ($ServiceEndpoint.Authorization.Scheme)
         {
-            "Basic"
+            "UsernamePassword"
             {
                 $Arguments += "basic"
                 $Arguments += "--username"
                 $Arguments += $ServiceEndpoint.Authorization.Parameters.Username
                 $Arguments += "--password"
                 $Arguments += $ServiceEndpoint.Authorization.Parameters.Password
+                $Arguments += "--service-url"
+                $Arguments += $ServiceEndpoint.Authorization.Parameters.ServerUri
             }
             "Token"
             {
@@ -425,6 +428,11 @@ function Invoke-Tfx
      
 
     $tfxArgs = ($Arguments | %{ Escape-Args $_ } ) -join " "
+
+    if ($global:globalOptions.TfxArguments)
+    {
+        $tfxArgs += " $($global:globalOptions.TfxArguments)"
+    }
 
     Write-Debug "Calling: $($global:tfx)"
     Write-Debug "Arguments: $tfxArgs"

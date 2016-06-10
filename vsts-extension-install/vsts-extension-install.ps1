@@ -41,7 +41,10 @@ param(
 
     [Parameter(Mandatory=$false)]
     [ValidateSet("true", "false", "1", "0")]
-    [string] $BypassValidation = $false
+    [string] $BypassValidation = $false,
+
+    [Parameter(Mandatory=$false)]
+    [string] $TfxArguments
 )
 
 $PreviewMode = ($Preview -eq $true)

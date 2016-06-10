@@ -82,7 +82,10 @@ param(
     [string] $OutputVariable = "",
 
     [Parameter(Mandatory=$false)]
-    [string] $LocalizationRoot
+    [string] $LocalizationRoot,
+
+    [Parameter(Mandatory=$false)]
+    [string] $TfxArguments
     
 )
 

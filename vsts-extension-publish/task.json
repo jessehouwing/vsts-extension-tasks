@@ -32,71 +32,80 @@
             "isExpanded": true
         }
     ],
-    "inputs": [
-        {
-            "defaultValue": "",
-            "helpMarkdown": "Path to a previously packaged VSIX. Supports wildcards `**`, `*` and `?`.",
-            "label": "VSIX path",
-            "name": "VsixPath",
-            "required": true,
-            "type": "filePath"
-        },
-        {
-            "name": "ServiceEndpoint",
-            "type": "connectedService:marketplace-auth-key",
-            "label": "Service Endpoint",
-            "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "The Visual Studio marketplace authorization to use.",
-            "groupName": "GlobalOptions"
-        },
-        {
-            "name": "TfxInstall",
-            "type": "boolean",
-            "label": "Install Tfx-cli",
-            "defaultValue": "false",
-            "required": false,
-            "helpMarkDown": "Will install `tfx-cli` if it can't be found. Optionally install `tfx-cli` yourself by adding an `npm install tfx-cli` task before calling any of the VSTS Extension tasks.",
-            "groupName": "GlobalOptions"
-        },
-        {
-            "name": "TfxUpdate",
-            "type": "boolean",
-            "label": "Auto-update Tfx-cli",
-            "defaultValue": "false",
-            "required": false,
-            "helpMarkDown": "Issues a call to `npm update tfx-cli` to ensure you're using the latest version of tfx.",
-            "groupName": "GlobalOptions",
-            "VisibleRule": "TfxInstall = true"
-        },
-        {
-            "name": "TfxLocation",
-            "type": "filePath",
-            "label": "Tfx Location",
-            "defaultValue": "$(Agent.WorkFolder)\\Tools",
-            "required": false,
-            "helpMarkDown": "The location were tfx can be found. If it can't be found and Tfx Install is checked, tfx will be installed here.",
-            "groupName": "GlobalOptions"
-        },
-        {
-            "name": "BypassValidation",
-            "type": "boolean",
-            "label": "Bypass Validation",
-            "defaultValue": "false",
-            "required": true,
-            "helpMarkDown": "By-passes local validation.",
-            "groupName": "AdvancedOptions"
-        },
-        {
-            "name": "Preview",
-            "type": "boolean",
-            "label": "Preview",
-            "defaultValue": "false",
-            "required": true,
-            "helpMarkDown": "When Preview is specified all calls to the Marketplace will be logged, but never executed.",
-            "groupName": "AdvancedOptions"
-        }
-    ],
+  "inputs": [
+    {
+      "defaultValue": "",
+      "helpMarkdown": "Path to a previously packaged VSIX. Supports wildcards `**`, `*` and `?`.",
+      "label": "VSIX path",
+      "name": "VsixPath",
+      "required": true,
+      "type": "filePath"
+    },
+    {
+      "name": "ServiceEndpoint",
+      "type": "connectedService:marketplace-auth-key",
+      "label": "Service Endpoint",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "The Visual Studio marketplace authorization to use.",
+      "groupName": "GlobalOptions"
+    },
+    {
+      "name": "TfxInstall",
+      "type": "boolean",
+      "label": "Install Tfx-cli",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Will install `tfx-cli` if it can't be found. Optionally install `tfx-cli` yourself by adding an `npm install tfx-cli` task before calling any of the VSTS Extension tasks.",
+      "groupName": "GlobalOptions"
+    },
+    {
+      "name": "TfxUpdate",
+      "type": "boolean",
+      "label": "Auto-update Tfx-cli",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Issues a call to `npm update tfx-cli` to ensure you're using the latest version of tfx.",
+      "groupName": "GlobalOptions",
+      "VisibleRule": "TfxInstall = true"
+    },
+    {
+      "name": "TfxLocation",
+      "type": "filePath",
+      "label": "Tfx Location",
+      "defaultValue": "$(Agent.WorkFolder)\\Tools",
+      "required": false,
+      "helpMarkDown": "The location were tfx can be found. If it can't be found and Tfx Install is checked, tfx will be installed here.",
+      "groupName": "GlobalOptions"
+    },
+    {
+      "name": "BypassValidation",
+      "type": "boolean",
+      "label": "Bypass Validation",
+      "defaultValue": "false",
+      "required": true,
+      "helpMarkDown": "By-passes local validation.",
+      "groupName": "AdvancedOptions"
+    },
+    {
+      "name": "TfxArguments",
+      "type": "string",
+      "label": "Additional arguments",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Additional arguments to pass to `tfx`.",
+      "groupName": "AdvancedOptions"
+    },
+    {
+      "name": "Preview",
+      "type": "boolean",
+      "label": "Preview",
+      "defaultValue": "false",
+      "required": true,
+      "helpMarkDown": "When Preview is specified all calls to the Marketplace will be logged, but never executed.",
+      "groupName": "AdvancedOptions"
+    }
+  ],
     "instanceNameFormat": "Publish VSTS Extension: $(VsixPath)",
     "execution": {
         "PowerShell": {

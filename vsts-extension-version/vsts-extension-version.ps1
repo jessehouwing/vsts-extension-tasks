@@ -34,7 +34,10 @@ param(
     [string] $UpdateVersion = "None",
 
     [Parameter(Mandatory=$false)]
-    [string] $OutputVariable = ""
+    [string] $OutputVariable = "",
+
+    [Parameter(Mandatory=$false)]
+    [string] $TfxArguments
 )
 
 $PreviewMode = ($Preview -eq $true)

@@ -1,199 +1,232 @@
 {
-    "manifestVersion": 1,
-    "id": "jessehouwing-vsts-extension-tasks-TEST",
-    "name": "VSTS Extension Tasks",
-    "version": "0.0.0",
-    "publisher": "jessehouwing",
-    "targets": [
-        {
-            "id": "Microsoft.VisualStudio.Services"
-        }
-    ],
-    "scope": [
-        "vso.build",
-        "vso.serviceendpoint"
-    ],
-    "description": "Build and Release Management extensions that enable you to package, publish and share VSTS Extensions to the marketplace.",
-    "categories": [
-        "Build and release"
-    ],
-    "tags": [
-        "Extension",
-        "Marketplace",
-        "Publish",
-        "Package"
-    ],
-    "screenshots": [
-        {
-            "path": "extension/Images/Screenshots/packageandpublish.png"
-        }
-    ],
-    "content": {
-        "details": {
-            "path": "readme.md"
-        },
-        "license": {
-            "path": "license.txt"
-        }
+  "manifestVersion": 1,
+  "id": "jessehouwing-vsts-extension-tasks-TEST",
+  "name": "VSTS Extension Tasks",
+  "version": "0.0.0",
+  "publisher": "jessehouwing",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "scope": [
+    "vso.build",
+    "vso.serviceendpoint"
+  ],
+  "description": "Build and Release Management extensions that enable you to package, publish and share VSTS Extensions to the marketplace.",
+  "categories": [
+    "Build and release"
+  ],
+  "tags": [
+    "Extension",
+    "Marketplace",
+    "Publish",
+    "Package"
+  ],
+  "screenshots": [
+    {
+      "path": "extension/Images/Screenshots/packageandpublish.png"
+    }
+  ],
+  "content": {
+    "details": {
+      "path": "readme.md"
     },
-    "links": {
-        "getstarted": {
-            "uri": "https://github.com/jessehouwing/vsts-extension-tasks/wiki"
-        },
-        "support": {
-            "uri": "https://github.com/jessehouwing/vsts-extension-tasks/issues"
-        }
+    "license": {
+      "path": "license.txt"
+    }
+  },
+  "links": {
+    "getstarted": {
+      "uri": "https://github.com/jessehouwing/vsts-extension-tasks/wiki"
     },
-    "branding": {
-        "color": "rgb(36, 43, 50)",
-        "theme": "dark"
+    "support": {
+      "uri": "https://github.com/jessehouwing/vsts-extension-tasks/issues"
+    }
+  },
+  "branding": {
+    "color": "rgb(36, 43, 50)",
+    "theme": "dark"
+  },
+  "icons": {
+    "default": "extension/images/extension-icon.png"
+  },
+  "files": [
+    {
+      "path": "vsts-extension-packageandpublish/vsts-extension-packageandpublish.ps1"
     },
-    "icons": {
-        "default": "extension/images/extension-icon.png"
+    {
+      "path": "vsts-extension-packageandpublish/vsts-extension-shared.psm1",
+      "contentType": "text/plain"
     },
-    "files": [
-        {
-            "path": "vsts-extension-packageandpublish/vsts-extension-packageandpublish.ps1"
-        },
-        {
-            "path": "vsts-extension-packageandpublish/vsts-extension-shared.psm1",
-            "contentType": "text/plain"
-        },
-        {
-            "path": "vsts-extension-packageandpublish/task.json"
-        },
-        {
-            "path": "vsts-extension-packageandpublish/icon.png"
-        },
+    {
+      "path": "vsts-extension-packageandpublish/task.json"
+    },
+    {
+      "path": "vsts-extension-packageandpublish/icon.png"
+    },
 
-        {
-            "path": "vsts-extension-share/vsts-extension-share.ps1"
-        },
-        {
-            "path": "vsts-extension-share/vsts-extension-shared.psm1",
-            "contentType": "text/plain"
-        },
-        {
-            "path": "vsts-extension-share/task.json"
-        },
-        {
-            "path": "vsts-extension-share/icon.png"
-        },
+    {
+      "path": "vsts-extension-share/vsts-extension-share.ps1"
+    },
+    {
+      "path": "vsts-extension-share/vsts-extension-shared.psm1",
+      "contentType": "text/plain"
+    },
+    {
+      "path": "vsts-extension-share/task.json"
+    },
+    {
+      "path": "vsts-extension-share/icon.png"
+    },
 
-        {
-            "path": "vsts-extension-publish/vsts-extension-publish.ps1"
-        },
-        {
-            "path": "vsts-extension-publish/vsts-extension-shared.psm1",
-            "contentType": "text/plain"
-        },
-        {
-            "path": "vsts-extension-publish/task.json"
-        },
-        {
-            "path": "vsts-extension-publish/icon.png"
-        },
+    {
+      "path": "vsts-extension-publish/vsts-extension-publish.ps1"
+    },
+    {
+      "path": "vsts-extension-publish/vsts-extension-shared.psm1",
+      "contentType": "text/plain"
+    },
+    {
+      "path": "vsts-extension-publish/task.json"
+    },
+    {
+      "path": "vsts-extension-publish/icon.png"
+    },
 
-        {
-            "path": "vsts-extension-version/vsts-extension-version.ps1"
-        },
-        {
-            "path": "vsts-extension-version/vsts-extension-shared.psm1",
-            "contentType": "text/plain"
-        },
-        {
-            "path": "vsts-extension-version/task.json"
-        },
-        {
-            "path": "vsts-extension-version/icon.png"
-        },
+    {
+      "path": "vsts-extension-version/vsts-extension-version.ps1"
+    },
+    {
+      "path": "vsts-extension-version/vsts-extension-shared.psm1",
+      "contentType": "text/plain"
+    },
+    {
+      "path": "vsts-extension-version/task.json"
+    },
+    {
+      "path": "vsts-extension-version/icon.png"
+    },
 
-        {
-            "path": "vsts-extension-install/vsts-extension-install.ps1"
-        },
-        {
-            "path": "vsts-extension-install/vsts-extension-shared.psm1",
-            "contentType": "text/plain"
-        },
-        {
-            "path": "vsts-extension-install/task.json"
-        },
-        {
-            "path": "vsts-extension-install/icon.png"
-        }
-    ],
-    "contributions": [
-        {
-            "id": "vsts-extension-packageandpublish",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "vsts-extension-packageandpublish"
-            }
-        },
-        {
-            "id": "vsts-extension-share",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "vsts-extension-share"
-            }
-        },
-        {
-            "id": "vsts-extension-publish",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "vsts-extension-publish"
-            }
-        },
-        {
-            "id": "vsts-extension-version",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "vsts-extension-version"
-            }
-        },
-        {
-            "id": "vsts-extension-install",
-            "type": "ms.vss-distributed-task.task",
-            "targets": [
-                "ms.vss-distributed-task.tasks"
-            ],
-            "properties": {
-                "name": "vsts-extension-install"
-            }
-        },
-        {
-            "id": "marketplace-service-endpoint",
-            "description": "Visual Studio Marketplace",
-            "type": "ms.vss-endpoint.service-endpoint-type",
-            "targets": [
-                "ms.vss-endpoint.endpoint-types"
-            ],
-            "properties": {
-                "name": "marketplace-auth-key",
-                "displayName": "Visual Studio Marketplace",
-                "url": "https://app.market.visualstudio.com/_apis/gallery",
-                "authenticationSchemes": [
-                    {
-                        "type": "ms.vss-endpoint.endpoint-auth-scheme-token"
-                    },
-                    {
-                        "type": "ms.vss-endpoint.endpoint-auth-scheme-basic"
-                    }
+    {
+      "path": "vsts-extension-install/vsts-extension-install.ps1"
+    },
+    {
+      "path": "vsts-extension-install/vsts-extension-shared.psm1",
+      "contentType": "text/plain"
+    },
+    {
+      "path": "vsts-extension-install/task.json"
+    },
+    {
+      "path": "vsts-extension-install/icon.png"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "vsts-extension-packageandpublish",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "vsts-extension-packageandpublish"
+      }
+    },
+    {
+      "id": "vsts-extension-share",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "vsts-extension-share"
+      }
+    },
+    {
+      "id": "vsts-extension-publish",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "vsts-extension-publish"
+      }
+    },
+    {
+      "id": "vsts-extension-version",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "vsts-extension-version"
+      }
+    },
+    {
+      "id": "vsts-extension-install",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "vsts-extension-install"
+      }
+    },
+    {
+      "id": "marketplace-service-endpoint",
+      "description": "Visual Studio Marketplace",
+      "type": "ms.vss-endpoint.service-endpoint-type",
+      "targets": [
+        "ms.vss-endpoint.endpoint-types"
+      ],
+      "properties": {
+        "name": "marketplace-auth-key",
+        "displayName": "Visual Studio Marketplace",
+        "url": "https://marketplace.visualstudio.com/",
+        "authenticationSchemes": [
+          {
+            "type": "ms.vss-endpoint.endpoint-auth-scheme-token"
+          },
+          {
+            "type": "ms.vss-endpoint.endpoint-auth-scheme-basic",
+            "inputDescriptors": [
+              {
+                "id": "serveruri",
+                "name": "Server Location",
+                "description": "TFS Server location",
+                "inputMode": "textbox",
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string"
+                }
+              },
 
-                ]
-            }
-        }
-    ]
+              {
+                "id": "username",
+                "name": "Username",
+                "description": "Username",
+                "inputMode": "textbox",
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string"
+                }
+              },
+              {
+                "id": "password",
+                "name": "Password",
+                "description": "Password",
+                "inputMode": "passwordbox",
+                "isConfidential": true,
+                "validation": {
+                  "isRequired": true,
+                  "dataType": "string"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }
