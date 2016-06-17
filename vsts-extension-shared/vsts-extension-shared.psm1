@@ -556,9 +556,10 @@ function Update-InternalVersion
         foreach ($file in $files)
         {
             $taskJson = ConvertFrom-Json (Get-Content $file -Raw)
-            $taskJson.Version.Major = $version.Major
-            $taskJson.Version.Minor = $version.Minor
-            $taskJson.Version.Patch = $version.Build
+            Add-Member -InputObject $taskJson.version -NotePropertyName "Major" -NotePropertyValue $version.Major -Force
+            Add-Member -InputObject $taskJson.version -NotePropertyName "Minor" -NotePropertyValue $version.Minor -Force
+            Add-Member -InputObject $taskJson.version -NotePropertyName "Patch" -NotePropertyValue $version.Build -Force
+
             $output = $taskjson | ConvertTo-JSON -Depth 100
             
             Write-Output "Setting version for: $file"
