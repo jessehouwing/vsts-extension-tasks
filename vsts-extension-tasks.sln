@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25029.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F5034706-568F-408A-B7B3-4D38C6DB8A32}") = "vsts-extension-shared", "vsts-extension-shared\vsts-extension-shared.pssproj", "{6CAFC0C6-A428-4D30-A9F9-700E829FEA51}"
 EndProject
@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extension", "Extension", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{60191CF5-016B-4E2D-B762-228F0D128D8C}"
 	ProjectSection(SolutionItems) = preProject
+		extension\images\donate.png = extension\images\donate.png
 		extension\images\extension-icon.png = extension\images\extension-icon.png
 		extension\images\icons-small.psd = extension\images\icons-small.psd
 		extension\images\icons.psd = extension\images\icons.psd

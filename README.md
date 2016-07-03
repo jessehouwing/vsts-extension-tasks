@@ -1,4 +1,10 @@
-[![Gitter](https://badges.gitter.im/jessehouwing/vsts-extension-tasks.svg)](https://gitter.im/jessehouwing/vsts-extension-tasks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)
+[![Gitter](https://badges.gitter.im/jessehouwing/vsts-extension-tasks.svg)](https://gitter.im/jessehouwing/vsts-extension-tasks?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge)[![Donate](https://raw.githubusercontent.com/jessehouwing/vsts-extension-tasks/master/extension/images/donate.png)](https://www.paypal.me/JesseHouwing/5)
+
+# Deprecation Notice
+
+Now that Microsoft has released its own version of the [Build and Release tasks for Extensions](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.vsts-developer-tools-build-tasks) I will be focussing my effort on further extending those in favor of extending these tasks. I will keep these tasks available for the time to come to give you, my users, time to migrate. If you encounter issues, I'll still try to solve them for some time to come.
+
+I've ensured that all the features you've come to like in this extension [were ported to the new Devlabs tasks](https://github.com/Microsoft/vsts-extension-build-release-tasks/graphs/contributors). Thank you for all your support!
 
 # Release Notes
 > **8-6-2016**
