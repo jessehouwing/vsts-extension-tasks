@@ -355,6 +355,7 @@ function Find-Tfx
 
         Write-Debug "Trying to update tfx in: $TfxLocation"
 
+        $npm = Get-Command -Name npm -ErrorAction Ignore
         if(!$npm)
         {
             throw ("Unable to locate npm")
