@@ -1,7 +1,7 @@
 import-module "Microsoft.TeamFoundation.DistributedTask.Task.Internal"
 import-module "Microsoft.TeamFoundation.DistributedTask.Task.Common"
 
-function Convert-GlobalOptions 
+function Convert-GlobalOptions
 {
     param
     (
@@ -24,7 +24,7 @@ function Convert-GlobalOptions
     return $global:globalOptions
 }
 
-function Convert-PackageOptions 
+function Convert-PackageOptions
 {
     param
     (
@@ -41,6 +41,7 @@ function Convert-PackageOptions
         OverrideExtensionVersion = ($parameters["OverrideExtensionVersion"] -eq $true)
         OverrideInternalVersions = ($parameters["OverrideInternalVersions"] -eq $true)
         ExtensionVersion = [string]$parameters["ExtensionVersion"]
+        PricingModel = [string]$parameters["PricingModel"]
         ExtensionVisibility = [string]$parameters["ExtensionVisibility"]
         ManifestGlobs = [string]$parameters["ManifestGlobs"]
         OverrideType = [string]$parameters["OverrideType"]
@@ -68,7 +69,7 @@ function Convert-PackageOptions
     {
         $packageOptions.ExtensionId = "$($packageOptions.ExtensionId)-$($packageOptions.ExtensionTag)"
     }
-    
+
     Add-Member -InputObject $OverrideJson -NotePropertyName "id" -NotePropertyValue $packageOptions.ExtensionId -Force
     Add-Member -InputObject $OverrideJson -NotePropertyName "publisher" -NotePropertyValue $packageOptions.PublisherId -Force
 
@@ -78,7 +79,7 @@ function Convert-PackageOptions
         Write-Debug "Setting 'Version'"
         Add-Member -InputObject $OverrideJson -NotePropertyName "version" -NotePropertyValue $Version.ToString(3) -Force
     }
-    
+
     $OverridePublic = $null
     $OverrideFlags  = $null
 
@@ -108,7 +109,20 @@ function Convert-PackageOptions
             $OverrideFlags = @( "Public" )
         }
     }
-    
+
+    switch ($packageOptions.PricingModel)
+    {
+        "Free"
+        {
+            $OverrideFlags  = @($OverrideFlags, "Free") | ?{ $_ -ne $null }
+        }
+
+        "Paid"
+        {
+            $OverrideFlags  = @($OverrideFlags, "Paid") | ?{ $_ -ne $null }
+        }
+    }
+
     if ($OverridePublic -ne $null)
     {
         Write-Debug "Setting 'Public'"
@@ -129,7 +143,7 @@ function Convert-PackageOptions
     return $global:packageOptions
 }
 
-function Convert-ShareOptions 
+function Convert-ShareOptions
 {
     param
     (
@@ -164,7 +178,7 @@ function Convert-ShareOptions
     return $global:shareOptions
 }
 
-function Convert-InstallOptions 
+function Convert-InstallOptions
 {
     param
     (
@@ -199,7 +213,7 @@ function Convert-InstallOptions
     return $global:installOptions
 }
 
-function Convert-VersionOptions 
+function Convert-VersionOptions
 {
     param
     (
@@ -227,7 +241,7 @@ function Convert-VersionOptions
     return $global:versionOptions
 }
 
-function Convert-PublishOptions 
+function Convert-PublishOptions
 {
     param
     (
@@ -281,7 +295,7 @@ function Find-Tfx
         $global:tfx = $tfxCommand.Source
     }
     else
-    { 
+    {
         Write-Debug "Locating tfx in standard locations"
         $options = @()
         if ($TfxLocation -ne "")
@@ -289,7 +303,7 @@ function Find-Tfx
             $options += $TfxLocation
             $options += "$TfxLocation\node_modules\.bin"
         }
-        
+
         $options += "$PSScriptRoot\Tools\node_modules\.bin"
         $options += "$($env:appdata)\npm"
 
@@ -302,7 +316,7 @@ function Find-Tfx
         {
             $options += (Get-Item $npm.Path).Directory.FullName
         }
-      
+
         foreach ($path in $options)
         {
             $path = Join-Path $path "tfx.cmd"
@@ -330,14 +344,14 @@ function Find-Tfx
             {
                 New-Item -ItemType Directory -Path $TfxLocation
             }
-            
+
             $npmargs = "install ""tfx-cli"" --prefix ""$TfxLocation"""
             Write-Verbose "Calling: $($npm.Path) $npmargs"
             Invoke-Tool -Path $npm.Path -Arguments $npmArgs -WorkingFolder $cwd -WarningPattern "^npm WARN"
-            
+
             Find-Tfx -TfxInstall:$false -TfxLocation $TfxLocation -DetectTfx:$false -TfxUpdate:$false
         }
-        
+
         if ($global:tfx -eq $null)
         {
             throw ("Unable to locate tfx")
@@ -376,7 +390,7 @@ function Invoke-Tfx
         $ServiceEndpoint,
         [switch] $Preview = $false
     )
-    
+
     $workingFolder = $env:SYSTEM_DEFAULTWORKINGDIRECTORY
     if (-not (Test-Path -PathType Container $workingFolder))
     {
@@ -426,7 +440,7 @@ function Invoke-Tfx
         $Arguments += "--service-url"
         $Arguments += "https://marketplace.visualstudio.com/"
     }
-     
+
 
     $tfxArgs = ($Arguments | %{ Escape-Args $_ } ) -join " "
 
@@ -449,7 +463,7 @@ function Invoke-Tfx
     {
         # Pass -1 as success so we can handle output ourselves.
         $output = Invoke-Tool -Path $global:tfx -Arguments $tfxArgs -SuccessfulExitCodes @(0,-1,255) -WorkingFolder $workingFolder
-        
+
     }
 
     return Handle-TfxOutput $output
@@ -471,7 +485,7 @@ function Handle-TfxOutput{
     $jsonStarted = $false
     $messages = @()
     $json = ""
- 
+
     foreach ($line in $output)
     {
         if (-not $commandProcessed -and $line.StartsWith("$global:tfx"))
@@ -528,7 +542,7 @@ function Escape-Args
         $output = $output.Trim('"')
     }
 
-    if ($output -match '"') 
+    if ($output -match '"')
     {
         $output = $output -replace '"', '""'
     }
@@ -537,7 +551,7 @@ function Escape-Args
     {
         $output = '"'+$output+'"'
     }
-    
+
     return $output
 }
 
@@ -561,10 +575,10 @@ function Update-InternalVersion
             $taskJson.Version.Minor = $version.Minor
             $taskJson.Version.Patch = $version.Build
             $output = $taskjson | ConvertTo-JSON -Depth 100
-            
+
             Write-Output "Setting version for: $file"
 
-            $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($False) 
+            $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($False)
             [System.IO.File]::WriteAllText($file, $output, $Utf8NoBomEncoding)
         }
     }
