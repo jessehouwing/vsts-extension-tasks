@@ -7,7 +7,10 @@ Now that Microsoft has released its own version of the [Build and Release tasks 
 I've ensured that all the features you've come to like in this extension [were ported to the new Devlabs tasks](https://github.com/Microsoft/vsts-extension-build-release-tasks/graphs/contributors). Thank you for all your support!
 
 # Release Notes
-> **8-6-2016**
+
+> **23-9-2016**
+> - Fixed: wildcards for "Publish Task"
+> - Added: Support for Paid extensions
 
 > - Added: Additional Arguments option to pass extra options to tfx
 > - Added: Publish to TFS 2015 update 2 (requires Basic Authentication)
