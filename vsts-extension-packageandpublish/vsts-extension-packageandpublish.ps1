@@ -3,7 +3,7 @@ param(
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string] $PublisherID,
-    
+
     [Parameter(Mandatory=$true)]
     [ValidateNotNullOrEmpty()]
     [string] $ExtensionID,
@@ -25,6 +25,10 @@ param(
     [Parameter(Mandatory=$false)]
     [ValidateSet("NoOverride", "Private", "PrivatePreview", "PublicPreview", "Public")]
     [string] $ExtensionVisibility = "NoOverride",
+
+    [Parameter(Mandatory=$false)]
+    [ValidateSet("NoOverride", "Free", "Paid")]
+    [string] $PricingModel = "NoOverride",
 
     # Global Options
     [Parameter(Mandatory=$false)]
@@ -86,7 +90,7 @@ param(
 
     [Parameter(Mandatory=$false)]
     [string] $TfxArguments
-    
+
 )
 
 $PreviewMode = ($Preview -eq $true)
@@ -157,7 +161,7 @@ if ($packageOptions.LocalizationRoot -ne "")
     $tfxArgs += "--loc-root"
     $tfxArgs += $packageOptions.LocalizationRoot
 }
-    
+
 if ($packageOptions.BypassValidation)
 {
     $tfxArgs += "--bypass-validation"
@@ -187,7 +191,7 @@ if ($packageOptions.OutputVariable -ne "")
             $location = $output.packaged
         }
     }
-    
+
     Write-Output "Setting output variable '$($packageOptions.OutputVariable)' to '$location'"
     Write-Host "##vso[task.setvariable variable=$($packageOptions.OutputVariable);]$location"
 }

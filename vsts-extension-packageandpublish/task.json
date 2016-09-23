@@ -113,7 +113,21 @@
       "groupName": "OverrideVersion"
     },
     {
-      "defaultValue": "Private",
+      "defaultValue": "NoOverride",
+      "helpMarkdown": "Allows you to override the Paid flag for the extension. Default: Use the values specified in the extension manifest.",
+      "label": "Pricing Model",
+      "name": "PricingModel",
+      "required": false,
+      "options": {
+        "NoOverride": "Use manifest",
+        "Free": "Free",
+        "Paid": "Paid"
+      },
+      "type": "pickList",
+      "groupName": "OverrideVersion"
+    },
+    {
+      "defaultValue": "NoOverride",
       "helpMarkdown": "Allows you to override the Visibility and Preview flag for the extension. Default: Use the values specified in the extension manifest.",
       "label": "Override Visibility",
       "name": "ExtensionVisibility",
