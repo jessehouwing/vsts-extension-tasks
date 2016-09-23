@@ -112,11 +112,6 @@ function Convert-PackageOptions
 
     switch ($packageOptions.PricingModel)
     {
-        "Free"
-        {
-            $OverrideFlags  = @($OverrideFlags, "Free") | ?{ $_ -ne $null }
-        }
-
         "Paid"
         {
             $OverrideFlags  = @($OverrideFlags, "Paid") | ?{ $_ -ne $null }
