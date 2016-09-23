@@ -239,9 +239,9 @@ function Convert-PublishOptions
         BypassValidation = ($parameters["BypassValidation"] -eq $true)
     }
 
-    if ($shareOptions.VsixPath -match "[?*]")
+    if ($publishOptions.VsixPath -match "[?*]")
     {
-        $shareOptions.VsixPath = [string](Find-Files $shareOptions.VsixPath)
+        $publishOptions.VsixPath = [string](Find-Files $publishOptions.VsixPath)
     }
 
     Write-Debug "PublishOptions:"
