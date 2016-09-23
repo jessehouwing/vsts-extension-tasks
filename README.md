@@ -12,6 +12,7 @@ I've ensured that all the features you've come to like in this extension [were p
 > - Fixed: wildcards for "Publish Task"
 > - Added: Support for Paid extensions
 
+> **8-6-2016**
 > - Added: Additional Arguments option to pass extra options to tfx
 > - Added: Publish to TFS 2015 update 2 (requires Basic Authentication)
 
