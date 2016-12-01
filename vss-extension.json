@@ -1,3 +1,4 @@
+
 {
   "manifestVersion": 1,
   "id": "jessehouwing-vsts-extension-tasks-TEST",
@@ -43,6 +44,10 @@
     "support": {
       "uri": "https://github.com/jessehouwing/vsts-extension-tasks/issues"
     }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/jessehouwing/vsts-extension-tasks"
   },
   "branding": {
     "color": "rgb(36, 43, 50)",
