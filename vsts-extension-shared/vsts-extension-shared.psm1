@@ -542,7 +542,7 @@ function Escape-Args
         $output = $output -replace '"', '""'
     }
 
-    if ($output -match '[\s"]')
+    if ($output -match '[\s"&]')
     {
         $output = '"'+$output+'"'
     }
